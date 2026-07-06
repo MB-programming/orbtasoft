@@ -71,6 +71,21 @@ function icon(string $name): string
     return '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' . $path . '</svg>';
 }
 
+function partners_data(): array
+{
+    // Fictional client/partner wordmarks (rendered as styled text, not real company logos).
+    return [
+        ['name' => 'Nova Analytics',  'weight' => 800],
+        ['name' => 'Vertex Commerce', 'weight' => 700],
+        ['name' => 'Lumen Booking',   'weight' => 600],
+        ['name' => 'Atlas CRM',       'weight' => 800],
+        ['name' => 'Solstice Labs',   'weight' => 700],
+        ['name' => 'Nexora',          'weight' => 900],
+        ['name' => 'Brightfield',     'weight' => 600],
+        ['name' => 'Cobalt Systems',  'weight' => 700],
+    ];
+}
+
 function services_data(): array
 {
     return [
@@ -80,6 +95,17 @@ function services_data(): array
         ['icon' => 'layout-panel-top', 'title' => t('service_4_title'), 'desc' => t('service_4_desc')],
         ['icon' => 'layout-dashboard', 'title' => t('service_5_title'), 'desc' => t('service_5_desc')],
         ['icon' => 'shield-check',  'title' => t('service_6_title'), 'desc' => t('service_6_desc')],
+    ];
+}
+
+function expertise_data(): array
+{
+    return [
+        ['title' => t('service_1_title'), 'image' => '/assets/img/expertise-web.svg'],
+        ['title' => t('service_2_title'), 'image' => '/assets/img/expertise-backend.svg'],
+        ['title' => t('service_3_title'), 'image' => '/assets/img/expertise-3d.svg'],
+        ['title' => t('service_4_title'), 'image' => '/assets/img/expertise-uiux.svg'],
+        ['title' => t('service_5_title'), 'image' => '/assets/img/expertise-business.svg'],
     ];
 }
 

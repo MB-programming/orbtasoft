@@ -94,6 +94,30 @@ horizontal-scroll gallery on desktop (vertical scroll drives horizontal
 card movement, direction-aware for RTL) and falls back to native
 swipe-scrolling on mobile.
 
+## Partners logo cloud
+
+`.logo-cloud` on the homepage is a pure-CSS infinite marquee (no JS
+animation library) with a progressive-blur fade at each edge. Partner
+names are fictional wordmarks (`partners_data()` in
+`includes/functions.php`), not real companies. Note it forces
+`direction: ltr` on the marquee container — RTL block layout right-aligns
+shrink-to-fit boxes, which combined with the `translateX` keyframes would
+otherwise push the whole track off-screen.
+
+## Expertise hover slider
+
+`#hoverSlider` shows a service name list next to a stacked image panel;
+hovering/focusing/tapping an item clip-path-reveals its image and rolls
+the label text. Character-by-character text splitting only runs for
+Latin-script labels — Arabic is left as plain text, since splitting
+cursive script into per-character spans breaks Arabic letter-joining.
+
+## Newsletter (orbit signup)
+
+A lightweight email-capture section with spinning orbit-ring decoration
+and a canvas confetti burst on success, storing emails in
+`newsletter_subscribers` via `newsletter-handler.php`.
+
 ## Contact form
 
 Submits via `fetch()` to `contact-handler.php`, which validates input,

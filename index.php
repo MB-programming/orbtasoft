@@ -30,6 +30,26 @@ require __DIR__ . '/includes/header.php';
     </div>
   </section>
 
+  <!-- ============ PARTNERS LOGO CLOUD ============ -->
+  <section class="logo-cloud-section reveal">
+    <div class="container">
+      <div class="logo-cloud-section__head">
+        <span class="logo-cloud-section__kicker"><?= e(t('partners_kicker')) ?></span>
+        <span class="logo-cloud-section__title"><?= e(t('partners_heading')) ?></span>
+      </div>
+
+      <div class="logo-cloud">
+        <div class="logo-track">
+          <?php foreach (array_merge(partners_data(), partners_data()) as $partner): ?>
+            <span class="logo-wordmark" style="font-weight: <?= (int) $partner['weight'] ?>;"><?= e($partner['name']) ?></span>
+          <?php endforeach; ?>
+        </div>
+        <div class="logo-cloud__blur logo-cloud__blur--left"><span></span></div>
+        <div class="logo-cloud__blur logo-cloud__blur--right"><span></span></div>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ SHOWCASE CARD ============ -->
   <section class="showcase">
     <div class="container showcase__inner">
@@ -84,6 +104,32 @@ require __DIR__ . '/includes/header.php';
             <h2><?= e(t('hero_brand')) ?></h2>
           </div>
 
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOVER SLIDER — EXPERTISE ============ -->
+  <section class="section hover-slider-section">
+    <div class="container">
+      <div class="section__head reveal" style="text-align: start; margin-inline: 0;">
+        <span class="kicker"><?= e(t('expertise_kicker')) ?></span>
+        <h2><?= e(t('expertise_heading')) ?></h2>
+      </div>
+
+      <div class="hover-slider" id="hoverSlider">
+        <div class="hover-slider__list">
+          <?php foreach (expertise_data() as $i => $item): ?>
+            <button type="button" class="hover-slider__item <?= $i === 0 ? 'is-active' : '' ?>" data-index="<?= $i ?>">
+              <span class="hover-slider__index">0<?= $i + 1 ?></span>
+              <span class="hover-slider__label" data-text="<?= e($item['title']) ?>"></span>
+            </button>
+          <?php endforeach; ?>
+        </div>
+        <div class="hover-slider__images">
+          <?php foreach (expertise_data() as $i => $item): ?>
+            <img class="hover-slider__image <?= $i === 0 ? 'is-active' : '' ?>" data-index="<?= $i ?>" src="<?= e($item['image']) ?>" alt="<?= e($item['title']) ?>" loading="lazy">
+          <?php endforeach; ?>
         </div>
       </div>
     </div>
@@ -167,6 +213,36 @@ require __DIR__ . '/includes/header.php';
         <div class="hero__actions">
           <a href="/pages/contact.php" class="btn btn--primary"><?= e(t('cta_btn_primary')) ?></a>
           <a href="/pages/portfolio.php" class="btn btn--secondary"><?= e(t('cta_btn_secondary')) ?></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ NEWSLETTER ============ -->
+  <section class="newsletter-section reveal">
+    <div class="newsletter-orbits" aria-hidden="true">
+      <div class="orbit orbit--1"></div>
+      <div class="orbit orbit--2"></div>
+      <div class="orbit orbit--3"></div>
+      <div class="orbit-core">⚡</div>
+    </div>
+
+    <div class="container newsletter-content">
+      <h2><?= e(t('newsletter_heading')) ?></h2>
+      <p><?= e(t('newsletter_desc')) ?></p>
+
+      <div class="newsletter-form-wrap" id="newsletterWrap">
+        <canvas id="confettiCanvas" class="confetti-canvas" aria-hidden="true"></canvas>
+
+        <form id="newsletterForm" class="newsletter-form">
+          <input type="text" name="company" tabindex="-1" autocomplete="off" style="position:absolute; left:-9999px;" aria-hidden="true">
+          <input type="email" name="email" placeholder="<?= e(t('newsletter_email')) ?>" required>
+          <button type="submit"><?= e(t('newsletter_submit')) ?></button>
+        </form>
+
+        <div class="newsletter-success">
+          <span>✓</span>
+          <span id="newsletterSuccessText"><?= e(t('newsletter_success')) ?></span>
         </div>
       </div>
     </div>

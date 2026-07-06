@@ -46,6 +46,12 @@ return [
     'service_6_title'   => 'Wartung & Support',
     'service_6_desc'    => 'Monitoring, Sicherheitsupdates und laufender Support lange nach dem Launch.',
 
+    'partners_kicker'   => 'Bereits im Einsatz bei',
+    'partners_heading'  => 'Marken, die uns vertrauen',
+
+    'expertise_kicker'  => '/ Unsere Expertise',
+    'expertise_heading' => 'Worin wir richtig gut sind',
+
     'stack_kicker'      => 'Unser Werkzeugkasten',
     'stack_heading'     => 'Zuverlässige Technologie für ein solides Fundament',
 
@@ -77,6 +83,12 @@ return [
     'form_success'      => 'Ihre Nachricht wurde erfolgreich gesendet! Wir melden uns bald bei Ihnen.',
     'form_error'        => 'Etwas ist schiefgelaufen, bitte versuchen Sie es erneut.',
     'form_error_validation' => 'Bitte füllen Sie alle Felder korrekt aus.',
+
+    'newsletter_heading'  => 'Bleib im Orbit.',
+    'newsletter_desc'     => 'Neue Case Studies, Dev-Insights und gelegentliche Produkt-Tipps — kein Spam, jederzeit abbestellbar.',
+    'newsletter_email'    => 'du@firma.de',
+    'newsletter_submit'   => 'Abonnieren',
+    'newsletter_success'  => 'Du bist dabei! Willkommen an Bord.',
 
     'footer_rights'     => 'Alle Rechte vorbehalten.',
     'footer_tagline'    => 'Wir entwickeln Software, die Blicke fängt.',

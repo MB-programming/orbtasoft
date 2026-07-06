@@ -46,6 +46,12 @@ return [
     'service_6_title'   => 'الصيانة والدعم',
     'service_6_desc'    => 'مراقبة، تحديثات أمنية، ودعم فني مستمر بعد الإطلاق.',
 
+    'partners_kicker'   => 'موثوق بنا من قبل',
+    'partners_heading'  => 'علامات تجارية تثق بنا',
+
+    'expertise_kicker'  => '/ خبرتنا',
+    'expertise_heading' => 'في ماذا نبرع',
+
     'stack_kicker'      => 'أدواتنا',
     'stack_heading'     => 'تقنيات موثوقة لبناء ثابت',
 
@@ -77,6 +83,12 @@ return [
     'form_success'      => 'تم إرسال رسالتك بنجاح! سنتواصل معك قريبًا.',
     'form_error'        => 'حدث خطأ ما، الرجاء المحاولة مرة أخرى.',
     'form_error_validation' => 'الرجاء تعبئة جميع الحقول بشكل صحيح.',
+
+    'newsletter_heading'  => 'ابقَ داخل المدار.',
+    'newsletter_desc'     => 'احصل على أحدث دراسات الحالة وأفكار تقنية بين الحين والآخر — بدون سبام، ويمكنك إلغاء الاشتراك في أي وقت.',
+    'newsletter_email'    => 'you@company.com',
+    'newsletter_submit'   => 'اشترك الآن',
+    'newsletter_success'  => 'تم! أهلاً بك معنا.',
 
     'footer_rights'     => 'جميع الحقوق محفوظة.',
     'footer_tagline'    => 'نبني برمجيات تخطف العين.',

@@ -46,6 +46,12 @@ return [
     'service_6_title'   => 'Maintenance & Support',
     'service_6_desc'    => 'Monitoring, security updates and ongoing support long after launch.',
 
+    'partners_kicker'   => 'Already used by',
+    'partners_heading'  => 'Brands that trust us',
+
+    'expertise_kicker'  => '/ Our Expertise',
+    'expertise_heading' => 'What we\'re great at',
+
     'stack_kicker'      => 'Our Toolkit',
     'stack_heading'     => 'Reliable technology for a solid build',
 
@@ -77,6 +83,12 @@ return [
     'form_success'      => 'Your message was sent successfully! We\'ll be in touch soon.',
     'form_error'        => 'Something went wrong, please try again.',
     'form_error_validation' => 'Please fill in all fields correctly.',
+
+    'newsletter_heading'  => 'Stay in the orbit.',
+    'newsletter_desc'     => 'Get new case studies, dev insights and the occasional product tip — no spam, unsubscribe anytime.',
+    'newsletter_email'    => 'you@company.com',
+    'newsletter_submit'   => 'Subscribe',
+    'newsletter_success'  => 'You\'re in! Welcome aboard.',
 
     'footer_rights'     => 'All rights reserved.',
     'footer_tagline'    => 'We build software that steals the eye.',
