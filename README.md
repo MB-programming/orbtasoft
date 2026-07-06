@@ -74,9 +74,25 @@ assets/img/             Local SVG placeholder artwork for the portfolio grid
 
 ## Language switching
 
-The site defaults to Arabic (RTL). Append `?lang=en` to any URL to switch
-to English (LTR); the choice is remembered in a cookie. All UI strings
-live in `lang/ar.php` and `lang/en.php`.
+The site defaults to German (`de`). English (`en`) and Arabic (`ar`, RTL)
+are also available — switch via the language pills inside the popout
+menu, or by appending `?lang=de|en|ar` to any URL; the choice is
+remembered in a cookie. All UI strings live in `lang/de.php`,
+`lang/en.php` and `lang/ar.php`.
+
+## Navigation
+
+The nav is a full-screen popout menu (triggered by the "Menu" button in
+the header) with large staggered links, a language switcher, and a
+contact CTA — see `includes/header.php`, the `.popout-menu*` rules in
+`assets/css/style.css`, and the open/close logic in `assets/js/main.js`.
+
+## Creative work gallery
+
+The portfolio section (`.work-gallery`) is a GSAP ScrollTrigger–pinned
+horizontal-scroll gallery on desktop (vertical scroll drives horizontal
+card movement, direction-aware for RTL) and falls back to native
+swipe-scrolling on mobile.
 
 ## Contact form
 

@@ -126,27 +126,34 @@ require __DIR__ . '/includes/header.php';
     </div>
   </section>
 
-  <!-- ============ PORTFOLIO TEASER ============ -->
-  <section class="section" id="work">
+  <!-- ============ PORTFOLIO — CREATIVE HORIZONTAL GALLERY ============ -->
+  <section class="section work-gallery" id="work">
     <div class="container">
-      <div class="section__head reveal">
+      <div class="section__head reveal" style="text-align: start; margin-inline: 0;">
         <span class="kicker"><?= e(t('work_kicker')) ?></span>
         <h2><?= e(t('work_heading')) ?></h2>
+        <div class="work-gallery__hint"><span class="arrow"></span> <?= e(t('work_drag_hint')) ?></div>
       </div>
-      <div class="portfolio-grid">
-        <?php foreach (array_slice(portfolio_data(), 0, 4) as $project): ?>
-          <div class="portfolio-card reveal">
+    </div>
+
+    <div class="work-gallery__pin">
+      <div class="work-gallery__track">
+        <?php foreach (portfolio_data() as $i => $project): ?>
+          <div class="work-card">
+            <span class="work-card__index">0<?= $i + 1 ?></span>
             <img src="<?= e($project['image']) ?>" alt="<?= e($project['title']) ?>" loading="lazy">
-            <div class="portfolio-card__overlay">
-              <span class="portfolio-card__tag"><?= e($project['tag']) ?></span>
-              <h3 class="portfolio-card__title"><?= e($project['title']) ?></h3>
-              <span class="portfolio-card__link"><?= e(t('work_view_project')) ?> →</span>
+            <div class="work-card__overlay">
+              <span class="work-card__tag"><?= e($project['tag']) ?></span>
+              <h3 class="work-card__title"><?= e($project['title']) ?></h3>
+              <span class="work-card__link"><?= e(t('work_view_project')) ?> →</span>
             </div>
           </div>
         <?php endforeach; ?>
-      </div>
-      <div class="section__foot reveal">
-        <a href="/pages/portfolio.php" class="btn btn--outline"><?= e(t('work_view_all')) ?></a>
+        <a href="/pages/portfolio.php" class="work-card work-card--cta">
+          <h3><?= e(t('work_view_all')) ?></h3>
+          <p><?= e(t('cta_desc')) ?></p>
+          <span class="btn btn--outline btn--sm"><?= e(t('work_view_all')) ?> →</span>
+        </a>
       </div>
     </div>
   </section>

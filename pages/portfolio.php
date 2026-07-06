@@ -13,16 +13,20 @@ require __DIR__ . '/../includes/header.php';
     </div>
   </section>
 
-  <section class="section section--tight">
+  <section class="section section--tight work-gallery">
     <div class="container">
-      <div class="portfolio-grid">
-        <?php foreach (portfolio_data() as $project): ?>
-          <div class="portfolio-card reveal">
+      <div class="work-gallery__hint reveal"><span class="arrow"></span> <?= e(t('work_drag_hint')) ?></div>
+    </div>
+    <div class="work-gallery__pin">
+      <div class="work-gallery__track">
+        <?php foreach (portfolio_data() as $i => $project): ?>
+          <div class="work-card">
+            <span class="work-card__index">0<?= $i + 1 ?></span>
             <img src="<?= e($project['image']) ?>" alt="<?= e($project['title']) ?>" loading="lazy">
-            <div class="portfolio-card__overlay">
-              <span class="portfolio-card__tag"><?= e($project['tag']) ?></span>
-              <h3 class="portfolio-card__title"><?= e($project['title']) ?></h3>
-              <span class="portfolio-card__link"><?= e(t('work_view_project')) ?> →</span>
+            <div class="work-card__overlay">
+              <span class="work-card__tag"><?= e($project['tag']) ?></span>
+              <h3 class="work-card__title"><?= e($project['title']) ?></h3>
+              <span class="work-card__link"><?= e(t('work_view_project')) ?> →</span>
             </div>
           </div>
         <?php endforeach; ?>

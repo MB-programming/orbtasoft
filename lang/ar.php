@@ -9,6 +9,9 @@ return [
     'nav_about'         => 'من نحن',
     'nav_contact'       => 'تواصل معنا',
     'nav_cta'           => 'ابدأ مشروعك',
+    'nav_menu'          => 'القائمة',
+    'nav_close'         => 'إغلاق',
+    'nav_get_in_touch'  => 'تواصل معنا',
 
     'hero_tagline_1'    => 'نحوّل الأفكار،',
     'hero_tagline_2'    => 'إلى منتجات حية.',
@@ -50,6 +53,7 @@ return [
     'work_heading'      => 'مشاريع اخترنا أن نفخر بها',
     'work_view_all'     => 'عرض كل الأعمال',
     'work_view_project' => 'عرض المشروع',
+    'work_drag_hint'    => 'مرّر للاستكشاف',
 
     'about_kicker'      => 'من نحن',
     'about_heading'     => 'فريق صغير، تنفيذ بمستوى عالمي',

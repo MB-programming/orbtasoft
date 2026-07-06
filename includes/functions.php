@@ -7,11 +7,11 @@ function current_lang(): string
         return $lang;
     }
 
-    $available = ['ar', 'en'];
-    $requested = $_GET['lang'] ?? $_COOKIE['orbta_lang'] ?? 'ar';
+    $available = ['de', 'en', 'ar'];
+    $requested = $_GET['lang'] ?? $_COOKIE['orbta_lang'] ?? 'de';
 
     if (!in_array($requested, $available, true)) {
-        $requested = 'ar';
+        $requested = 'de';
     }
 
     if (isset($_GET['lang']) && !headers_sent()) {
@@ -42,9 +42,13 @@ function dir_attr(): string
     return current_lang() === 'ar' ? 'rtl' : 'ltr';
 }
 
-function other_lang(): string
+function available_langs(): array
 {
-    return current_lang() === 'ar' ? 'en' : 'ar';
+    return [
+        'de' => 'Deutsch',
+        'en' => 'English',
+        'ar' => 'العربية',
+    ];
 }
 
 function e(string $value): string

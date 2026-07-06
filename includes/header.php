@@ -11,6 +11,13 @@ $nav_links = [
     'about'     => ['label' => t('nav_about'),     'href' => '/pages/about.php'],
     'contact'   => ['label' => t('nav_contact'),   'href' => '/pages/contact.php'],
 ];
+
+function lang_url(string $code): string
+{
+    $params = $_GET;
+    $params['lang'] = $code;
+    return '?' . http_build_query($params);
+}
 ?>
 <!DOCTYPE html>
 <html lang="<?= e($lang) ?>" dir="<?= dir_attr() ?>">
@@ -36,26 +43,50 @@ $nav_links = [
       <span class="brand__name"><?= e(t('hero_brand')) ?></span>
     </a>
 
-    <nav class="main-nav" id="mainNav">
-      <ul>
-        <?php foreach ($nav_links as $key => $link): ?>
-          <li>
-            <a href="<?= e($link['href']) ?>" class="<?= $current_page === $key ? 'is-active' : '' ?>">
-              <?= e($link['label']) ?>
-            </a>
-          </li>
-        <?php endforeach; ?>
-      </ul>
-    </nav>
-
     <div class="header-actions">
-      <a href="?lang=<?= e(other_lang()) ?>" class="lang-switch" aria-label="Switch language">
-        <?= $is_rtl ? 'EN' : 'AR' ?>
-      </a>
       <a href="/pages/contact.php" class="btn btn--primary btn--sm header-cta"><?= e(t('nav_cta')) ?></a>
-      <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
-        <span></span><span></span><span></span>
+      <button class="menu-trigger" id="menuTrigger" aria-haspopup="true" aria-expanded="false" aria-controls="popoutMenu">
+        <span class="menu-trigger__bars"><span></span><span></span></span>
+        <span class="menu-trigger__label"><?= e(t('nav_menu')) ?></span>
       </button>
     </div>
   </div>
 </header>
+
+<!-- ============ POPOUT MENU ============ -->
+<div class="popout-menu" id="popoutMenu" aria-hidden="true">
+  <div class="popout-menu__backdrop" id="popoutBackdrop"></div>
+  <div class="popout-menu__panel">
+    <div class="popout-menu__top">
+      <a href="/index.php" class="brand">
+        <span class="brand__mark">⚡</span>
+        <span class="brand__name"><?= e(t('hero_brand')) ?></span>
+      </a>
+      <button class="menu-close" id="menuClose" aria-label="<?= e(t('nav_close')) ?>">
+        <span></span><span></span>
+      </button>
+    </div>
+
+    <nav class="popout-menu__nav">
+      <ul>
+        <?php $i = 1; foreach ($nav_links as $key => $link): ?>
+          <li class="popout-item">
+            <a href="<?= e($link['href']) ?>" class="<?= $current_page === $key ? 'is-active' : '' ?>">
+              <span class="popout-item__index">0<?= $i ?></span>
+              <span class="popout-item__label"><?= e($link['label']) ?></span>
+            </a>
+          </li>
+        <?php $i++; endforeach; ?>
+      </ul>
+    </nav>
+
+    <div class="popout-menu__bottom">
+      <div class="popout-langs">
+        <?php foreach (available_langs() as $code => $label): ?>
+          <a href="<?= e(lang_url($code)) ?>" class="lang-pill <?= $lang === $code ? 'is-active' : '' ?>"><?= e($label) ?></a>
+        <?php endforeach; ?>
+      </div>
+      <a href="/pages/contact.php" class="btn btn--primary popout-cta"><?= e(t('nav_get_in_touch')) ?></a>
+    </div>
+  </div>
+</div>

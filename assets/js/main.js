@@ -12,19 +12,30 @@ document.addEventListener('DOMContentLoaded', function () {
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  /* ---------- Mobile nav ---------- */
-  var navToggle = document.getElementById('navToggle');
-  var mainNav = document.getElementById('mainNav');
-  if (navToggle && mainNav) {
-    navToggle.addEventListener('click', function () {
-      var isOpen = mainNav.classList.toggle('is-open');
-      navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-    });
-    mainNav.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', function () {
-        mainNav.classList.remove('is-open');
-        navToggle.setAttribute('aria-expanded', 'false');
-      });
+  /* ---------- Popout menu ---------- */
+  var menuTrigger = document.getElementById('menuTrigger');
+  var menuClose = document.getElementById('menuClose');
+  var popoutMenu = document.getElementById('popoutMenu');
+  var popoutBackdrop = document.getElementById('popoutBackdrop');
+
+  function openMenu() {
+    popoutMenu.classList.add('is-open');
+    popoutMenu.setAttribute('aria-hidden', 'false');
+    menuTrigger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu() {
+    popoutMenu.classList.remove('is-open');
+    popoutMenu.setAttribute('aria-hidden', 'true');
+    menuTrigger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+  if (menuTrigger && popoutMenu) {
+    menuTrigger.addEventListener('click', openMenu);
+    if (menuClose) menuClose.addEventListener('click', closeMenu);
+    if (popoutBackdrop) popoutBackdrop.addEventListener('click', closeMenu);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeMenu();
     });
   }
 
@@ -108,16 +119,44 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     /* Stack marquee */
-    var track = document.querySelector('.stack-track');
-    if (track) {
-      var originalWidth = track.scrollWidth / 2;
-      gsap.to(track, {
+    var stackTrack = document.querySelector('.stack-track');
+    if (stackTrack) {
+      var originalWidth = stackTrack.scrollWidth / 2;
+      gsap.to(stackTrack, {
         x: -originalWidth,
         duration: 22,
         ease: 'none',
         repeat: -1,
       });
     }
+
+    /* Creative work gallery: pinned horizontal scroll on desktop,
+       native swipe-scroll on mobile (handled by CSS overflow-x). */
+    var isRTL = document.documentElement.dir === 'rtl';
+    ScrollTrigger.matchMedia({
+      '(min-width: 900px)': function () {
+        document.querySelectorAll('.work-gallery__pin').forEach(function (pin) {
+          var galleryTrack = pin.querySelector('.work-gallery__track');
+          if (!galleryTrack) return;
+          var getDistance = function () {
+            return Math.max(0, galleryTrack.scrollWidth - pin.clientWidth);
+          };
+          gsap.to(galleryTrack, {
+            x: function () { return isRTL ? getDistance() : -getDistance(); },
+            ease: 'none',
+            scrollTrigger: {
+              trigger: pin,
+              start: 'top top',
+              end: function () { return '+=' + getDistance(); },
+              scrub: 1,
+              pin: true,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+            },
+          });
+        });
+      },
+    });
   }
 
   /* ---------- Contact form ---------- */

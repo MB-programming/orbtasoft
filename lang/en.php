@@ -9,6 +9,9 @@ return [
     'nav_about'         => 'About',
     'nav_contact'       => 'Contact',
     'nav_cta'           => 'Start a Project',
+    'nav_menu'          => 'Menu',
+    'nav_close'         => 'Close',
+    'nav_get_in_touch'  => 'Get in touch',
 
     'hero_tagline_1'    => 'We turn ideas,',
     'hero_tagline_2'    => 'into living products.',
@@ -50,6 +53,7 @@ return [
     'work_heading'      => 'Projects we\'re proud to show',
     'work_view_all'     => 'View All Work',
     'work_view_project' => 'View Project',
+    'work_drag_hint'    => 'Scroll to explore',
 
     'about_kicker'      => 'About Us',
     'about_heading'     => 'A small team, world-class execution',
