@@ -39,6 +39,47 @@ $stats = [
     </div>
   </section>
 
+  <!-- ============ TEAM MARQUEE ============ -->
+  <section class="section section--tight team-section reveal">
+    <div class="container">
+      <div class="team-section__head">
+        <div class="team-section__icon"><?= icon('user-star') ?></div>
+        <span class="kicker"><?= e(t('team_kicker')) ?></span>
+        <h2><?= e(t('team_heading')) ?></h2>
+        <p><?= e(t('team_desc')) ?></p>
+      </div>
+    </div>
+
+    <div class="team-marquee">
+      <div class="team-marquee__fade team-marquee__fade--start"></div>
+      <div class="team-marquee__fade team-marquee__fade--end"></div>
+      <div class="team-marquee__track">
+        <?php foreach (array_merge(team_data(), team_data()) as $member): ?>
+          <div class="team-card">
+            <div class="team-card__avatar" style="background: <?= e($member['color']) ?>;">
+              <span class="team-card__initials"><?= e(initials($member['name'])) ?></span>
+              <div class="team-card__info">
+                <h3><?= e($member['name']) ?></h3>
+                <p><?= e($member['role']) ?></p>
+              </div>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="team-quote">
+        <p class="team-quote__text">&ldquo;<?= e(t('team_quote')) ?>&rdquo;</p>
+        <div class="team-quote__author">
+          <div class="team-quote__avatar" style="background: <?= e(avatar_palette(0)) ?>;"><?= e(initials(t('team_quote_name'))) ?></div>
+          <p><?= e(t('team_quote_name')) ?></p>
+          <p><?= e(t('team_quote_role')) ?></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section section--tight">
     <div class="container">
       <div class="section__head reveal">

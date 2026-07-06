@@ -204,6 +204,39 @@ require __DIR__ . '/includes/header.php';
     </div>
   </section>
 
+  <!-- ============ TESTIMONIALS ============ -->
+  <section class="section" id="testimonialsSection">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="kicker"><?= e(t('testimonials_kicker')) ?></span>
+        <h2><?= e(t('testimonials_heading')) ?></h2>
+      </div>
+
+      <div class="testimonials-grid reveal" id="circularTestimonials">
+        <div class="testimonial-images">
+          <?php foreach (testimonials_data() as $i => $tItem): ?>
+            <div class="testimonial-avatar <?= $i === 0 ? 'is-active' : '' ?>" data-index="<?= $i ?>" style="background: <?= e($tItem['color']) ?>;">
+              <?= e(initials($tItem['name'])) ?>
+            </div>
+          <?php endforeach; ?>
+        </div>
+
+        <div class="testimonial-content">
+          <h3 class="testimonial-name" id="testimonialName"></h3>
+          <p class="testimonial-role" id="testimonialRole"></p>
+          <p class="testimonial-quote" id="testimonialQuote"></p>
+
+          <div class="testimonial-arrows">
+            <button type="button" class="testimonial-arrow" id="testimonialPrev" aria-label="Previous testimonial"><?= icon('arrow-left') ?></button>
+            <button type="button" class="testimonial-arrow" id="testimonialNext" aria-label="Next testimonial"><?= icon('arrow-right') ?></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script id="testimonialsData" type="application/json"><?= json_encode(testimonials_data(), JSON_UNESCAPED_UNICODE) ?></script>
+
   <!-- ============ CTA ============ -->
   <section class="cta-section">
     <div class="container">

@@ -1,5 +1,50 @@
 <?php
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+function current_user(): ?array
+{
+    static $user = false;
+    if ($user !== false) {
+        return $user;
+    }
+
+    $user = null;
+    if (!empty($_SESSION['user_id'])) {
+        require_once __DIR__ . '/../config/database.php';
+        $pdo = get_db();
+        if ($pdo) {
+            $stmt = $pdo->prepare('SELECT id, name, email FROM users WHERE id = :id');
+            $stmt->execute(['id' => $_SESSION['user_id']]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($row) {
+                $user = $row;
+            }
+        }
+    }
+    return $user;
+}
+
+function is_logged_in(): bool
+{
+    return current_user() !== null;
+}
+
+function csrf_token(): string
+{
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION['csrf_token'];
+}
+
+function csrf_valid(string $token): bool
+{
+    return !empty($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
+}
+
 function current_lang(): string
 {
     static $lang = null;
@@ -56,6 +101,46 @@ function e(string $value): string
     return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
 }
 
+function initials(string $name): string
+{
+    $parts = preg_split('/\s+/', trim($name));
+    $letters = array_map(fn($p) => mb_strtoupper(mb_substr($p, 0, 1)), array_slice($parts, 0, 2));
+    return implode('', $letters);
+}
+
+function avatar_palette(int $i): string
+{
+    $palette = [
+        'linear-gradient(145deg, #3b82f6, #162c6d)',
+        'linear-gradient(145deg, #a855f7, #3b1e6d)',
+        'linear-gradient(145deg, #2dd4bf, #0d4d4d)',
+        'linear-gradient(145deg, #f472b6, #5a2a4d)',
+        'linear-gradient(145deg, #22c55e, #1f5a35)',
+        'linear-gradient(145deg, #fbbf24, #5a3a10)',
+    ];
+    return $palette[$i % count($palette)];
+}
+
+function team_data(): array
+{
+    $names = ['Youssef Adel', 'Lina Hartmann', 'Marco Lindqvist', 'Sara El-Amin', 'Tom Richter', 'Maya Okafor'];
+    $roleKeys = ['team_role_1', 'team_role_2', 'team_role_3', 'team_role_4', 'team_role_5', 'team_role_6'];
+    $team = [];
+    foreach ($names as $i => $name) {
+        $team[] = ['name' => $name, 'role' => t($roleKeys[$i]), 'color' => avatar_palette($i)];
+    }
+    return $team;
+}
+
+function testimonials_data(): array
+{
+    return [
+        ['quote' => t('testimonial_1_quote'), 'name' => t('testimonial_1_name'), 'role' => t('testimonial_1_role'), 'color' => avatar_palette(0)],
+        ['quote' => t('testimonial_2_quote'), 'name' => t('testimonial_2_name'), 'role' => t('testimonial_2_role'), 'color' => avatar_palette(2)],
+        ['quote' => t('testimonial_3_quote'), 'name' => t('testimonial_3_name'), 'role' => t('testimonial_3_role'), 'color' => avatar_palette(4)],
+    ];
+}
+
 function icon(string $name): string
 {
     $icons = [
@@ -65,6 +150,12 @@ function icon(string $name): string
         'layout-panel-top' => '<rect x="3" y="3" width="18" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
         'layout-dashboard' => '<rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/>',
         'shield-check' => '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+        'user-star' => '<path d="M16.051 12.616a1 1 0 0 1 1.909.024l.737 1.452a1 1 0 0 0 .737.535l1.634.256a1 1 0 0 1 .588 1.806l-1.172 1.168a1 1 0 0 0-.282.866l.259 1.613a1 1 0 0 1-1.541 1.134l-1.465-.75a1 1 0 0 0-.912 0l-1.465.75a1 1 0 0 1-1.539-1.133l.258-1.613a1 1 0 0 0-.282-.866l-1.156-1.153a1 1 0 0 1 .572-1.822l1.633-.256a1 1 0 0 0 .737-.535z"/><path d="M8 15H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/>',
+        'arrow-left' => '<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>',
+        'arrow-right' => '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
+        'eye' => '<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>',
+        'eye-off' => '<path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/>',
+        'mail' => '<path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/>',
     ];
 
     $path = $icons[$name] ?? $icons['box'];

@@ -14,9 +14,9 @@ no build step.
 - **GSAP + ScrollTrigger** (motion/animation)
 - **Three.js** (hero background: particle network + wireframe icosahedron)
 
-GSAP, ScrollTrigger and Three.js are vendored locally under
-`assets/vendor/` (installed via npm and copied in — no CDN dependency at
-runtime, no Node/build step required to run the site).
+GSAP, ScrollTrigger, Three.js and cobe are vendored locally under
+`assets/vendor/` (installed via npm and copied in/bundled — no CDN
+dependency at runtime, no Node/build step required to run the site).
 
 ## Requirements
 
@@ -117,6 +117,41 @@ cursive script into per-character spans breaks Arabic letter-joining.
 A lightweight email-capture section with spinning orbit-ring decoration
 and a canvas confetti burst on success, storing emails in
 `newsletter_subscribers` via `newsletter-handler.php`.
+
+## Team marquee
+
+`.team-marquee` on the About page is a pure-CSS infinite marquee of
+fictional team members (`team_data()` in `includes/functions.php`),
+shown as initials avatars — not real photos, for the same reason the
+partner logos are fictional wordmarks. Grayscale-by-default, full color
+on hover.
+
+## Circular testimonials
+
+`#circularTestimonials` on the homepage is a 3D-offset testimonial
+carousel (active/left/right avatar positions, autoplay, keyboard and
+button navigation). Quote text is split and animated **word-by-word**
+(not character-by-character) specifically so it stays safe for Arabic —
+splitting cursive script into individual character spans breaks letter
+joining (see the expertise hover slider, which hit this exact bug).
+
+## 404 page
+
+`pages/404.php` uses [cobe](https://github.com/shuding/cobe) — a
+canvas-based globe library with a framework-agnostic vanilla JS API, so
+it works here without any React wrapper. It's vendored as a single
+bundled script (`assets/vendor/cobe.min.js`, built with esbuild from the
+npm package since cobe only ships an ESM build with a bare-specifier
+dependency on `phenomenon`). Apache serves this page for real 404s via
+the `.htaccess` `ErrorDocument` directive.
+
+## Login / Register
+
+Real authentication, not just UI: `users` table with `password_hash`/
+`password_verify`, PHP sessions, and CSRF tokens on both forms.
+`auth-login.php`, `auth-register.php` and `auth-logout.php` handle the
+POSTs; the header reflects logged-in state (name + logout in the popout
+menu) via `current_user()` in `includes/functions.php`.
 
 ## Contact form
 

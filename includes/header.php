@@ -18,6 +18,8 @@ function lang_url(string $code): string
     $params['lang'] = $code;
     return '?' . http_build_query($params);
 }
+
+$authUser = current_user();
 ?>
 <!DOCTYPE html>
 <html lang="<?= e($lang) ?>" dir="<?= dir_attr() ?>">
@@ -35,6 +37,10 @@ function lang_url(string $code): string
 <body class="<?= $is_rtl ? 'is-rtl' : 'is-ltr' ?>">
 
 <div class="site-grain" aria-hidden="true"></div>
+
+<?php if (isset($_GET['welcome']) && $authUser): ?>
+  <div class="welcome-toast" id="welcomeToast"><?= e(t('auth_success_login')) ?></div>
+<?php endif; ?>
 
 <header class="site-header" id="siteHeader">
   <div class="container site-header__inner">
@@ -86,6 +92,14 @@ function lang_url(string $code): string
           <a href="<?= e(lang_url($code)) ?>" class="lang-pill <?= $lang === $code ? 'is-active' : '' ?>"><?= e($label) ?></a>
         <?php endforeach; ?>
       </div>
+      <?php if ($authUser): ?>
+        <div class="popout-account">
+          <span><?= e(t('auth_logged_in_as')) ?> <strong><?= e($authUser['name']) ?></strong></span>
+          <a href="/auth-logout.php"><?= e(t('nav_logout')) ?></a>
+        </div>
+      <?php else: ?>
+        <a href="/pages/login.php" class="popout-account-link"><?= e(t('nav_login')) ?></a>
+      <?php endif; ?>
       <a href="/pages/contact.php" class="btn btn--primary popout-cta"><?= e(t('nav_get_in_touch')) ?></a>
     </div>
   </div>

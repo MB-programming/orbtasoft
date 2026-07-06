@@ -60,6 +60,93 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  /* ---------- Circular testimonials ---------- */
+  var testimonialsRoot = document.getElementById('circularTestimonials');
+  var testimonialsDataEl = document.getElementById('testimonialsData');
+  if (testimonialsRoot && testimonialsDataEl) {
+    var testimonials = JSON.parse(testimonialsDataEl.textContent || '[]');
+    var tActiveIndex = 0;
+    var tAutoplayTimer = null;
+    var tAvatars = testimonialsRoot.querySelectorAll('.testimonial-avatar');
+    var tNameEl = document.getElementById('testimonialName');
+    var tRoleEl = document.getElementById('testimonialRole');
+    var tQuoteEl = document.getElementById('testimonialQuote');
+    var tPrevBtn = document.getElementById('testimonialPrev');
+    var tNextBtn = document.getElementById('testimonialNext');
+
+    function renderTestimonial(index) {
+      var count = testimonials.length;
+      tAvatars.forEach(function (avatar) {
+        var i = parseInt(avatar.getAttribute('data-index'), 10);
+        avatar.classList.remove('is-active', 'is-left', 'is-right');
+        if (i === index) avatar.classList.add('is-active');
+        else if (i === (index - 1 + count) % count) avatar.classList.add('is-left');
+        else if (i === (index + 1) % count) avatar.classList.add('is-right');
+      });
+
+      var item = testimonials[index];
+      tNameEl.textContent = item.name;
+      tRoleEl.textContent = item.role;
+
+      tQuoteEl.classList.remove('is-in');
+      tQuoteEl.innerHTML = '';
+      item.quote.split(' ').forEach(function (word, i) {
+        var span = document.createElement('span');
+        span.className = 'word';
+        span.style.transitionDelay = (i * 0.025) + 's';
+        span.textContent = word;
+        tQuoteEl.appendChild(span);
+        tQuoteEl.appendChild(document.createTextNode(' '));
+      });
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { tQuoteEl.classList.add('is-in'); });
+      });
+    }
+
+    function goTo(index) {
+      tActiveIndex = (index + testimonials.length) % testimonials.length;
+      renderTestimonial(tActiveIndex);
+    }
+    function stopAutoplay() {
+      if (tAutoplayTimer) clearInterval(tAutoplayTimer);
+    }
+    function startAutoplay() {
+      tAutoplayTimer = setInterval(function () { goTo(tActiveIndex + 1); }, 5000);
+    }
+
+    if (tPrevBtn) tPrevBtn.addEventListener('click', function () { goTo(tActiveIndex - 1); stopAutoplay(); });
+    if (tNextBtn) tNextBtn.addEventListener('click', function () { goTo(tActiveIndex + 1); stopAutoplay(); });
+    document.addEventListener('keydown', function (e) {
+      var tag = (e.target.tagName || '').toLowerCase();
+      if (tag === 'input' || tag === 'textarea' || e.target.isContentEditable) return;
+      if (e.key === 'ArrowLeft') { goTo(tActiveIndex - 1); stopAutoplay(); }
+      if (e.key === 'ArrowRight') { goTo(tActiveIndex + 1); stopAutoplay(); }
+    });
+
+    renderTestimonial(0);
+    startAutoplay();
+  }
+
+  /* ---------- Welcome toast ---------- */
+  var welcomeToast = document.getElementById('welcomeToast');
+  if (welcomeToast) {
+    requestAnimationFrame(function () { welcomeToast.classList.add('is-visible'); });
+    setTimeout(function () { welcomeToast.classList.remove('is-visible'); }, 4000);
+  }
+
+  /* ---------- Password visibility toggle ---------- */
+  document.querySelectorAll('.toggle-password').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var input = document.getElementById(btn.getAttribute('data-target'));
+      if (!input) return;
+      var isHidden = input.type === 'password';
+      input.type = isHidden ? 'text' : 'password';
+      btn.innerHTML = isHidden
+        ? '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg>'
+        : '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>';
+    });
+  });
+
   /* ---------- Popout menu ---------- */
   var menuTrigger = document.getElementById('menuTrigger');
   var menuClose = document.getElementById('menuClose');
