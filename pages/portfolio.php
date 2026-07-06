@@ -20,7 +20,7 @@ require __DIR__ . '/../includes/header.php';
     <div class="work-gallery__pin">
       <div class="work-gallery__track">
         <?php foreach (portfolio_data() as $i => $project): ?>
-          <div class="work-card">
+          <a class="work-card" href="/pages/project.php?slug=<?= e(urlencode($project['slug'])) ?>">
             <span class="work-card__index">0<?= $i + 1 ?></span>
             <img src="<?= e($project['image']) ?>" alt="<?= e($project['title']) ?>" loading="lazy">
             <div class="work-card__overlay">
@@ -28,7 +28,7 @@ require __DIR__ . '/../includes/header.php';
               <h3 class="work-card__title"><?= e($project['title']) ?></h3>
               <span class="work-card__link"><?= e(t('work_view_project')) ?> →</span>
             </div>
-          </div>
+          </a>
         <?php endforeach; ?>
       </div>
     </div>

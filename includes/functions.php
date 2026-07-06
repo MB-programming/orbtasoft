@@ -101,6 +101,13 @@ function e(string $value): string
     return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
 }
 
+function slugify(string $text): string
+{
+    $text = strtolower(trim($text));
+    $text = preg_replace('/[^a-z0-9]+/', '-', $text);
+    return trim($text, '-') ?: 'item';
+}
+
 function initials(string $name): string
 {
     $parts = preg_split('/\s+/', trim($name));
@@ -188,6 +195,7 @@ function icon(string $name): string
         'plus' => '<path d="M5 12h14"/><path d="M12 5v14"/>',
         'log-out' => '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>',
         'grip' => '<circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/>',
+        'file-text' => '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>',
     ];
 
     $path = $icons[$name] ?? $icons['box'];
@@ -234,6 +242,105 @@ function stack_data(): array
 function portfolio_data(): array
 {
     $lang = lang_column_suffix();
-    $rows = db_fetch_all("SELECT id, image, title, tag_{$lang} AS tag FROM portfolio_items ORDER BY sort_order ASC, id ASC");
-    return array_map(fn($r) => ['id' => (int) $r['id'], 'title' => $r['title'], 'tag' => $r['tag'], 'image' => $r['image']], $rows);
+    $rows = db_fetch_all("SELECT id, slug, image, title, client, year, tag_{$lang} AS tag FROM portfolio_items ORDER BY sort_order ASC, id ASC");
+    return array_map(fn($r) => [
+        'id' => (int) $r['id'],
+        'slug' => $r['slug'],
+        'title' => $r['title'],
+        'tag' => $r['tag'],
+        'image' => $r['image'],
+        'client' => $r['client'],
+        'year' => $r['year'],
+    ], $rows);
+}
+
+function portfolio_item_by_slug(string $slug): ?array
+{
+    $lang = lang_column_suffix();
+    $sql = "SELECT id, slug, image, title, client, year, project_url, tag_{$lang} AS tag, description_{$lang} AS description
+            FROM portfolio_items WHERE slug = " . quote_for_lookup($slug) . " LIMIT 1";
+    $rows = db_fetch_all($sql);
+    return $rows[0] ?? null;
+}
+
+function portfolio_neighbors(int $id): array
+{
+    $rows = db_fetch_all('SELECT id, slug FROM portfolio_items ORDER BY sort_order ASC, id ASC');
+    $index = null;
+    foreach ($rows as $i => $r) {
+        if ((int) $r['id'] === $id) {
+            $index = $i;
+            break;
+        }
+    }
+    if ($index === null || !$rows) {
+        return ['prev' => null, 'next' => null];
+    }
+    $count = count($rows);
+    return [
+        'prev' => $rows[($index - 1 + $count) % $count]['slug'],
+        'next' => $rows[($index + 1) % $count]['slug'],
+    ];
+}
+
+function blog_posts_data(): array
+{
+    $lang = lang_column_suffix();
+    $sql = "SELECT id, slug, cover_image, author, title_{$lang} AS title, excerpt_{$lang} AS excerpt, published_at
+            FROM blog_posts ORDER BY published_at DESC, id DESC";
+    return db_fetch_all($sql);
+}
+
+function blog_post_by_slug(string $slug): ?array
+{
+    $lang = lang_column_suffix();
+    $sql = "SELECT id, slug, cover_image, author, title_{$lang} AS title, excerpt_{$lang} AS excerpt, content_{$lang} AS content, published_at
+            FROM blog_posts WHERE slug = " . quote_for_lookup($slug) . " LIMIT 1";
+    $rows = db_fetch_all($sql);
+    return $rows[0] ?? null;
+}
+
+function blog_neighbors(int $id): array
+{
+    $rows = db_fetch_all('SELECT id, slug FROM blog_posts ORDER BY published_at DESC, id DESC');
+    $index = null;
+    foreach ($rows as $i => $r) {
+        if ((int) $r['id'] === $id) {
+            $index = $i;
+            break;
+        }
+    }
+    if ($index === null || !$rows) {
+        return ['prev' => null, 'next' => null];
+    }
+    $count = count($rows);
+    return [
+        'prev' => $rows[($index - 1 + $count) % $count]['slug'],
+        'next' => $rows[($index + 1) % $count]['slug'],
+    ];
+}
+
+function format_date(string $datetime): string
+{
+    $locales = ['de' => 'de_DE', 'en' => 'en_US', 'ar' => 'ar_EG'];
+    $locale = $locales[current_lang()] ?? 'en_US';
+    $formatter = new IntlDateFormatter($locale, IntlDateFormatter::LONG, IntlDateFormatter::NONE);
+    $ts = strtotime($datetime);
+    return $ts ? $formatter->format($ts) : $datetime;
+}
+
+function reading_minutes(string $content): int
+{
+    $words = str_word_count(strip_tags($content));
+    if ($words === 0) {
+        $words = (int) round(mb_strlen($content) / 6);
+    }
+    return max(1, (int) ceil($words / 200));
+}
+
+function quote_for_lookup(string $value): string
+{
+    require_once __DIR__ . '/../config/database.php';
+    $pdo = get_db();
+    return $pdo ? $pdo->quote($value) : "''";
 }

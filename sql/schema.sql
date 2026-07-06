@@ -54,12 +54,46 @@ CREATE TABLE IF NOT EXISTS services (
 
 CREATE TABLE IF NOT EXISTS portfolio_items (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    slug VARCHAR(160) NOT NULL UNIQUE,
     image VARCHAR(255) NOT NULL,
     title VARCHAR(160) NOT NULL,
+    client VARCHAR(160) NOT NULL DEFAULT '',
+    year VARCHAR(20) NOT NULL DEFAULT '',
+    project_url VARCHAR(255) NOT NULL DEFAULT '',
     tag_de VARCHAR(160) NOT NULL,
     tag_en VARCHAR(160) NOT NULL,
     tag_ar VARCHAR(160) NOT NULL,
+    description_de TEXT NOT NULL DEFAULT '',
+    description_en TEXT NOT NULL DEFAULT '',
+    description_ar TEXT NOT NULL DEFAULT '',
     sort_order INT NOT NULL DEFAULT 0
+) ENGINE=InnoDB;
+
+-- Upgrading an existing database created before these columns existed:
+ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS slug VARCHAR(160) NOT NULL DEFAULT '' AFTER id;
+ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS client VARCHAR(160) NOT NULL DEFAULT '' AFTER title;
+ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS year VARCHAR(20) NOT NULL DEFAULT '' AFTER client;
+ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS project_url VARCHAR(255) NOT NULL DEFAULT '' AFTER year;
+ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS description_de TEXT NOT NULL DEFAULT '' AFTER tag_ar;
+ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS description_en TEXT NOT NULL DEFAULT '' AFTER description_de;
+ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS description_ar TEXT NOT NULL DEFAULT '' AFTER description_en;
+
+CREATE TABLE IF NOT EXISTS blog_posts (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    slug VARCHAR(160) NOT NULL UNIQUE,
+    cover_image VARCHAR(255) NOT NULL,
+    author VARCHAR(120) NOT NULL DEFAULT 'Orbtasoft Team',
+    title_de VARCHAR(200) NOT NULL,
+    title_en VARCHAR(200) NOT NULL,
+    title_ar VARCHAR(200) NOT NULL,
+    excerpt_de VARCHAR(400) NOT NULL,
+    excerpt_en VARCHAR(400) NOT NULL,
+    excerpt_ar VARCHAR(400) NOT NULL,
+    content_de TEXT NOT NULL,
+    content_en TEXT NOT NULL,
+    content_ar TEXT NOT NULL,
+    published_at DATETIME NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS team_members (

@@ -7,6 +7,7 @@ $adminNav = [
     'dashboard'    => ['label' => 'Dashboard', 'href' => '/admin/index.php', 'icon' => 'layout-dashboard'],
     'services'     => ['label' => 'Services', 'href' => '/admin/services.php', 'icon' => 'box'],
     'portfolio'    => ['label' => 'Portfolio', 'href' => '/admin/portfolio.php', 'icon' => 'layout-panel-top'],
+    'blog'         => ['label' => 'Blog', 'href' => '/admin/blog.php', 'icon' => 'file-text'],
     'team'         => ['label' => 'Team', 'href' => '/admin/team.php', 'icon' => 'user-star'],
     'testimonials' => ['label' => 'Testimonials', 'href' => '/admin/testimonials.php', 'icon' => 'star'],
     'partners'     => ['label' => 'Partners', 'href' => '/admin/partners.php', 'icon' => 'briefcase'],
