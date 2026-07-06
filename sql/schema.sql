@@ -22,3 +22,78 @@ CREATE TABLE IF NOT EXISTS users (
     password_hash VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
+
+-- ============ Admin dashboard ============
+
+CREATE TABLE IF NOT EXISTS admin_users (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(60) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS settings (
+    setting_key VARCHAR(80) PRIMARY KEY,
+    setting_value TEXT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- ============ Admin-managed content ============
+
+CREATE TABLE IF NOT EXISTS services (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    icon VARCHAR(60) NOT NULL DEFAULT 'box',
+    title_de VARCHAR(160) NOT NULL,
+    title_en VARCHAR(160) NOT NULL,
+    title_ar VARCHAR(160) NOT NULL,
+    desc_de TEXT NOT NULL,
+    desc_en TEXT NOT NULL,
+    desc_ar TEXT NOT NULL,
+    sort_order INT NOT NULL DEFAULT 0
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS portfolio_items (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    image VARCHAR(255) NOT NULL,
+    title VARCHAR(160) NOT NULL,
+    tag_de VARCHAR(160) NOT NULL,
+    tag_en VARCHAR(160) NOT NULL,
+    tag_ar VARCHAR(160) NOT NULL,
+    sort_order INT NOT NULL DEFAULT 0
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS team_members (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(160) NOT NULL,
+    role_de VARCHAR(160) NOT NULL,
+    role_en VARCHAR(160) NOT NULL,
+    role_ar VARCHAR(160) NOT NULL,
+    color VARCHAR(120) NOT NULL,
+    sort_order INT NOT NULL DEFAULT 0
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS testimonials (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(160) NOT NULL,
+    role_de VARCHAR(160) NOT NULL,
+    role_en VARCHAR(160) NOT NULL,
+    role_ar VARCHAR(160) NOT NULL,
+    quote_de TEXT NOT NULL,
+    quote_en TEXT NOT NULL,
+    quote_ar TEXT NOT NULL,
+    color VARCHAR(120) NOT NULL,
+    sort_order INT NOT NULL DEFAULT 0
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS partners (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(160) NOT NULL,
+    weight INT NOT NULL DEFAULT 700,
+    sort_order INT NOT NULL DEFAULT 0
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS tech_stack (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(120) NOT NULL,
+    sort_order INT NOT NULL DEFAULT 0
+) ENGINE=InnoDB;

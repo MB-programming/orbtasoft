@@ -8,7 +8,7 @@ no build step.
 ## Stack
 
 - **PHP** (server-rendered pages, no framework)
-- **MySQL** (contact form submissions)
+- **MySQL** (all site content, contact/newsletter submissions, users, admin settings)
 - **Vanilla CSS** (custom design system, RTL-aware)
 - **Vanilla JavaScript** (nav, scroll reveals, form handling)
 - **GSAP + ScrollTrigger** (motion/animation)
@@ -29,6 +29,13 @@ dependency at runtime, no Node/build step required to run the site).
 
    ```bash
    mysql -u root -p < sql/schema.sql
+   ```
+
+   Then seed it with the site's default content and the admin account
+   (safe to re-run — it only inserts into empty tables):
+
+   ```bash
+   php sql/seed.php
    ```
 
 2. Configure the database connection. `config/database.php` reads from
@@ -158,3 +165,34 @@ menu) via `current_user()` in `includes/functions.php`.
 Submits via `fetch()` to `contact-handler.php`, which validates input,
 rejects bot submissions via a honeypot field, and inserts valid messages
 into the `contact_messages` table.
+
+## Admin dashboard
+
+A full content-management backend lives under `/admin` (its own
+session-based auth, separate from the public login/register system).
+
+- **Login**: `/admin/login.php` — default account seeded by
+  `sql/seed.php` is username `minaboules`.
+- **Content CRUD**: Services, Portfolio, Team, Testimonials, Partners and
+  Tech Stack each have a full create/edit/delete admin page
+  (`admin/services.php`, `admin/portfolio.php`, etc.). This content used
+  to be hardcoded PHP arrays in `includes/functions.php` — it's now read
+  from MySQL, so editing it in the dashboard changes the live site
+  immediately. Translatable entities store one column per language
+  (`title_de`/`title_en`/`title_ar`, etc.) rather than reusing the static
+  UI-string system in `lang/*.php`.
+- **Submissions**: `admin/messages.php` and `admin/newsletter.php` list
+  (and let you delete) contact form and newsletter submissions, with a
+  CSV export for subscribers.
+- **Settings** (`admin/settings.php`): SMTP host/port/encryption/
+  credentials, a toggle for "notify me on new contact/newsletter
+  submissions", the notification recipient address, and editable email
+  subject/body templates (with `{{name}}`/`{{email}}`/`{{message}}`
+  placeholders) — plus a "send test email" button.
+- **Mailer** (`includes/mailer.php`): a from-scratch SMTP client over raw
+  PHP sockets (EHLO, STARTTLS, AUTH LOGIN, MAIL FROM/RCPT TO/DATA) — no
+  PHPMailer/Composer dependency, consistent with the rest of the vanilla
+  stack. `contact-handler.php` and `newsletter-handler.php` call it
+  after a successful DB insert; a mail failure is logged but never
+  affects the user-facing success response, since the submission is
+  already saved either way.

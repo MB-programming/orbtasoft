@@ -1,6 +1,7 @@
 <?php
 require __DIR__ . '/includes/functions.php';
 require __DIR__ . '/config/database.php';
+require __DIR__ . '/includes/mailer.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -34,6 +35,15 @@ if (!$pdo) {
 try {
     $stmt = $pdo->prepare('INSERT INTO contact_messages (name, email, message) VALUES (:name, :email, :message)');
     $stmt->execute(['name' => $name, 'email' => $email, 'message' => $message]);
+
+    // Best-effort notification email — the submission is already saved, so a
+    // mail failure here must never affect the success response to the user.
+    try {
+        notify_admin('contact', ['name' => $name, 'email' => $email, 'message' => $message]);
+    } catch (Throwable $e) {
+        error_log('Contact notification email failed: ' . $e->getMessage());
+    }
+
     echo json_encode(['success' => true, 'message' => t('form_success')]);
 } catch (PDOException $e) {
     error_log('Contact insert failed: ' . $e->getMessage());

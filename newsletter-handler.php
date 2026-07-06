@@ -1,6 +1,7 @@
 <?php
 require __DIR__ . '/includes/functions.php';
 require __DIR__ . '/config/database.php';
+require __DIR__ . '/includes/mailer.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -32,6 +33,13 @@ if (!$pdo) {
 try {
     $stmt = $pdo->prepare('INSERT IGNORE INTO newsletter_subscribers (email) VALUES (:email)');
     $stmt->execute(['email' => $email]);
+
+    try {
+        notify_admin('newsletter', ['email' => $email]);
+    } catch (Throwable $e) {
+        error_log('Newsletter notification email failed: ' . $e->getMessage());
+    }
+
     echo json_encode(['success' => true, 'message' => t('newsletter_success')]);
 } catch (PDOException $e) {
     error_log('Newsletter insert failed: ' . $e->getMessage());

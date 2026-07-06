@@ -121,24 +121,39 @@ function avatar_palette(int $i): string
     return $palette[$i % count($palette)];
 }
 
+function lang_column_suffix(): string
+{
+    $lang = current_lang();
+    return in_array($lang, ['de', 'en', 'ar'], true) ? $lang : 'en';
+}
+
+function db_fetch_all(string $sql): array
+{
+    require_once __DIR__ . '/../config/database.php';
+    $pdo = get_db();
+    if (!$pdo) {
+        return [];
+    }
+    try {
+        return $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log('db_fetch_all failed: ' . $e->getMessage());
+        return [];
+    }
+}
+
 function team_data(): array
 {
-    $names = ['Youssef Adel', 'Lina Hartmann', 'Marco Lindqvist', 'Sara El-Amin', 'Tom Richter', 'Maya Okafor'];
-    $roleKeys = ['team_role_1', 'team_role_2', 'team_role_3', 'team_role_4', 'team_role_5', 'team_role_6'];
-    $team = [];
-    foreach ($names as $i => $name) {
-        $team[] = ['name' => $name, 'role' => t($roleKeys[$i]), 'color' => avatar_palette($i)];
-    }
-    return $team;
+    $lang = lang_column_suffix();
+    $rows = db_fetch_all("SELECT id, name, role_{$lang} AS role, color FROM team_members ORDER BY sort_order ASC, id ASC");
+    return array_map(fn($r) => ['id' => (int) $r['id'], 'name' => $r['name'], 'role' => $r['role'], 'color' => $r['color']], $rows);
 }
 
 function testimonials_data(): array
 {
-    return [
-        ['quote' => t('testimonial_1_quote'), 'name' => t('testimonial_1_name'), 'role' => t('testimonial_1_role'), 'color' => avatar_palette(0)],
-        ['quote' => t('testimonial_2_quote'), 'name' => t('testimonial_2_name'), 'role' => t('testimonial_2_role'), 'color' => avatar_palette(2)],
-        ['quote' => t('testimonial_3_quote'), 'name' => t('testimonial_3_name'), 'role' => t('testimonial_3_role'), 'color' => avatar_palette(4)],
-    ];
+    $lang = lang_column_suffix();
+    $rows = db_fetch_all("SELECT id, name, role_{$lang} AS role, quote_{$lang} AS quote, color FROM testimonials ORDER BY sort_order ASC, id ASC");
+    return array_map(fn($r) => ['id' => (int) $r['id'], 'name' => $r['name'], 'role' => $r['role'], 'quote' => $r['quote'], 'color' => $r['color']], $rows);
 }
 
 function icon(string $name): string
@@ -164,6 +179,15 @@ function icon(string $name): string
         'brand-mark' => '<ellipse cx="12" cy="12" rx="9" ry="4" fill="none" transform="rotate(-30 12 12)"/><circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"/><circle cx="20" cy="7.2" r="1.6" fill="currentColor" stroke="none"/>',
         'chevron-down' => '<path d="m6 9 6 6 6-6"/>',
         'globe' => '<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+        'star' => '<path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>',
+        'briefcase' => '<path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect x="2" y="6" width="20" height="14" rx="2"/>',
+        'send' => '<path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/>',
+        'settings' => '<path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>',
+        'trash' => '<path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+        'pencil' => '<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/>',
+        'plus' => '<path d="M5 12h14"/><path d="M12 5v14"/>',
+        'log-out' => '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>',
+        'grip' => '<circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/>',
     ];
 
     $path = $icons[$name] ?? $icons['box'];
@@ -173,68 +197,43 @@ function icon(string $name): string
 function partners_data(): array
 {
     // Fictional client/partner wordmarks (rendered as styled text, not real company logos).
-    return [
-        ['name' => 'Nova Analytics',  'weight' => 800],
-        ['name' => 'Vertex Commerce', 'weight' => 700],
-        ['name' => 'Lumen Booking',   'weight' => 600],
-        ['name' => 'Atlas CRM',       'weight' => 800],
-        ['name' => 'Solstice Labs',   'weight' => 700],
-        ['name' => 'Nexora',          'weight' => 900],
-        ['name' => 'Brightfield',     'weight' => 600],
-        ['name' => 'Cobalt Systems',  'weight' => 700],
-    ];
+    $rows = db_fetch_all('SELECT id, name, weight FROM partners ORDER BY sort_order ASC, id ASC');
+    return array_map(fn($r) => ['id' => (int) $r['id'], 'name' => $r['name'], 'weight' => (int) $r['weight']], $rows);
 }
 
 function services_data(): array
 {
-    return [
-        ['icon' => 'code-2',        'title' => t('service_1_title'), 'desc' => t('service_1_desc')],
-        ['icon' => 'database',      'title' => t('service_2_title'), 'desc' => t('service_2_desc')],
-        ['icon' => 'box',           'title' => t('service_3_title'), 'desc' => t('service_3_desc')],
-        ['icon' => 'layout-panel-top', 'title' => t('service_4_title'), 'desc' => t('service_4_desc')],
-        ['icon' => 'layout-dashboard', 'title' => t('service_5_title'), 'desc' => t('service_5_desc')],
-        ['icon' => 'shield-check',  'title' => t('service_6_title'), 'desc' => t('service_6_desc')],
-    ];
+    $lang = lang_column_suffix();
+    $rows = db_fetch_all("SELECT id, icon, title_{$lang} AS title, desc_{$lang} AS `desc` FROM services ORDER BY sort_order ASC, id ASC");
+    return array_map(fn($r) => ['id' => (int) $r['id'], 'icon' => $r['icon'], 'title' => $r['title'], 'desc' => $r['desc']], $rows);
 }
 
 function expertise_data(): array
 {
-    return [
-        ['title' => t('service_1_title'), 'image' => '/assets/img/expertise-web.svg'],
-        ['title' => t('service_2_title'), 'image' => '/assets/img/expertise-backend.svg'],
-        ['title' => t('service_3_title'), 'image' => '/assets/img/expertise-3d.svg'],
-        ['title' => t('service_4_title'), 'image' => '/assets/img/expertise-uiux.svg'],
-        ['title' => t('service_5_title'), 'image' => '/assets/img/expertise-business.svg'],
+    $imageMap = [
+        'code-2' => '/assets/img/expertise-web.svg',
+        'database' => '/assets/img/expertise-backend.svg',
+        'box' => '/assets/img/expertise-3d.svg',
+        'layout-panel-top' => '/assets/img/expertise-uiux.svg',
+        'layout-dashboard' => '/assets/img/expertise-business.svg',
+        'shield-check' => '/assets/img/expertise-business.svg',
     ];
+    $services = array_slice(services_data(), 0, 5);
+    return array_map(fn($s) => [
+        'title' => $s['title'],
+        'image' => $imageMap[$s['icon']] ?? '/assets/img/expertise-web.svg',
+    ], $services);
 }
 
 function stack_data(): array
 {
-    return ['HTML5', 'CSS3', 'JavaScript', 'PHP', 'MySQL', 'Three.js', 'GSAP', 'Framer'];
+    $rows = db_fetch_all('SELECT name FROM tech_stack ORDER BY sort_order ASC, id ASC');
+    return array_map(fn($r) => $r['name'], $rows);
 }
 
 function portfolio_data(): array
 {
-    return [
-        [
-            'title'   => 'Nova Analytics',
-            'tag'     => 'SaaS Dashboard',
-            'image'   => '/assets/img/project-nova.svg',
-        ],
-        [
-            'title'   => 'Vertex Commerce',
-            'tag'     => 'E-Commerce Platform',
-            'image'   => '/assets/img/project-vertex.svg',
-        ],
-        [
-            'title'   => 'Lumen Booking',
-            'tag'     => 'Booking System',
-            'image'   => '/assets/img/project-lumen.svg',
-        ],
-        [
-            'title'   => 'Atlas CRM',
-            'tag'     => 'Business App',
-            'image'   => '/assets/img/project-atlas.svg',
-        ],
-    ];
+    $lang = lang_column_suffix();
+    $rows = db_fetch_all("SELECT id, image, title, tag_{$lang} AS tag FROM portfolio_items ORDER BY sort_order ASC, id ASC");
+    return array_map(fn($r) => ['id' => (int) $r['id'], 'title' => $r['title'], 'tag' => $r['tag'], 'image' => $r['image']], $rows);
 }
