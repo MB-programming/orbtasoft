@@ -1,0 +1,45 @@
+<?php
+require __DIR__ . '/../includes/functions.php';
+$current_page = 'services';
+require __DIR__ . '/../includes/header.php';
+?>
+
+<main>
+  <section class="page-hero">
+    <div class="bg-grid" aria-hidden="true"></div>
+    <div class="container">
+      <span class="kicker reveal"><?= e(t('services_kicker')) ?></span>
+      <h1 class="reveal"><?= e(t('services_heading')) ?></h1>
+      <p class="reveal"><?= e(t('services_desc')) ?></p>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container">
+      <div class="services-grid">
+        <?php foreach (services_data() as $service): ?>
+          <div class="service-card reveal">
+            <div class="service-card__icon"><?= icon($service['icon']) ?></div>
+            <h3><?= e($service['title']) ?></h3>
+            <p><?= e($service['desc']) ?></p>
+          </div>
+        <?php endforeach; ?>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-card reveal">
+        <h2><?= e(t('cta_heading')) ?></h2>
+        <p><?= e(t('cta_desc')) ?></p>
+        <div class="hero__actions">
+          <a href="/pages/contact.php" class="btn btn--primary"><?= e(t('cta_btn_primary')) ?></a>
+          <a href="/pages/portfolio.php" class="btn btn--secondary"><?= e(t('cta_btn_secondary')) ?></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<?php require __DIR__ . '/../includes/footer.php'; ?>
