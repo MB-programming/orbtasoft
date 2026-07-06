@@ -3,7 +3,7 @@
   <div class="container site-footer__inner">
     <div class="site-footer__brand">
       <a href="/index.php" class="brand">
-        <span class="brand__mark">⚡</span>
+        <span class="brand__mark"><?= icon('brand-mark') ?></span>
         <span class="brand__name"><?= e(t('hero_brand')) ?></span>
       </a>
       <p><?= e(t('footer_tagline')) ?></p>

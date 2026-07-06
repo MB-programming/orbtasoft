@@ -22,15 +22,15 @@ require __DIR__ . '/../includes/header.php';
           <p><?= e(t('contact_desc')) ?></p>
 
           <div class="contact-detail">
-            <span class="icon">✉️</span>
+            <span class="icon"><?= icon('mail') ?></span>
             <span>hello@orbtasoft.dev</span>
           </div>
           <div class="contact-detail">
-            <span class="icon">📞</span>
+            <span class="icon"><?= icon('phone') ?></span>
             <span dir="ltr">+20 100 000 0000</span>
           </div>
           <div class="contact-detail">
-            <span class="icon">📍</span>
+            <span class="icon"><?= icon('map-pin') ?></span>
             <span><?= current_lang() === 'ar' ? 'عن بُعد / عالميًا' : 'Remote / Worldwide' ?></span>
           </div>
         </div>

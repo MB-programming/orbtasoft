@@ -73,7 +73,7 @@ require __DIR__ . '/../includes/header.php';
       <div class="auth-page__hero-bg">
         <div class="bg-grid" aria-hidden="true"></div>
         <div class="auth-page__hero-brand">
-          <span>⚡</span> <?= e(t('hero_brand')) ?>
+          <span class="brand__mark"><?= icon('brand-mark') ?></span> <?= e(t('hero_brand')) ?>
         </div>
         <div class="auth-testimonial-stack">
           <?php foreach (array_slice(testimonials_data(), 1, 2) as $tItem): ?>

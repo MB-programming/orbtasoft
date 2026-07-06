@@ -12,6 +12,29 @@ document.addEventListener('DOMContentLoaded', function () {
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
+  /* ---------- Header language switcher ---------- */
+  var langSwitcher = document.getElementById('langSwitcher');
+  var langSwitcherTrigger = document.getElementById('langSwitcherTrigger');
+  if (langSwitcher && langSwitcherTrigger) {
+    langSwitcherTrigger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var isOpen = langSwitcher.classList.toggle('is-open');
+      langSwitcherTrigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+    document.addEventListener('click', function (e) {
+      if (!langSwitcher.contains(e.target)) {
+        langSwitcher.classList.remove('is-open');
+        langSwitcherTrigger.setAttribute('aria-expanded', 'false');
+      }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        langSwitcher.classList.remove('is-open');
+        langSwitcherTrigger.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
   /* ---------- Hover slider (expertise) ---------- */
   var hoverSlider = document.getElementById('hoverSlider');
   if (hoverSlider) {

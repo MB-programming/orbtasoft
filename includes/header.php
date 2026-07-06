@@ -28,7 +28,7 @@ $authUser = current_user();
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?= e(t('meta_title')) ?></title>
 <meta name="description" content="<?= e(t('meta_desc')) ?>">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>&#9889;</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22><rect width=%2224%22 height=%2224%22 rx=%225%22 fill=%22%2305070d%22/><ellipse cx=%2212%22 cy=%2212%22 rx=%229%22 ry=%224%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-width=%221.6%22 transform=%22rotate(-30 12 12)%22/><circle cx=%2212%22 cy=%2212%22 r=%222.6%22 fill=%22%2360a5fa%22/><circle cx=%2220%22 cy=%227.2%22 r=%221.6%22 fill=%22%2360a5fa%22/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -45,11 +45,23 @@ $authUser = current_user();
 <header class="site-header" id="siteHeader">
   <div class="container site-header__inner">
     <a href="/index.php" class="brand">
-      <span class="brand__mark">⚡</span>
+      <span class="brand__mark"><?= icon('brand-mark') ?></span>
       <span class="brand__name"><?= e(t('hero_brand')) ?></span>
     </a>
 
     <div class="header-actions">
+      <div class="lang-switcher" id="langSwitcher">
+        <button class="lang-switcher__trigger" id="langSwitcherTrigger" aria-haspopup="true" aria-expanded="false">
+          <?= icon('globe') ?>
+          <span><?= e(strtoupper($lang)) ?></span>
+          <?= icon('chevron-down') ?>
+        </button>
+        <div class="lang-switcher__menu" id="langSwitcherMenu">
+          <?php foreach (available_langs() as $code => $label): ?>
+            <a href="<?= e(lang_url($code)) ?>" class="<?= $lang === $code ? 'is-active' : '' ?>"><?= e($label) ?></a>
+          <?php endforeach; ?>
+        </div>
+      </div>
       <a href="/pages/contact.php" class="btn btn--primary btn--sm header-cta"><?= e(t('nav_cta')) ?></a>
       <button class="menu-trigger" id="menuTrigger" aria-haspopup="true" aria-expanded="false" aria-controls="popoutMenu">
         <span class="menu-trigger__bars"><span></span><span></span></span>
@@ -65,7 +77,7 @@ $authUser = current_user();
   <div class="popout-menu__panel">
     <div class="popout-menu__top">
       <a href="/index.php" class="brand">
-        <span class="brand__mark">⚡</span>
+        <span class="brand__mark"><?= icon('brand-mark') ?></span>
         <span class="brand__name"><?= e(t('hero_brand')) ?></span>
       </a>
       <button class="menu-close" id="menuClose" aria-label="<?= e(t('nav_close')) ?>">
@@ -87,11 +99,6 @@ $authUser = current_user();
     </nav>
 
     <div class="popout-menu__bottom">
-      <div class="popout-langs">
-        <?php foreach (available_langs() as $code => $label): ?>
-          <a href="<?= e(lang_url($code)) ?>" class="lang-pill <?= $lang === $code ? 'is-active' : '' ?>"><?= e($label) ?></a>
-        <?php endforeach; ?>
-      </div>
       <?php if ($authUser): ?>
         <div class="popout-account">
           <span><?= e(t('auth_logged_in_as')) ?> <strong><?= e($authUser['name']) ?></strong></span>

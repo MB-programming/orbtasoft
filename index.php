@@ -85,14 +85,14 @@ require __DIR__ . '/includes/header.php';
             </div>
 
             <div class="floating-badge badge-tl">
-              <div class="floating-badge__icon">🚀</div>
+              <div class="floating-badge__icon"><?= icon('rocket') ?></div>
               <div>
                 <p class="floating-badge__title"><?= e(t('hero_badge_1_t')) ?></p>
                 <p class="floating-badge__sub"><?= e(t('hero_badge_1_s')) ?></p>
               </div>
             </div>
             <div class="floating-badge badge-br">
-              <div class="floating-badge__icon">✅</div>
+              <div class="floating-badge__icon"><?= icon('check') ?></div>
               <div>
                 <p class="floating-badge__title"><?= e(t('hero_badge_2_t')) ?></p>
                 <p class="floating-badge__sub"><?= e(t('hero_badge_2_s')) ?></p>
@@ -257,7 +257,7 @@ require __DIR__ . '/includes/header.php';
       <div class="orbit orbit--1"></div>
       <div class="orbit orbit--2"></div>
       <div class="orbit orbit--3"></div>
-      <div class="orbit-core">⚡</div>
+      <div class="orbit-core"><?= icon('brand-mark') ?></div>
     </div>
 
     <div class="container newsletter-content">
@@ -274,7 +274,7 @@ require __DIR__ . '/includes/header.php';
         </form>
 
         <div class="newsletter-success">
-          <span>✓</span>
+          <span class="newsletter-success__icon"><?= icon('check') ?></span>
           <span id="newsletterSuccessText"><?= e(t('newsletter_success')) ?></span>
         </div>
       </div>
