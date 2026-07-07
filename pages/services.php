@@ -18,11 +18,12 @@ require __DIR__ . '/../includes/header.php';
     <div class="container">
       <div class="services-grid">
         <?php foreach (services_data() as $service): ?>
-          <div class="service-card reveal">
+          <a class="service-card reveal" href="/pages/service.php?slug=<?= e(urlencode($service['slug'])) ?>">
             <div class="service-card__icon"><?= icon($service['icon']) ?></div>
             <h3><?= e($service['title']) ?></h3>
             <p><?= e($service['desc']) ?></p>
-          </div>
+            <span class="service-card__link"><?= e(t('service_learn_more')) ?> →</span>
+          </a>
         <?php endforeach; ?>
       </div>
     </div>

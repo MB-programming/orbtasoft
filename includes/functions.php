@@ -76,8 +76,33 @@ function trans(): array
     return $strings;
 }
 
+function site_strings_db(): array
+{
+    static $rows = null;
+    if ($rows === null) {
+        require_once __DIR__ . '/../config/database.php';
+        $pdo = get_db();
+        $rows = [];
+        if ($pdo) {
+            try {
+                $rows = $pdo->query('SELECT str_key, value_de, value_en, value_ar FROM site_strings')->fetchAll(PDO::FETCH_ASSOC | PDO::FETCH_UNIQUE);
+            } catch (PDOException $e) {
+                $rows = [];
+            }
+        }
+    }
+    return $rows;
+}
+
 function t(string $key): string
 {
+    $dbStrings = site_strings_db();
+    if (isset($dbStrings[$key])) {
+        $column = 'value_' . lang_column_suffix();
+        if (isset($dbStrings[$key][$column]) && $dbStrings[$key][$column] !== '') {
+            return $dbStrings[$key][$column];
+        }
+    }
     $strings = trans();
     return $strings[$key] ?? $key;
 }
@@ -212,8 +237,37 @@ function partners_data(): array
 function services_data(): array
 {
     $lang = lang_column_suffix();
-    $rows = db_fetch_all("SELECT id, icon, title_{$lang} AS title, desc_{$lang} AS `desc` FROM services ORDER BY sort_order ASC, id ASC");
-    return array_map(fn($r) => ['id' => (int) $r['id'], 'icon' => $r['icon'], 'title' => $r['title'], 'desc' => $r['desc']], $rows);
+    $rows = db_fetch_all("SELECT id, slug, icon, title_{$lang} AS title, desc_{$lang} AS `desc` FROM services ORDER BY sort_order ASC, id ASC");
+    return array_map(fn($r) => ['id' => (int) $r['id'], 'slug' => $r['slug'], 'icon' => $r['icon'], 'title' => $r['title'], 'desc' => $r['desc']], $rows);
+}
+
+function service_by_slug(string $slug): ?array
+{
+    $lang = lang_column_suffix();
+    $sql = "SELECT id, slug, icon, image, title_{$lang} AS title, desc_{$lang} AS description, content_{$lang} AS content
+            FROM services WHERE slug = " . quote_for_lookup($slug) . " LIMIT 1";
+    $rows = db_fetch_all($sql);
+    return $rows[0] ?? null;
+}
+
+function service_neighbors(int $id): array
+{
+    $rows = db_fetch_all('SELECT id, slug FROM services ORDER BY sort_order ASC, id ASC');
+    $index = null;
+    foreach ($rows as $i => $r) {
+        if ((int) $r['id'] === $id) {
+            $index = $i;
+            break;
+        }
+    }
+    if ($index === null || !$rows) {
+        return ['prev' => null, 'next' => null];
+    }
+    $count = count($rows);
+    return [
+        'prev' => $rows[($index - 1 + $count) % $count]['slug'],
+        'next' => $rows[($index + 1) % $count]['slug'],
+    ];
 }
 
 function expertise_data(): array

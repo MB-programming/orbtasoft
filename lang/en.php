@@ -170,6 +170,10 @@ return [
     'project_prev'          => 'Previous Project',
     'project_next'          => 'Next Project',
 
+    'service_prev'          => 'Previous Service',
+    'service_next'          => 'Next Service',
+    'service_learn_more'    => 'Learn More',
+
     'footer_rights'     => 'All rights reserved.',
     'footer_tagline'    => 'We build software that steals the eye.',
 ];

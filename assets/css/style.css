@@ -172,6 +172,7 @@ button { font: inherit; cursor: pointer; }
   box-shadow: -40px 0 100px -20px rgba(0,0,0,.8);
   display: flex; flex-direction: column; padding: 28px clamp(24px, 5vw, 64px);
   transform: translateX(105%); transition: transform .55s var(--ease-out);
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
 }
 body.is-rtl .popout-menu__panel { transform: translateX(-105%); }
 .popout-menu.is-open .popout-menu__panel { transform: translateX(0); }
@@ -235,12 +236,13 @@ body.is-rtl .popout-menu__panel { transform: translateX(-105%); }
 
 /* ---------- Hero ---------- */
 .hero {
-  position: relative; min-height: 100svh; display: flex; align-items: center; justify-content: center;
-  overflow: hidden; padding-block: 140px 80px;
+  position: relative; min-height: 100svh; display: grid; grid-template-rows: 1fr auto;
+  overflow: hidden; padding-block: 140px 32px;
 }
 .hero-canvas { position: absolute; inset: 0; z-index: 0; opacity: 0.8; }
 .hero__inner {
-  position: relative; z-index: 2; width: 100%; max-width: var(--container-w); margin-inline: auto; padding-inline: 24px;
+  position: relative; z-index: 2; grid-row: 1; align-self: center;
+  width: 100%; max-width: var(--container-w); margin-inline: auto; padding-inline: 24px;
   text-align: center;
 }
 .hero__eyebrow {
@@ -267,9 +269,9 @@ body.is-rtl .popout-menu__panel { transform: translateX(-105%); }
 .hero__actions { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
 
 .hero__scroll-cue {
-  position: absolute; bottom: 32px; inset-inline: 0; margin-inline: auto; width: fit-content;
+  position: relative; grid-row: 2; z-index: 2; margin-inline: auto; width: fit-content;
   display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--color-muted);
-  font-size: 12px; letter-spacing: .08em; text-transform: uppercase; z-index: 2;
+  font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
 }
 .hero__scroll-cue .stem { width: 1px; height: 36px; background: linear-gradient(var(--color-muted), transparent); }
 
@@ -465,6 +467,7 @@ body.is-rtl .logo-track { animation-direction: reverse; }
 /* ---------- Services grid ---------- */
 .services-grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
 .service-card {
+  display: block; color: inherit; text-decoration: none;
   padding: 32px; border-radius: var(--radius-md); background: var(--color-surface); border: 1px solid var(--color-border);
   transition: transform .35s var(--ease-out), border-color .35s ease, background .35s ease;
 }
@@ -475,6 +478,15 @@ body.is-rtl .logo-track { animation-direction: reverse; }
   margin-block-end: 20px;
 }
 .service-card h3 { font-size: 1.15rem; font-weight: 700; margin-block-end: 10px; }
+.service-card__link {
+  display: inline-flex; align-items: center; gap: 6px; margin-block-start: 14px; font-size: 13px; font-weight: 700;
+  color: var(--color-accent-strong);
+}
+.service-detail__icon {
+  width: 60px; height: 60px; border-radius: 16px; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(145deg, rgba(59,130,246,.25), rgba(59,130,246,.05)); color: var(--color-accent-strong);
+  margin-block-end: 20px;
+}
 .service-card p { color: var(--color-muted); font-size: .95rem; line-height: 1.7; }
 
 /* ---------- Hover slider (expertise) ---------- */

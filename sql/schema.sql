@@ -38,17 +38,31 @@ CREATE TABLE IF NOT EXISTS settings (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
+-- Every translatable string on the site — editable from the admin dashboard.
+CREATE TABLE IF NOT EXISTS site_strings (
+    str_key VARCHAR(100) PRIMARY KEY,
+    value_de TEXT NOT NULL,
+    value_en TEXT NOT NULL,
+    value_ar TEXT NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
 -- ============ Admin-managed content ============
 
 CREATE TABLE IF NOT EXISTS services (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    slug VARCHAR(160) NOT NULL DEFAULT '',
     icon VARCHAR(60) NOT NULL DEFAULT 'box',
+    image VARCHAR(255) NOT NULL DEFAULT '',
     title_de VARCHAR(160) NOT NULL,
     title_en VARCHAR(160) NOT NULL,
     title_ar VARCHAR(160) NOT NULL,
     desc_de TEXT NOT NULL,
     desc_en TEXT NOT NULL,
     desc_ar TEXT NOT NULL,
+    content_de TEXT NOT NULL DEFAULT '',
+    content_en TEXT NOT NULL DEFAULT '',
+    content_ar TEXT NOT NULL DEFAULT '',
     sort_order INT NOT NULL DEFAULT 0
 ) ENGINE=InnoDB;
 
@@ -70,6 +84,12 @@ CREATE TABLE IF NOT EXISTS portfolio_items (
 ) ENGINE=InnoDB;
 
 -- Upgrading an existing database created before these columns existed:
+ALTER TABLE services ADD COLUMN IF NOT EXISTS slug VARCHAR(160) NOT NULL DEFAULT '' AFTER id;
+ALTER TABLE services ADD COLUMN IF NOT EXISTS image VARCHAR(255) NOT NULL DEFAULT '' AFTER icon;
+ALTER TABLE services ADD COLUMN IF NOT EXISTS content_de TEXT NOT NULL DEFAULT '' AFTER desc_ar;
+ALTER TABLE services ADD COLUMN IF NOT EXISTS content_en TEXT NOT NULL DEFAULT '' AFTER content_de;
+ALTER TABLE services ADD COLUMN IF NOT EXISTS content_ar TEXT NOT NULL DEFAULT '' AFTER content_en;
+
 ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS slug VARCHAR(160) NOT NULL DEFAULT '' AFTER id;
 ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS client VARCHAR(160) NOT NULL DEFAULT '' AFTER title;
 ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS year VARCHAR(20) NOT NULL DEFAULT '' AFTER client;

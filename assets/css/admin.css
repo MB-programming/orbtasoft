@@ -136,6 +136,38 @@
 
 .admin-toggle-form { display: inline-block; }
 
+/* ---------- Site content editor ---------- */
+.content-search-bar { margin-block-end: 20px; }
+.content-search-bar input {
+  width: 100%; background: var(--color-bg-elevated); border: 1px solid var(--color-border); border-radius: 12px;
+  padding: 14px 18px; color: var(--color-foreground); font-family: inherit; font-size: .95rem;
+}
+.content-group { padding: 0; overflow: hidden; }
+.content-group__summary {
+  cursor: pointer; list-style: none; padding: 20px 28px; font-size: 1.05rem; font-weight: 700;
+  display: flex; align-items: center; gap: 10px;
+}
+.content-group__summary::-webkit-details-marker { display: none; }
+.content-group__summary::before { content: '▸'; color: var(--color-muted); font-size: .8em; transition: transform .2s ease; }
+.content-group[open] .content-group__summary::before { transform: rotate(90deg); }
+.content-group__count {
+  font-size: .75rem; font-weight: 700; color: var(--color-muted); background: rgba(255,255,255,.04);
+  border-radius: 999px; padding: 2px 10px;
+}
+.content-group__body { padding: 0 28px 24px; display: flex; flex-direction: column; gap: 18px; }
+.content-row { border-block-start: 1px solid var(--color-border); padding-block-start: 18px; }
+.content-row__key { font-family: monospace; font-size: .78rem; color: var(--color-accent-strong); margin-block-end: 10px; }
+.content-row__fields { display: grid; gap: 14px; grid-template-columns: repeat(3, 1fr); }
+.content-row__fields textarea { min-height: 44px; }
+.content-row.is-hidden { display: none; }
+.content-group.is-hidden { display: none; }
+@media (max-width: 900px) { .content-row__fields { grid-template-columns: 1fr; } }
+
+.admin-save-bar {
+  position: sticky; bottom: 20px; background: var(--color-bg-elevated); border: 1px solid var(--color-border);
+  border-radius: 14px; padding: 16px 20px; box-shadow: 0 10px 40px rgba(0,0,0,.4); z-index: 5;
+}
+
 @media (max-width: 900px) {
   .admin-shell { flex-direction: column; }
   .admin-sidebar { position: static; height: auto; width: 100%; flex-direction: row; align-items: center; overflow-x: auto; }

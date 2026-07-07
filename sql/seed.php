@@ -58,39 +58,112 @@ foreach ($defaultSettings as $key => $value) {
 }
 echo "Settings seeded (existing keys left untouched).\n";
 
+// ---------- Site strings (every translatable string, editable from the admin Content page) ----------
+if (seed_count($pdo, 'site_strings') === 0) {
+    $langDe = require __DIR__ . '/../lang/de.php';
+    $langEn = require __DIR__ . '/../lang/en.php';
+    $langAr = require __DIR__ . '/../lang/ar.php';
+    $stmt = $pdo->prepare('INSERT INTO site_strings (str_key, value_de, value_en, value_ar) VALUES (:k, :de, :en, :ar)');
+    foreach ($langDe as $key => $value) {
+        $stmt->execute(['k' => $key, 'de' => $value, 'en' => $langEn[$key] ?? '', 'ar' => $langAr[$key] ?? '']);
+    }
+    echo 'Seeded site strings (' . count($langDe) . ").\n";
+}
+
 // ---------- Services ----------
+$services = [
+    [
+        'slug' => 'web-development', 'icon' => 'code-2', 'image' => '/assets/img/expertise-web.svg',
+        'title_de' => 'Webentwicklung', 'title_en' => 'Web Development', 'title_ar' => 'تطوير الويب',
+        'desc_de' => 'Schnelle, skalierbare Websites und Web-Apps mit HTML, CSS, JavaScript und PHP.',
+        'desc_en' => 'Fast, scalable websites and web apps built with HTML, CSS, JavaScript and PHP.',
+        'desc_ar' => 'مواقع وتطبيقات ويب سريعة وقابلة للتوسع بلغات HTML وCSS وJavaScript وPHP.',
+        'content_de' => "Wir bauen Websites und Web-Apps direkt auf den Grundlagen des Webs auf: sauberes HTML, durchdachtes CSS und handgeschriebenes JavaScript, ohne unnötige Framework-Schichten dazwischen. Das Ergebnis sind Seiten, die in Millisekunden laden und sich auf jedem Gerät gleich zuverlässig verhalten.\n\nJedes Projekt beginnt mit einem klaren Informationsarchitektur-Plan, gefolgt von einem responsiven Layout, das von Mobiltelefonen bis zu großen Desktops funktioniert. Wir integrieren GSAP für Bewegung, wo sie das Erlebnis verbessert, und PHP für alles, was serverseitige Logik braucht — Kontaktformulare, Nutzerkonten, Inhalte, die sich ohne Codeänderung aktualisieren lassen.",
+        'content_en' => "We build websites and web apps directly on the fundamentals of the web: clean HTML, deliberate CSS and hand-written JavaScript, without unnecessary framework layers in between. The result is pages that load in milliseconds and behave consistently on every device.\n\nEvery project starts with a clear information-architecture plan, followed by a responsive layout that works from phones to large desktops. We bring in GSAP for motion where it improves the experience, and PHP for anything that needs server-side logic — contact forms, user accounts, content that updates without a code change.",
+        'content_ar' => "نبني المواقع وتطبيقات الويب مباشرة على أساسيات الويب: HTML نظيف، وCSS مدروس، وجافاسكريبت مكتوب يدويًا، دون طبقات أطر عمل غير ضرورية بينهما. النتيجة صفحات تُحمَّل خلال أجزاء من الثانية وتتصرف بثبات على كل جهاز.\n\nيبدأ كل مشروع بخطة واضحة لهيكلة المعلومات، تليها تصميمات متجاوبة تعمل من الهواتف إلى الشاشات الكبيرة. نستخدم GSAP للحركة حيثما تحسّن التجربة، وPHP لكل ما يحتاج منطقًا من جهة الخادم - نماذج التواصل، حسابات المستخدمين، محتوى يتحدث دون تعديل الكود.",
+    ],
+    [
+        'slug' => 'databases-backend', 'icon' => 'database', 'image' => '/assets/img/expertise-backend.svg',
+        'title_de' => 'Datenbanken & Backend', 'title_en' => 'Databases & Backend', 'title_ar' => 'قواعد البيانات والأنظمة الخلفية',
+        'desc_de' => 'Optimierte MySQL-Schemas und sichere, zuverlässige APIs, die mit Ihrem Unternehmen wachsen.',
+        'desc_en' => 'Optimized MySQL schemas and secure, reliable APIs that scale with your business.',
+        'desc_ar' => 'تصميم قواعد بيانات MySQL محسّنة وواجهات برمجية آمنة وموثوقة.',
+        'content_de' => "Ein Produkt ist nur so zuverlässig wie die Datenbank dahinter. Wir entwerfen MySQL-Schemas mit sauberer Normalisierung, sinnvollen Indizes und Fremdschlüsseln, die Datenintegrität von Anfang an erzwingen, statt sie später zu reparieren.\n\nAuf dieser Grundlage bauen wir PHP-APIs mit vorbereiteten Anweisungen gegen SQL-Injection, ordentlicher Fehlerbehandlung und Sitzungsverwaltung, die auch unter Last stabil bleibt. Wir haben Systeme gebaut, die täglich Millionen Zeilen verarbeiten, ohne dass sich Kunden dessen bewusst sein müssen.",
+        'content_en' => "A product is only as reliable as the database behind it. We design MySQL schemas with clean normalization, sensible indexes, and foreign keys that enforce data integrity from day one instead of patching it in later.\n\nOn top of that foundation we build PHP APIs with prepared statements against SQL injection, proper error handling, and session management that stays stable under load. We've built systems that process millions of rows a day without customers ever needing to know it.",
+        'content_ar' => "يعتمد أي منتج على موثوقية قاعدة بياناته. نصمم مخططات MySQL بتطبيع نظيف، وفهارس مدروسة، ومفاتيح خارجية تفرض سلامة البيانات منذ اليوم الأول بدلاً من إصلاحها لاحقًا.\n\nفوق هذا الأساس، نبني واجهات برمجية بـ PHP باستخدام الاستعلامات المُجهّزة ضد حقن SQL، ومعالجة أخطاء سليمة، وإدارة جلسات تبقى مستقرة تحت الضغط. بنينا أنظمة تعالج ملايين الصفوف يوميًا دون أن يحتاج العملاء لمعرفة ذلك.",
+    ],
+    [
+        'slug' => 'interactive-3d-experiences', 'icon' => 'box', 'image' => '/assets/img/expertise-3d.svg',
+        'title_de' => 'Interaktive 3D-Erlebnisse', 'title_en' => 'Interactive 3D Experiences', 'title_ar' => 'تجارب تفاعلية ثلاثية الأبعاد',
+        'desc_de' => 'Three.js-Szenen und GSAP-Animationen verleihen Ihrer Seite echte kinematografische Präsenz.',
+        'desc_en' => 'Three.js scenes and GSAP-powered motion that give your site real cinematic presence.',
+        'desc_ar' => 'مشاهد Three.js وحركات GSAP تمنح موقعك حضورًا سينمائيًا فعليًا.',
+        'content_de' => "Three.js lässt uns Tiefe, Licht und Bewegung direkt im Browser einsetzen, ohne dass Besucher irgendetwas installieren müssen. Wir setzen es gezielt ein: ein rotierender Globus, ein Partikelfeld, eine Szene, die auf Scrollen reagiert.\n\nGepaart mit GSAP und ScrollTrigger entsteht eine Choreografie, bei der jede Bewegung an eine bestimmte Scrollposition gebunden ist. Wir achten dabei immer auf Performance, damit die 3D-Ebene das Erlebnis unterstützt, statt es auf langsamen Geräten zu verlangsamen.",
+        'content_en' => "Three.js lets us bring depth, lighting, and motion directly into the browser without asking visitors to install anything. We use it deliberately: a rotating globe, a particle field, a scene that reacts to scroll.\n\nPaired with GSAP and ScrollTrigger, this becomes a choreography where every movement is tied to a specific scroll position. We always keep an eye on performance so the 3D layer supports the experience instead of slowing it down on weaker devices.",
+        'content_ar' => "يتيح لنا Three.js إدخال العمق والإضاءة والحركة مباشرة داخل المتصفح دون أن نطلب من الزوار تثبيت أي شيء. نستخدمه بشكل مدروس: كرة أرضية دوارة، حقل جسيمات، مشهد يتفاعل مع التمرير.\n\nبالاقتران مع GSAP وScrollTrigger، تتحول هذه العناصر إلى توليفة حيث ترتبط كل حركة بموضع تمرير محدد. نراقب الأداء دائمًا حتى تدعم طبقة الأبعاد الثلاثية التجربة بدلاً من إبطائها على الأجهزة الأضعف.",
+    ],
+    [
+        'slug' => 'ui-ux-design', 'icon' => 'layout-panel-top', 'image' => '/assets/img/expertise-uiux.svg',
+        'title_de' => 'UI/UX-Design', 'title_en' => 'UI/UX Design', 'title_ar' => 'واجهات وتجربة المستخدم',
+        'desc_de' => 'Elegante, konversionsorientierte Interfaces mit einer intuitiven Benutzererfahrung.',
+        'desc_en' => 'Elegant, conversion-focused interfaces with a smooth, intuitive user experience.',
+        'desc_ar' => 'تصميم واجهات أنيقة تركز على التحويل وتجربة استخدام سلسة.',
+        'content_de' => "Gutes Design ist unsichtbar, wenn es funktioniert: Besucher finden, was sie suchen, ohne darüber nachzudenken. Wir beginnen mit Nutzerflüssen und Wireframes, bevor wir uns um Farben und Typografie kümmern.\n\nJede Oberfläche, die wir entwerfen, wird mit echten Inhalten und echten Bildschirmgrößen getestet, nicht nur mit perfekten Mockups. Barrierefreiheit und mehrsprachige Unterstützung — einschließlich vollständigem RTL für Arabisch — sind von Anfang an Teil des Prozesses, nicht ein nachträglicher Gedanke.",
+        'content_en' => "Good design is invisible when it works: visitors find what they're looking for without having to think about it. We start with user flows and wireframes before we touch colors and typography.\n\nEvery interface we design gets tested with real content and real screen sizes, not just pixel-perfect mockups. Accessibility and multilingual support — including full RTL for Arabic — are part of the process from day one, not an afterthought.",
+        'content_ar' => "التصميم الجيد يصبح غير مرئي عندما يعمل بشكل صحيح: يجد الزوار ما يبحثون عنه دون تفكير. نبدأ بمسارات المستخدم والمخططات الأولية قبل الانتقال إلى الألوان والخطوط.\n\nكل واجهة نصممها تُختبر بمحتوى حقيقي وأحجام شاشات حقيقية، لا بنماذج مثالية فقط. إمكانية الوصول والدعم متعدد اللغات - بما في ذلك دعم كامل للاتجاه من اليمين لليسار للعربية - جزء من العملية منذ اليوم الأول، لا فكرة لاحقة.",
+    ],
+    [
+        'slug' => 'business-applications', 'icon' => 'layout-dashboard', 'image' => '/assets/img/expertise-business.svg',
+        'title_de' => 'Business-Anwendungen', 'title_en' => 'Business Applications', 'title_ar' => 'تطبيقات الأعمال',
+        'desc_de' => 'Individuelle Dashboards und Verwaltungssysteme für Ihren täglichen Betrieb.',
+        'desc_en' => 'Custom dashboards and management systems that run your daily operations.',
+        'desc_ar' => 'لوحات تحكم وأنظمة إدارة مخصصة تدير عملياتك اليومية.',
+        'content_de' => "Viele Unternehmen laufen auf einer Mischung aus Tabellen, E-Mails und veralteter Software. Wir ersetzen das durch ein einziges Dashboard, das zu Ihrem tatsächlichen Arbeitsablauf passt, statt Sie zu zwingen, sich an eine generische Vorlage anzupassen.\n\nOb Vertriebspipeline, Bestandsverwaltung oder interne Berichterstattung — wir entwerfen die Datenbankstruktur um Ihren Prozess herum und bauen ein Interface, das Ihr Team ohne Schulung versteht. Rollenbasierte Berechtigungen sorgen dafür, dass jeder nur sieht, was er sehen soll.",
+        'content_en' => "Many businesses run on a mix of spreadsheets, emails, and outdated software. We replace that with a single dashboard that fits your actual workflow instead of forcing you to adapt to a generic template.\n\nWhether it's a sales pipeline, inventory management, or internal reporting, we design the database structure around your process and build an interface your team understands without training. Role-based permissions make sure everyone sees exactly what they should.",
+        'content_ar' => "تعمل شركات كثيرة بمزيج من جداول البيانات والبريد الإلكتروني وبرامج قديمة. نستبدل ذلك بلوحة تحكم واحدة تناسب سير عملك الفعلي بدلاً من إجبارك على التكيف مع قالب عام.\n\nسواء كان الأمر يتعلق بمسار مبيعات، أو إدارة مخزون، أو تقارير داخلية، نصمم بنية قاعدة البيانات حول عمليتك ونبني واجهة يفهمها فريقك دون تدريب. تضمن الصلاحيات القائمة على الأدوار أن يرى كل شخص ما يجب أن يراه فقط.",
+    ],
+    [
+        'slug' => 'maintenance-support', 'icon' => 'shield-check', 'image' => '/assets/img/expertise-business.svg',
+        'title_de' => 'Wartung & Support', 'title_en' => 'Maintenance & Support', 'title_ar' => 'الصيانة والدعم',
+        'desc_de' => 'Monitoring, Sicherheitsupdates und laufender Support lange nach dem Launch.',
+        'desc_en' => 'Monitoring, security updates and ongoing support long after launch.',
+        'desc_ar' => 'مراقبة، تحديثات أمنية، ودعم فني مستمر بعد الإطلاق.',
+        'content_de' => "Der Launch ist nicht das Ende der Arbeit. Wir überwachen Fehlerprotokolle, wenden Sicherheitsupdates zeitnah an und behalten Backups im Blick, damit ein Problem entdeckt wird, bevor Ihre Kunden es merken.\n\nUnsere Support-Vereinbarungen sind unkompliziert: klare Reaktionszeiten, direkte Kommunikation und keine überraschenden Rechnungen. Egal ob es um eine kleine Anpassung oder eine dringende Fehlerbehebung geht, wir behandeln Ihr Produkt weiter wie unser eigenes.",
+        'content_en' => "Launch isn't the end of the work. We monitor error logs, apply security updates promptly, and keep an eye on backups so a problem gets caught before your customers notice it.\n\nOur support agreements are straightforward: clear response times, direct communication, and no surprise invoices. Whether it's a small tweak or an urgent bug fix, we keep treating your product like our own.",
+        'content_ar' => "الإطلاق ليس نهاية العمل. نراقب سجلات الأخطاء، ونطبّق التحديثات الأمنية بسرعة، ونتابع النسخ الاحتياطية بحيث تُكتشف أي مشكلة قبل أن يلاحظها عملاؤك.\n\nاتفاقيات الدعم لدينا واضحة: أوقات استجابة محددة، وتواصل مباشر، ولا فواتير مفاجئة. سواء كان الأمر تعديلاً بسيطًا أو إصلاح خطأ عاجل، نستمر في التعامل مع منتجك وكأنه منتجنا نحن.",
+    ],
+];
+
 if (seed_count($pdo, 'services') === 0) {
-    $services = [
-        ['code-2', 'Webentwicklung', 'Web Development', 'تطوير الويب',
-            'Schnelle, skalierbare Websites und Web-Apps mit HTML, CSS, JavaScript und PHP.',
-            'Fast, scalable websites and web apps built with HTML, CSS, JavaScript and PHP.',
-            'مواقع وتطبيقات ويب سريعة وقابلة للتوسع بلغات HTML وCSS وJavaScript وPHP.'],
-        ['database', 'Datenbanken & Backend', 'Databases & Backend', 'قواعد البيانات والأنظمة الخلفية',
-            'Optimierte MySQL-Schemas und sichere, zuverlässige APIs, die mit Ihrem Unternehmen wachsen.',
-            'Optimized MySQL schemas and secure, reliable APIs that scale with your business.',
-            'تصميم قواعد بيانات MySQL محسّنة وواجهات برمجية آمنة وموثوقة.'],
-        ['box', 'Interaktive 3D-Erlebnisse', 'Interactive 3D Experiences', 'تجارب تفاعلية ثلاثية الأبعاد',
-            'Three.js-Szenen und GSAP-Animationen verleihen Ihrer Seite echte kinematografische Präsenz.',
-            'Three.js scenes and GSAP-powered motion that give your site real cinematic presence.',
-            'مشاهد Three.js وحركات GSAP تمنح موقعك حضورًا سينمائيًا فعليًا.'],
-        ['layout-panel-top', 'UI/UX-Design', 'UI/UX Design', 'واجهات وتجربة المستخدم',
-            'Elegante, konversionsorientierte Interfaces mit einer intuitiven Benutzererfahrung.',
-            'Elegant, conversion-focused interfaces with a smooth, intuitive user experience.',
-            'تصميم واجهات أنيقة تركز على التحويل وتجربة استخدام سلسة.'],
-        ['layout-dashboard', 'Business-Anwendungen', 'Business Applications', 'تطبيقات الأعمال',
-            'Individuelle Dashboards und Verwaltungssysteme für Ihren täglichen Betrieb.',
-            'Custom dashboards and management systems that run your daily operations.',
-            'لوحات تحكم وأنظمة إدارة مخصصة تدير عملياتك اليومية.'],
-        ['shield-check', 'Wartung & Support', 'Maintenance & Support', 'الصيانة والدعم',
-            'Monitoring, Sicherheitsupdates und laufender Support lange nach dem Launch.',
-            'Monitoring, security updates and ongoing support long after launch.',
-            'مراقبة، تحديثات أمنية، ودعم فني مستمر بعد الإطلاق.'],
-    ];
-    $stmt = $pdo->prepare('INSERT INTO services (icon, title_de, title_en, title_ar, desc_de, desc_en, desc_ar, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+    $stmt = $pdo->prepare('INSERT INTO services (slug, icon, image, title_de, title_en, title_ar, desc_de, desc_en, desc_ar, content_de, content_en, content_ar, sort_order) VALUES (:slug, :icon, :image, :title_de, :title_en, :title_ar, :desc_de, :desc_en, :desc_ar, :content_de, :content_en, :content_ar, :sort_order)');
     foreach ($services as $i => $s) {
-        $stmt->execute([$s[0], $s[1], $s[2], $s[3], $s[4], $s[5], $s[6], $i]);
+        $s['sort_order'] = $i;
+        $stmt->execute($s);
     }
     echo "Seeded services.\n";
+} else {
+    require_once __DIR__ . '/../includes/functions.php';
+    $byTitle = [];
+    foreach ($services as $s) {
+        $byTitle[$s['title_en']] = $s;
+    }
+    $rows = $pdo->query("SELECT id, title_en FROM services WHERE slug = '' OR slug IS NULL")->fetchAll(PDO::FETCH_ASSOC);
+    if ($rows) {
+        $stmt = $pdo->prepare('UPDATE services SET slug=:slug, image=:image, content_de=:content_de, content_en=:content_en, content_ar=:content_ar WHERE id=:id');
+        foreach ($rows as $row) {
+            $match = $byTitle[$row['title_en']] ?? null;
+            if ($match) {
+                $stmt->execute([
+                    'slug' => $match['slug'], 'image' => $match['image'], 'content_de' => $match['content_de'],
+                    'content_en' => $match['content_en'], 'content_ar' => $match['content_ar'], 'id' => $row['id'],
+                ]);
+            } else {
+                $pdo->prepare('UPDATE services SET slug = :slug WHERE id = :id')
+                    ->execute(['slug' => slugify($row['title_en']) . '-' . $row['id'], 'id' => $row['id']]);
+            }
+        }
+        echo 'Backfilled ' . count($rows) . " service(s).\n";
+    }
 }
 
 // ---------- Portfolio ----------

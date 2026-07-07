@@ -1,5 +1,6 @@
 <?php
 require __DIR__ . '/includes/auth.php';
+require __DIR__ . '/../includes/uploads.php';
 admin_require_login();
 $pdo = get_db();
 
@@ -17,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (($_POST['action'] ?? '') === 'save') {
         $id = (int) ($_POST['id'] ?? 0);
         $data = [
-            'cover_image' => trim($_POST['cover_image'] ?? ''),
+            'cover_image' => handle_image_upload('cover_image_file', trim($_POST['existing_cover_image'] ?? '')),
             'author' => trim($_POST['author'] ?? ''),
             'title_de' => trim($_POST['title_de'] ?? ''),
             'title_en' => trim($_POST['title_en'] ?? ''),
@@ -85,13 +86,20 @@ require __DIR__ . '/includes/layout-top.php';
 
 <div class="admin-panel">
   <h2><?= $editing ? 'Edit Blog Post' : 'Add New Blog Post' ?></h2>
-  <form method="post" action="/admin/blog.php">
+  <form method="post" action="/admin/blog.php" enctype="multipart/form-data">
     <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
     <input type="hidden" name="action" value="save">
     <input type="hidden" name="id" value="<?= (int) ($editing['id'] ?? 0) ?>">
+    <input type="hidden" name="existing_cover_image" value="<?= e($editing['cover_image'] ?? '') ?>">
 
     <div class="admin-form-grid">
-      <div class="form-row span-3"><label for="cover_image">Cover image path (SVG/PNG/JPG under /assets/img/, or a full URL)</label><input type="text" id="cover_image" name="cover_image" value="<?= e($editing['cover_image'] ?? '/assets/img/') ?>" required></div>
+      <div class="form-row span-3">
+        <label for="cover_image_file">Cover image</label>
+        <?php if (!empty($editing['cover_image'])): ?>
+          <img class="admin-img-preview" src="<?= e($editing['cover_image']) ?>" alt="" style="margin-block-end:10px;">
+        <?php endif; ?>
+        <input type="file" id="cover_image_file" name="cover_image_file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml">
+      </div>
 
       <div class="form-row"><label for="author">Author</label><input type="text" id="author" name="author" value="<?= e($editing['author'] ?? '') ?>" required></div>
       <div class="form-row"><label for="slug">Slug (leave blank to auto-generate from EN title)</label><input type="text" id="slug" name="slug" value="<?= e($editing['slug'] ?? '') ?>"></div>

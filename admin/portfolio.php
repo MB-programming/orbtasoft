@@ -1,5 +1,6 @@
 <?php
 require __DIR__ . '/includes/auth.php';
+require __DIR__ . '/../includes/uploads.php';
 admin_require_login();
 $pdo = get_db();
 
@@ -17,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (($_POST['action'] ?? '') === 'save') {
         $id = (int) ($_POST['id'] ?? 0);
         $data = [
-            'image' => trim($_POST['image'] ?? ''),
+            'image' => handle_image_upload('image_file', trim($_POST['existing_image'] ?? '')),
             'title' => trim($_POST['title'] ?? ''),
             'client' => trim($_POST['client'] ?? ''),
             'year' => trim($_POST['year'] ?? ''),
@@ -78,13 +79,20 @@ require __DIR__ . '/includes/layout-top.php';
 
 <div class="admin-panel">
   <h2><?= $editing ? 'Edit Portfolio Item' : 'Add New Portfolio Item' ?></h2>
-  <form method="post" action="/admin/portfolio.php">
+  <form method="post" action="/admin/portfolio.php" enctype="multipart/form-data">
     <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
     <input type="hidden" name="action" value="save">
     <input type="hidden" name="id" value="<?= (int) ($editing['id'] ?? 0) ?>">
+    <input type="hidden" name="existing_image" value="<?= e($editing['image'] ?? '') ?>">
 
     <div class="admin-form-grid">
-      <div class="form-row span-3"><label for="image">Image path (SVG/PNG/JPG under /assets/img/, or a full URL)</label><input type="text" id="image" name="image" value="<?= e($editing['image'] ?? '/assets/img/') ?>" required></div>
+      <div class="form-row span-3">
+        <label for="image_file">Project image</label>
+        <?php if (!empty($editing['image'])): ?>
+          <img class="admin-img-preview" src="<?= e($editing['image']) ?>" alt="" style="margin-block-end:10px;">
+        <?php endif; ?>
+        <input type="file" id="image_file" name="image_file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml">
+      </div>
 
       <div class="form-row"><label for="title">Title (brand name — same in all languages)</label><input type="text" id="title" name="title" value="<?= e($editing['title'] ?? '') ?>" required></div>
       <div class="form-row"><label for="slug">Slug (URL — leave blank to auto-generate from title)</label><input type="text" id="slug" name="slug" value="<?= e($editing['slug'] ?? '') ?>"></div>

@@ -170,6 +170,10 @@ return [
     'project_prev'          => 'المشروع السابق',
     'project_next'          => 'المشروع التالي',
 
+    'service_prev'          => 'الخدمة السابقة',
+    'service_next'          => 'الخدمة التالية',
+    'service_learn_more'    => 'اعرف المزيد',
+
     'footer_rights'     => 'جميع الحقوق محفوظة.',
     'footer_tagline'    => 'نبني برمجيات تخطف العين.',
 ];

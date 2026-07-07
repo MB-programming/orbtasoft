@@ -170,6 +170,10 @@ return [
     'project_prev'          => 'Vorheriges Projekt',
     'project_next'          => 'Nächstes Projekt',
 
+    'service_prev'          => 'Vorherige Leistung',
+    'service_next'          => 'Nächste Leistung',
+    'service_learn_more'    => 'Mehr erfahren',
+
     'footer_rights'     => 'Alle Rechte vorbehalten.',
     'footer_tagline'    => 'Wir entwickeln Software, die Blicke fängt.',
 ];
