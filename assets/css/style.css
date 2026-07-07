@@ -273,6 +273,58 @@ body.is-rtl .popout-menu__panel { transform: translateX(-105%); }
 }
 .hero__scroll-cue .stem { width: 1px; height: 36px; background: linear-gradient(var(--color-muted), transparent); }
 
+/* ---------- Hero variant: Aurora ---------- */
+.hero-aurora { position: absolute; inset: 0; z-index: 0; overflow: hidden; opacity: .55; }
+.hero-aurora__layer {
+  position: absolute; inset: -50%; display: block;
+  background: repeating-linear-gradient(100deg, #8b5cf6 10%, #3b82f6 15%, #ec4899 20%, #8b5cf6 25%, #3b82f6 30%);
+  background-size: 300% 100%;
+  filter: blur(80px);
+  animation: hero-aurora-drift 22s linear infinite;
+}
+.hero-aurora__layer--2 {
+  mix-blend-mode: difference; opacity: .5; filter: blur(60px);
+  animation-duration: 16s; animation-direction: reverse;
+}
+@keyframes hero-aurora-drift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.hero--aurora::after {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 0%, rgba(5,7,13,.88) 100%);
+}
+.hero-title--stagger .hero-word { display: inline-block; will-change: transform, filter, opacity; }
+
+/* ---------- Hero variant: Geometric shapes ---------- */
+.hero-shapes { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.hero-shape {
+  position: absolute; display: block; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: linear-gradient(90deg, rgba(96,165,250,.16), transparent 70%);
+  backdrop-filter: blur(2px);
+  box-shadow: 0 8px 32px rgba(255,255,255,.06);
+  animation: hero-shape-float 12s ease-in-out infinite;
+}
+.hero-shape--1 { width: 460px; height: 120px; inset-inline-start: -8%; top: 16%; --rot: 12deg; background: linear-gradient(90deg, rgba(99,102,241,.18), transparent 70%); }
+.hero-shape--2 { width: 380px; height: 100px; inset-inline-end: -4%; top: 68%; --rot: -15deg; background: linear-gradient(90deg, rgba(244,114,182,.16), transparent 70%); animation-delay: .6s; }
+.hero-shape--3 { width: 240px; height: 70px; inset-inline-start: 8%; bottom: 8%; --rot: -8deg; background: linear-gradient(90deg, rgba(167,139,250,.16), transparent 70%); animation-delay: .3s; }
+.hero-shape--4 { width: 160px; height: 50px; inset-inline-end: 18%; top: 12%; --rot: 20deg; background: linear-gradient(90deg, rgba(251,191,36,.16), transparent 70%); animation-delay: .8s; }
+.hero-shape--5 { width: 130px; height: 36px; inset-inline-start: 24%; top: 6%; --rot: -25deg; background: linear-gradient(90deg, rgba(45,212,191,.16), transparent 70%); animation-delay: .45s; }
+@keyframes hero-shape-float {
+  0%, 100% { transform: translateY(0) rotate(var(--rot, 0deg)); }
+  50% { transform: translateY(16px) rotate(var(--rot, 0deg)); }
+}
+.hero--shapes::after {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(180deg, transparent 0%, rgba(5,7,13,.6) 100%);
+}
+@media (max-width: 767px) {
+  .hero-shape--1, .hero-shape--2 { width: 260px; height: 70px; }
+  .hero-shape--3, .hero-shape--4, .hero-shape--5 { display: none; }
+}
+
 /* ---------- Logo cloud (Partners) ---------- */
 .logo-cloud-section { padding-block: 50px; }
 .logo-cloud-section__head { text-align: center; margin-block-end: 36px; }

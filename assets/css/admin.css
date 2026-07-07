@@ -76,6 +76,32 @@
   padding: 14px 16px; color: var(--color-foreground); font-family: inherit; font-size: .95rem;
 }
 
+/* ---------- Hero variant picker ---------- */
+.hero-variant-picker { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.hero-variant-option {
+  position: relative; display: flex; flex-direction: column; gap: 10px; padding: 16px;
+  border-radius: 14px; border: 1px solid var(--color-border); background: var(--color-bg-elevated);
+  cursor: pointer; transition: border-color .2s ease, background .2s ease;
+}
+.hero-variant-option:hover { border-color: rgba(96,165,250,.35); }
+.hero-variant-option.is-selected { border-color: #60a5fa; background: rgba(59,130,246,.08); }
+.hero-variant-option input[type="radio"] { position: absolute; top: 14px; inset-inline-end: 14px; accent-color: #60a5fa; }
+.hero-variant-option__preview { display: block; width: 100%; height: 70px; border-radius: 10px; overflow: hidden; background: #05070d; }
+.hero-variant-option__preview--cinematic { background: radial-gradient(circle at 60% 40%, rgba(96,165,250,.4), transparent 60%), linear-gradient(160deg, #0b1224, #05070d); }
+.hero-variant-option__preview--aurora { background: repeating-linear-gradient(100deg, #8b5cf6 10%, #3b82f6 15%, #ec4899 20%, #8b5cf6 25%, #3b82f6 30%); background-size: 300% 100%; filter: blur(6px) saturate(1.3); }
+.hero-variant-option__preview--shapes {
+  background: linear-gradient(160deg, #0b1224, #05070d);
+  background-image:
+    linear-gradient(160deg, #0b1224, #05070d),
+    linear-gradient(100deg, rgba(99,102,241,.5), transparent 70%),
+    linear-gradient(-100deg, rgba(244,114,182,.4), transparent 70%);
+  background-position: 0 0, -10% 30%, 110% 70%;
+  background-size: 100% 100%, 70% 40%, 60% 35%;
+  background-repeat: no-repeat;
+}
+.hero-variant-option__label { font-weight: 700; font-size: .95rem; }
+.hero-variant-option__desc { font-size: .78rem; color: var(--color-muted); line-height: 1.5; }
+
 /* ---------- Table ---------- */
 .admin-table-wrap { overflow-x: auto; }
 .admin-table { width: 100%; border-collapse: collapse; font-size: .9rem; }

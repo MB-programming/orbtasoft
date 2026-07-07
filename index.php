@@ -1,21 +1,40 @@
 <?php
 require __DIR__ . '/includes/functions.php';
 $current_page = 'home';
+$heroVariant = site_setting('hero_variant', 'cinematic');
+if (!in_array($heroVariant, ['cinematic', 'aurora', 'shapes'], true)) {
+    $heroVariant = 'cinematic';
+}
 require __DIR__ . '/includes/header.php';
 ?>
 
 <main>
 
   <!-- ============ HERO ============ -->
-  <section class="hero">
-    <div id="heroCanvas" class="hero-canvas" aria-hidden="true"></div>
-    <div class="bg-grid" aria-hidden="true"></div>
+  <section class="hero hero--<?= e($heroVariant) ?>">
+    <?php if ($heroVariant === 'cinematic'): ?>
+      <div id="heroCanvas" class="hero-canvas" aria-hidden="true"></div>
+      <div class="bg-grid" aria-hidden="true"></div>
+    <?php elseif ($heroVariant === 'aurora'): ?>
+      <div class="hero-aurora" aria-hidden="true">
+        <span class="hero-aurora__layer hero-aurora__layer--1"></span>
+        <span class="hero-aurora__layer hero-aurora__layer--2"></span>
+      </div>
+    <?php elseif ($heroVariant === 'shapes'): ?>
+      <div class="hero-shapes" aria-hidden="true">
+        <span class="hero-shape hero-shape--1"></span>
+        <span class="hero-shape hero-shape--2"></span>
+        <span class="hero-shape hero-shape--3"></span>
+        <span class="hero-shape hero-shape--4"></span>
+        <span class="hero-shape hero-shape--5"></span>
+      </div>
+    <?php endif; ?>
 
     <div class="hero__inner">
       <span class="hero__eyebrow hero-line"><span class="dot"></span> Orbtasoft Studio</span>
-      <h1>
-        <span class="hero-line text-track" style="display:block;"><?= e(t('hero_tagline_1')) ?></span>
-        <span class="hero-line text-silver" style="display:block;"><?= e(t('hero_tagline_2')) ?></span>
+      <h1 class="<?= $heroVariant === 'aurora' ? 'hero-title--stagger' : '' ?>">
+        <span class="hero-line text-track" style="display:block;" data-hero-stagger><?= e(t('hero_tagline_1')) ?></span>
+        <span class="hero-line text-silver" style="display:block;" data-hero-stagger><?= e(t('hero_tagline_2')) ?></span>
       </h1>
       <p class="hero__desc hero-line"><?= t('meta_desc') ?></p>
       <div class="hero__actions hero-line">

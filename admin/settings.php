@@ -5,11 +5,17 @@ admin_require_login();
 $pdo = get_db();
 
 $settingKeys = [
+    'hero_variant',
     'smtp_host', 'smtp_port', 'smtp_encryption', 'smtp_username', 'smtp_password',
     'smtp_from_email', 'smtp_from_name',
     'notify_email', 'notify_on_contact', 'notify_on_newsletter',
     'contact_email_subject', 'contact_email_body',
     'newsletter_email_subject', 'newsletter_email_body',
+];
+$heroVariants = [
+    'cinematic' => ['label' => 'Cinematic', 'desc' => 'Three.js particle field with a wireframe globe drifting behind the headline.'],
+    'aurora'    => ['label' => 'Aurora', 'desc' => 'Animated aurora gradient wash with a word-by-word headline reveal.'],
+    'shapes'    => ['label' => 'Geometric Shapes', 'desc' => 'Soft floating gradient bars drifting behind the headline.'],
 ];
 
 $flash = null;
@@ -24,6 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         foreach ($settingKeys as $key) {
             if (in_array($key, ['notify_on_contact', 'notify_on_newsletter'], true)) {
                 $value = isset($_POST[$key]) ? '1' : '0';
+            } elseif ($key === 'hero_variant') {
+                $value = array_key_exists($_POST[$key] ?? '', $heroVariants) ? $_POST[$key] : 'cinematic';
             } else {
                 $value = trim($_POST[$key] ?? '');
             }
@@ -74,6 +82,21 @@ require __DIR__ . '/includes/layout-top.php';
 <form method="post" action="/admin/settings.php">
   <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
   <input type="hidden" name="action" value="save_settings">
+
+  <div class="admin-panel">
+    <h2>Homepage Hero Section</h2>
+    <p style="color:var(--color-muted); font-size:.85rem; margin-block-end:16px;">Choose the visual style used for the homepage hero background.</p>
+    <div class="hero-variant-picker">
+      <?php foreach ($heroVariants as $key => $variant): ?>
+        <label class="hero-variant-option <?= sv($settings, 'hero_variant', 'cinematic') === $key ? 'is-selected' : '' ?>">
+          <input type="radio" name="hero_variant" value="<?= e($key) ?>" <?= sv($settings, 'hero_variant', 'cinematic') === $key ? 'checked' : '' ?>>
+          <span class="hero-variant-option__preview hero-variant-option__preview--<?= e($key) ?>" aria-hidden="true"></span>
+          <span class="hero-variant-option__label"><?= e($variant['label']) ?></span>
+          <span class="hero-variant-option__desc"><?= e($variant['desc']) ?></span>
+        </label>
+      <?php endforeach; ?>
+    </div>
+  </div>
 
   <div class="admin-panel">
     <h2>SMTP Configuration</h2>

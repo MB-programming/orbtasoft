@@ -36,12 +36,12 @@ if (seed_count($pdo, 'admin_users') === 0) {
 
 // ---------- Settings ----------
 $defaultSettings = [
-    'smtp_host' => '',
-    'smtp_port' => '587',
-    'smtp_encryption' => 'tls',
-    'smtp_username' => '',
-    'smtp_password' => '',
-    'smtp_from_email' => 'hello@orbtasoft.dev',
+    'smtp_host' => 'smtp.hostinger.com',
+    'smtp_port' => '465',
+    'smtp_encryption' => 'ssl',
+    'smtp_username' => 'noreply@orbtasoft.com',
+    'smtp_password' => '#5C#kFHatZm',
+    'smtp_from_email' => 'noreply@orbtasoft.com',
     'smtp_from_name' => 'Orbtasoft',
     'notify_email' => '',
     'notify_on_contact' => '0',
@@ -50,6 +50,7 @@ $defaultSettings = [
     'contact_email_body' => "You received a new contact form submission.\n\nName: {{name}}\nEmail: {{email}}\nMessage:\n{{message}}",
     'newsletter_email_subject' => 'New newsletter subscriber',
     'newsletter_email_body' => "You have a new newsletter subscriber.\n\nEmail: {{email}}",
+    'hero_variant' => 'cinematic',
 ];
 $stmt = $pdo->prepare('INSERT IGNORE INTO settings (setting_key, setting_value) VALUES (:k, :v)');
 foreach ($defaultSettings as $key => $value) {

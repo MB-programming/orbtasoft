@@ -236,10 +236,37 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     /* Hero intro (only on pages that have one) */
-    if (document.querySelector('.hero-line')) {
+    var heroLines = document.querySelectorAll('.hero-line');
+    if (heroLines.length) {
       var heroTl = gsap.timeline({ delay: 0.2 });
-      gsap.set('.hero-line', { autoAlpha: 0, y: 50, filter: 'blur(14px)' });
-      heroTl.to('.hero-line', { autoAlpha: 1, y: 0, filter: 'blur(0px)', duration: 1.3, ease: 'expo.out', stagger: 0.15 });
+      var staggerTitleLines = document.querySelectorAll('.hero-title--stagger [data-hero-stagger]');
+
+      if (staggerTitleLines.length) {
+        staggerTitleLines.forEach(function (line) {
+          /* Gradient-clipped lines (text-silver) need the clip classes copied onto
+             each word span too, since background-clip:text doesn't inherit into children. */
+          var colorClass = line.classList.contains('text-silver') ? ' text-silver' : (line.classList.contains('text-track') ? ' text-track' : '');
+          var words = line.textContent.split(' ');
+          line.textContent = '';
+          words.forEach(function (word, i) {
+            var span = document.createElement('span');
+            span.className = 'hero-word' + colorClass;
+            span.textContent = word + (i < words.length - 1 ? ' ' : '');
+            line.appendChild(span);
+          });
+        });
+        gsap.set(staggerTitleLines, { autoAlpha: 1, y: 0, filter: 'none' });
+        gsap.set('.hero-word', { autoAlpha: 0, y: 60, filter: 'blur(10px)' });
+        heroTl.to('.hero-word', { autoAlpha: 1, y: 0, filter: 'blur(0px)', duration: 1, ease: 'expo.out', stagger: 0.045 }, 0);
+      }
+
+      var plainHeroLines = Array.prototype.filter.call(heroLines, function (el) {
+        return !el.closest('.hero-title--stagger');
+      });
+      if (plainHeroLines.length) {
+        gsap.set(plainHeroLines, { autoAlpha: 0, y: 50, filter: 'blur(14px)' });
+        heroTl.to(plainHeroLines, { autoAlpha: 1, y: 0, filter: 'blur(0px)', duration: 1.3, ease: 'expo.out', stagger: 0.15 }, staggerTitleLines.length ? 0.2 : 0);
+      }
     }
 
     /* Counter animation on the device metric */

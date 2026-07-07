@@ -338,6 +338,16 @@ function reading_minutes(string $content): int
     return max(1, (int) ceil($words / 200));
 }
 
+function site_setting(string $key, string $default = ''): string
+{
+    require_once __DIR__ . '/mailer.php';
+    static $settings = null;
+    if ($settings === null) {
+        $settings = get_settings();
+    }
+    return $settings[$key] ?? $default;
+}
+
 function quote_for_lookup(string $value): string
 {
     require_once __DIR__ . '/../config/database.php';
