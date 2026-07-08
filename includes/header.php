@@ -103,6 +103,7 @@ $authUser = current_user();
       <?php if ($authUser): ?>
         <div class="popout-account">
           <span><?= e(t('auth_logged_in_as')) ?> <strong><?= e($authUser['name']) ?></strong></span>
+          <a href="/account/index.php"><?= e(t('nav_account')) ?></a>
           <a href="/auth-logout.php"><?= e(t('nav_logout')) ?></a>
         </div>
       <?php else: ?>

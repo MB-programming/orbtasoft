@@ -59,7 +59,7 @@ try {
 
     $_SESSION['user_id'] = (int) $pdo->lastInsertId();
     session_regenerate_id(true);
-    header('Location: /index.php?lang=' . urlencode($lang) . '&welcome=1');
+    header('Location: /account/index.php?lang=' . urlencode($lang) . '&welcome=1');
     exit;
 } catch (PDOException $e) {
     error_log('Register failed: ' . $e->getMessage());

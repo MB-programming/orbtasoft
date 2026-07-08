@@ -59,16 +59,18 @@ foreach ($defaultSettings as $key => $value) {
 echo "Settings seeded (existing keys left untouched).\n";
 
 // ---------- Site strings (every translatable string, editable from the admin Content page) ----------
-if (seed_count($pdo, 'site_strings') === 0) {
-    $langDe = require __DIR__ . '/../lang/de.php';
-    $langEn = require __DIR__ . '/../lang/en.php';
-    $langAr = require __DIR__ . '/../lang/ar.php';
-    $stmt = $pdo->prepare('INSERT INTO site_strings (str_key, value_de, value_en, value_ar) VALUES (:k, :de, :en, :ar)');
-    foreach ($langDe as $key => $value) {
-        $stmt->execute(['k' => $key, 'de' => $value, 'en' => $langEn[$key] ?? '', 'ar' => $langAr[$key] ?? '']);
-    }
-    echo 'Seeded site strings (' . count($langDe) . ").\n";
+// Uses INSERT IGNORE so re-running this after adding new lang/*.php keys only adds the
+// new ones and never overwrites text an admin has already edited from the dashboard.
+$langDe = require __DIR__ . '/../lang/de.php';
+$langEn = require __DIR__ . '/../lang/en.php';
+$langAr = require __DIR__ . '/../lang/ar.php';
+$stmt = $pdo->prepare('INSERT IGNORE INTO site_strings (str_key, value_de, value_en, value_ar) VALUES (:k, :de, :en, :ar)');
+$addedStrings = 0;
+foreach ($langDe as $key => $value) {
+    $stmt->execute(['k' => $key, 'de' => $value, 'en' => $langEn[$key] ?? '', 'ar' => $langAr[$key] ?? '']);
+    $addedStrings += $stmt->rowCount();
 }
+echo "Site strings: {$addedStrings} new key(s) added (" . count($langDe) . " total checked).\n";
 
 // ---------- Services ----------
 $services = [
@@ -200,6 +202,22 @@ $portfolio = [
             'description_en' => "Atlas CRM's sales team was tracking leads across four different spreadsheets before we stepped in. We built them a unified dashboard with pipeline stages, activity timelines, and role-based permissions, all on the same PHP/MySQL foundation the rest of our stack uses. Their sales managers now get a single source of truth instead of chasing updates over Slack.",
             'description_ar' => 'كان فريق مبيعات Atlas CRM يتابع العملاء المحتملين عبر أربعة جداول بيانات مختلفة قبل أن نتدخل. بنينا لهم لوحة تحكم موحدة بمراحل واضحة لمسار المبيعات، وسجل زمني للأنشطة، وصلاحيات حسب الدور، كل ذلك على نفس أساس PHP وMySQL المستخدم في باقي مجموعتنا التقنية. أصبح مديرو المبيعات الآن يمتلكون مصدرًا واحدًا موثوقًا بدل ملاحقة التحديثات عبر Slack.',
         ],
+        [
+            'slug' => 'nexora-ops', 'image' => '/assets/img/project-nexora.svg', 'title' => 'Nexora Ops Suite',
+            'client' => 'Nexora', 'year' => '2025', 'project_url' => 'https://nexora.example.com',
+            'tag_de' => 'Betriebsmanagement', 'tag_en' => 'Operations Management', 'tag_ar' => 'إدارة العمليات',
+            'description_de' => 'Nexora verwaltete Lagerbestände über mehrere Standorte hinweg per E-Mail und Papierlisten, was zu ständigen Bestandsdifferenzen führte. Wir haben ein zentrales Betriebs-Dashboard gebaut, das Lagerbewegungen in Echtzeit über alle Standorte hinweg synchronisiert, mit klaren Warnungen bei niedrigem Bestand und einem Audit-Verlauf für jede Änderung.\n\nDas Team kann jetzt Bestellungen direkt aus dem Dashboard auslösen, und Standortleiter sehen nur die Daten, für die sie zuständig sind, dank feingranularer, rollenbasierter Berechtigungen. Innerhalb der ersten zwei Monate sank die Zeit für die monatliche Bestandsprüfung um mehr als die Hälfte.',
+            'description_en' => "Nexora was managing inventory across multiple locations through email threads and paper lists, which led to constant stock discrepancies. We built a central operations dashboard that syncs stock movements in real time across every location, with clear low-stock alerts and an audit trail for every change.\n\nThe team can now trigger reorders directly from the dashboard, and location managers only see the data they're responsible for, thanks to fine-grained role-based permissions. Within the first two months, time spent on the monthly stock reconciliation dropped by more than half.",
+            'description_ar' => "كانت Nexora تدير المخزون عبر عدة مواقع بواسطة رسائل بريد إلكتروني وقوائم ورقية، ما أدى إلى فروقات مستمرة في الجرد. بنينا لوحة تحكم مركزية للعمليات تُزامن حركة المخزون فوريًا عبر جميع المواقع، مع تنبيهات واضحة عند انخفاض المخزون وسجل تتبع لكل تغيير.\n\nيستطيع الفريق الآن تفعيل طلبات إعادة التوريد مباشرة من لوحة التحكم، ولا يرى مديرو المواقع سوى البيانات الخاصة بهم بفضل صلاحيات دقيقة قائمة على الأدوار. خلال أول شهرين، انخفض الوقت المستغرق في مطابقة الجرد الشهري بأكثر من النصف.",
+        ],
+        [
+            'slug' => 'brightfield-retail', 'image' => '/assets/img/project-brightfield.svg', 'title' => 'Brightfield Retail',
+            'client' => 'Brightfield', 'year' => '2024', 'project_url' => 'https://brightfield.example.com',
+            'tag_de' => 'Einzelhandelsplattform', 'tag_en' => 'Retail Platform', 'tag_ar' => 'منصة تجزئة',
+            'description_de' => 'Brightfield betreibt ein Netz kleiner Boutiquen und brauchte eine gemeinsame Online-Plattform, die trotzdem jeden Filialbestand getrennt hält. Wir haben eine Multi-Store-Architektur auf derselben PHP/MySQL-Basis entwickelt, bei der jede Filiale ihren eigenen Katalogausschnitt, ihre Preise und ihre Bestellungen verwaltet, während Kunden alles über eine einzige, elegante Storefront durchsuchen.\n\nDie Such- und Filterfunktionen wurden mit sauberen, indizierten MySQL-Abfragen gebaut, sodass Seiten auch bei Tausenden Produkten sofort laden. Brightfield konnte innerhalb weniger Wochen drei neue Filialen online bringen, ohne eine Zeile Code anzufassen.',
+            'description_en' => "Brightfield runs a network of small boutiques and needed a shared online platform that still kept each store's inventory separate. We built a multi-store architecture on the same PHP/MySQL foundation, where each location manages its own slice of the catalog, pricing and orders, while customers browse everything through a single, elegant storefront.\n\nSearch and filtering were built with clean, indexed MySQL queries so pages load instantly even with thousands of products. Brightfield was able to bring three new stores online within a few weeks without touching a line of code.",
+            'description_ar' => "تدير Brightfield شبكة من المتاجر الصغيرة واحتاجت منصة إلكترونية مشتركة تحافظ مع ذلك على فصل مخزون كل متجر. بنينا بنية متعددة المتاجر على نفس أساس PHP وMySQL، حيث يدير كل متجر جزءه الخاص من الكتالوج والأسعار والطلبات، بينما يتصفح العملاء كل شيء عبر واجهة أنيقة واحدة.\n\nبُنيت ميزات البحث والتصفية باستعلامات MySQL نظيفة ومفهرسة بحيث تُحمَّل الصفحات فورًا حتى مع آلاف المنتجات. تمكنت Brightfield من تشغيل ثلاثة متاجر جديدة خلال أسابيع قليلة دون تعديل أي سطر كود.",
+        ],
 ];
 
 if (seed_count($pdo, 'portfolio_items') === 0) {
@@ -237,6 +255,20 @@ if (seed_count($pdo, 'portfolio_items') === 0) {
     }
 }
 
+// Add any new catalog items (like nexora-ops/brightfield-retail) that don't exist yet,
+// so re-running this script against an already-seeded database still picks them up.
+$existingSlugs = $pdo->query('SELECT slug FROM portfolio_items')->fetchAll(PDO::FETCH_COLUMN);
+$missing = array_filter($portfolio, fn($p) => !in_array($p['slug'], $existingSlugs, true));
+if ($missing) {
+    $nextOrder = (int) $pdo->query('SELECT COALESCE(MAX(sort_order), -1) + 1 FROM portfolio_items')->fetchColumn();
+    $stmt = $pdo->prepare('INSERT INTO portfolio_items (slug, image, title, client, year, project_url, tag_de, tag_en, tag_ar, description_de, description_en, description_ar, sort_order) VALUES (:slug, :image, :title, :client, :year, :project_url, :tag_de, :tag_en, :tag_ar, :description_de, :description_en, :description_ar, :sort_order)');
+    foreach (array_values($missing) as $i => $p) {
+        $p['sort_order'] = $nextOrder + $i;
+        $stmt->execute($p);
+    }
+    echo 'Added ' . count($missing) . " new portfolio item(s).\n";
+}
+
 // ---------- Team ----------
 if (seed_count($pdo, 'team_members') === 0) {
     $team = [
@@ -272,12 +304,45 @@ if (seed_count($pdo, 'testimonials') === 0) {
             'A rare team that\'s equally strong on engineering and design. They shipped on time and the product just works.',
             'فريق نادر قوي في الهندسة والتصميم معًا. سلّموا في الموعد والمنتج يعمل ببساطة كما ينبغي.',
             $palette[4]],
+        ['Daniel Osei', 'Operations Director, Nexora', 'Operations Director, Nexora', 'مدير العمليات، Nexora',
+            'Unsere Bestandsdifferenzen sind praktisch verschwunden, seit wir das neue Dashboard nutzen. Orbtasoft hat wirklich verstanden, wie unser Betrieb funktioniert, bevor sie eine Zeile Code geschrieben haben.',
+            'Our stock discrepancies practically disappeared once we started using the new dashboard. Orbtasoft genuinely understood how our operations worked before writing a line of code.',
+            'اختفت فروقات المخزون لدينا عمليًا بعد استخدام لوحة التحكم الجديدة. فهم فريق أوربتاسوفت طريقة عمل عملياتنا فعليًا قبل كتابة أي سطر كود.',
+            $palette[5]],
+        ['Priya Nair', 'Head of E-Commerce, Brightfield', 'Head of E-Commerce, Brightfield', 'رئيسة التجارة الإلكترونية، Brightfield',
+            'Wir haben drei neue Filialen in wenigen Wochen online gebracht, ohne unser Entwicklerteam aufzustocken. Genau das hatten wir uns von einer Partnerschaft erhofft.',
+            'We brought three new stores online in a matter of weeks without growing our dev team. That is exactly what we hoped a partnership would look like.',
+            'أطلقنا ثلاثة متاجر جديدة خلال أسابيع دون توسيع فريق التطوير لدينا. هذا بالضبط ما كنا نأمل أن تبدو عليه الشراكة.',
+            $palette[3]],
     ];
     $stmt = $pdo->prepare('INSERT INTO testimonials (name, role_de, role_en, role_ar, quote_de, quote_en, quote_ar, color, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
     foreach ($testimonials as $i => $t) {
         $stmt->execute([$t[0], $t[1], $t[2], $t[3], $t[4], $t[5], $t[6], $t[7], $i]);
     }
     echo "Seeded testimonials.\n";
+} else {
+    $existingNames = $pdo->query('SELECT name FROM testimonials')->fetchAll(PDO::FETCH_COLUMN);
+    $newTestimonials = [
+        ['Daniel Osei', 'Operations Director, Nexora', 'Operations Director, Nexora', 'مدير العمليات، Nexora',
+            'Unsere Bestandsdifferenzen sind praktisch verschwunden, seit wir das neue Dashboard nutzen. Orbtasoft hat wirklich verstanden, wie unser Betrieb funktioniert, bevor sie eine Zeile Code geschrieben haben.',
+            'Our stock discrepancies practically disappeared once we started using the new dashboard. Orbtasoft genuinely understood how our operations worked before writing a line of code.',
+            'اختفت فروقات المخزون لدينا عمليًا بعد استخدام لوحة التحكم الجديدة. فهم فريق أوربتاسوفت طريقة عمل عملياتنا فعليًا قبل كتابة أي سطر كود.',
+            $palette[5]],
+        ['Priya Nair', 'Head of E-Commerce, Brightfield', 'Head of E-Commerce, Brightfield', 'رئيسة التجارة الإلكترونية، Brightfield',
+            'Wir haben drei neue Filialen in wenigen Wochen online gebracht, ohne unser Entwicklerteam aufzustocken. Genau das hatten wir uns von einer Partnerschaft erhofft.',
+            'We brought three new stores online in a matter of weeks without growing our dev team. That is exactly what we hoped a partnership would look like.',
+            'أطلقنا ثلاثة متاجر جديدة خلال أسابيع دون توسيع فريق التطوير لدينا. هذا بالضبط ما كنا نأمل أن تبدو عليه الشراكة.',
+            $palette[3]],
+    ];
+    $missing = array_filter($newTestimonials, fn($t) => !in_array($t[0], $existingNames, true));
+    if ($missing) {
+        $nextOrder = (int) $pdo->query('SELECT COALESCE(MAX(sort_order), -1) + 1 FROM testimonials')->fetchColumn();
+        $stmt = $pdo->prepare('INSERT INTO testimonials (name, role_de, role_en, role_ar, quote_de, quote_en, quote_ar, color, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        foreach (array_values($missing) as $i => $t) {
+            $stmt->execute([$t[0], $t[1], $t[2], $t[3], $t[4], $t[5], $t[6], $t[7], $nextOrder + $i]);
+        }
+        echo 'Added ' . count($missing) . " new testimonial(s).\n";
+    }
 }
 
 // ---------- Partners ----------

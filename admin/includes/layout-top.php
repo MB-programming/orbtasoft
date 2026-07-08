@@ -5,6 +5,9 @@ $current_admin_page = $current_admin_page ?? 'dashboard';
 
 $adminNav = [
     'dashboard'    => ['label' => 'Dashboard', 'href' => '/admin/index.php', 'icon' => 'layout-dashboard'],
+    'clients'      => ['label' => 'Clients', 'href' => '/admin/clients.php', 'icon' => 'user-star'],
+    'invoices'     => ['label' => 'Invoices', 'href' => '/admin/invoices.php', 'icon' => 'file-text'],
+    'discounts'    => ['label' => 'Discounts', 'href' => '/admin/discounts.php', 'icon' => 'check-circle'],
     'services'     => ['label' => 'Services', 'href' => '/admin/services.php', 'icon' => 'box'],
     'portfolio'    => ['label' => 'Portfolio', 'href' => '/admin/portfolio.php', 'icon' => 'layout-panel-top'],
     'blog'         => ['label' => 'Blog', 'href' => '/admin/blog.php', 'icon' => 'file-text'],

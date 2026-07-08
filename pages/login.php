@@ -2,7 +2,7 @@
 require __DIR__ . '/../includes/functions.php';
 
 if (is_logged_in()) {
-    header('Location: /index.php?lang=' . urlencode(current_lang()));
+    header('Location: /account/index.php?lang=' . urlencode(current_lang()));
     exit;
 }
 
