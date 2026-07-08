@@ -35,9 +35,15 @@ require __DIR__ . '/../includes/header.php';
             <span class="project-detail__meta-label"><?= e(t('project_year')) ?></span>
             <span class="project-detail__meta-value"><?= e($project['year']) ?></span>
           </div>
+          <?php if (!empty($project['duration'])): ?>
+            <div class="project-detail__meta-item">
+              <span class="project-detail__meta-label"><?= e(t('project_duration')) ?></span>
+              <span class="project-detail__meta-value"><?= e($project['duration']) ?></span>
+            </div>
+          <?php endif; ?>
           <?php if (!empty($project['project_url'])): ?>
-            <a href="<?= e($project['project_url']) ?>" class="btn btn--outline btn--sm" target="_blank" rel="noopener noreferrer">
-              <?= e(t('project_visit_site')) ?> <?= icon('arrow-right') ?>
+            <a href="<?= e($project['project_url']) ?>" class="btn btn--primary btn--sm" target="_blank" rel="noopener noreferrer">
+              <?= e(t('project_preview')) ?> <?= icon('arrow-right') ?>
             </a>
           <?php endif; ?>
         </div>
@@ -46,10 +52,61 @@ require __DIR__ . '/../includes/header.php';
 
     <section class="section section--tight">
       <div class="container container--narrow">
-        <div class="project-detail__cover reveal">
-          <img src="<?= e($project['image']) ?>" alt="<?= e($project['title']) ?>">
-        </div>
-        <div class="project-detail__content reveal">
+        <?php if ($project['category'] === 'uiux' && !empty($project['gallery'])): ?>
+          <h2 class="reveal" style="margin-block-end:20px;"><?= e(t('project_gallery')) ?></h2>
+          <div class="project-gallery reveal">
+            <img src="<?= e($project['image']) ?>" alt="<?= e($project['title']) ?>">
+            <?php foreach ($project['gallery'] as $shot): ?>
+              <img src="<?= e($shot['image']) ?>" alt="<?= e($project['title']) ?>">
+            <?php endforeach; ?>
+          </div>
+        <?php else: ?>
+          <div class="project-preview-frame reveal">
+            <div class="project-preview-frame__bar">
+              <span></span><span></span><span></span>
+              <?php if (!empty($project['project_url'])): ?>
+                <span class="project-preview-frame__url"><?= e($project['project_url']) ?></span>
+              <?php endif; ?>
+            </div>
+            <div class="project-preview-frame__media">
+              <img src="<?= e($project['image']) ?>" alt="<?= e($project['title']) ?>">
+              <?php if (!empty($project['project_url'])): ?>
+                <a href="<?= e($project['project_url']) ?>" class="project-preview-frame__cta" target="_blank" rel="noopener noreferrer">
+                  <span class="btn btn--primary btn--sm"><?= e(t('project_preview')) ?> <?= icon('arrow-right') ?></span>
+                </a>
+              <?php endif; ?>
+            </div>
+          </div>
+        <?php endif; ?>
+
+        <?php if (!empty($project['technologies'])): ?>
+          <div class="project-tech-pills reveal" style="margin-block-start:28px;">
+            <?php foreach (array_map('trim', explode(',', $project['technologies'])) as $tech): ?>
+              <?php if ($tech !== ''): ?><span class="project-tech-pill"><?= e($tech) ?></span><?php endif; ?>
+            <?php endforeach; ?>
+          </div>
+        <?php endif; ?>
+
+        <?php
+          $metrics = array_filter([
+              [$project['metric_1_label'], $project['metric_1_value']],
+              [$project['metric_2_label'], $project['metric_2_value']],
+              [$project['metric_3_label'], $project['metric_3_value']],
+          ], fn($m) => $m[0] !== '' && $m[1] !== '');
+        ?>
+        <?php if ($metrics): ?>
+          <h2 class="reveal" style="margin-block-start:36px; margin-block-end:16px;"><?= e(t('project_performance')) ?></h2>
+          <div class="project-metrics reveal">
+            <?php foreach ($metrics as $m): ?>
+              <div class="project-metric-card">
+                <div class="project-metric-card__value"><?= e($m[1]) ?></div>
+                <div class="project-metric-card__label"><?= e($m[0]) ?></div>
+              </div>
+            <?php endforeach; ?>
+          </div>
+        <?php endif; ?>
+
+        <div class="project-detail__content reveal" style="margin-block-start:36px;">
           <h2><?= e(t('project_overview')) ?></h2>
           <?php foreach (explode("\n\n", $project['description']) as $paragraph): ?>
             <p><?= e($paragraph) ?></p>

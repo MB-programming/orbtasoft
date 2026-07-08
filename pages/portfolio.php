@@ -15,12 +15,18 @@ require __DIR__ . '/../includes/header.php';
 
   <section class="section section--tight work-gallery">
     <div class="container">
+      <div class="work-filter" id="workFilter" role="tablist">
+        <button type="button" class="work-filter__btn is-active" data-filter="all"><?= e(t('work_filter_all')) ?></button>
+        <?php foreach (portfolio_categories() as $key => $label): ?>
+          <button type="button" class="work-filter__btn" data-filter="<?= e($key) ?>"><?= e($label) ?></button>
+        <?php endforeach; ?>
+      </div>
       <div class="work-gallery__hint reveal"><span class="arrow"></span> <?= e(t('work_drag_hint')) ?></div>
     </div>
     <div class="work-gallery__pin">
-      <div class="work-gallery__track">
+      <div class="work-gallery__track" id="workTrack">
         <?php foreach (portfolio_data() as $i => $project): ?>
-          <a class="work-card" href="/pages/project.php?slug=<?= e(urlencode($project['slug'])) ?>">
+          <a class="work-card" data-category="<?= e($project['category']) ?>" href="/pages/project.php?slug=<?= e(urlencode($project['slug'])) ?>">
             <span class="work-card__index">0<?= $i + 1 ?></span>
             <img src="<?= e($project['image']) ?>" alt="<?= e($project['title']) ?>" loading="lazy">
             <div class="work-card__overlay">

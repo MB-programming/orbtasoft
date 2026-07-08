@@ -12,6 +12,7 @@
     <div class="site-footer__links">
       <a href="/pages/services.php"><?= e(t('nav_services')) ?></a>
       <a href="/pages/portfolio.php"><?= e(t('nav_portfolio')) ?></a>
+      <a href="/pages/tools.php"><?= e(t('nav_tools')) ?></a>
       <a href="/pages/about.php"><?= e(t('nav_about')) ?></a>
       <a href="/pages/contact.php"><?= e(t('nav_contact')) ?></a>
     </div>

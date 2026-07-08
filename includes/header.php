@@ -9,6 +9,7 @@ $nav_links = [
     'services'  => ['label' => t('nav_services'),  'href' => '/pages/services.php'],
     'portfolio' => ['label' => t('nav_portfolio'), 'href' => '/pages/portfolio.php'],
     'blog'      => ['label' => t('nav_blog'),      'href' => '/pages/blog.php'],
+    'tools'     => ['label' => t('nav_tools'),     'href' => '/pages/tools.php'],
     'about'     => ['label' => t('nav_about'),     'href' => '/pages/about.php'],
     'contact'   => ['label' => t('nav_contact'),   'href' => '/pages/contact.php'],
 ];

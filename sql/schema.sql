@@ -74,6 +74,15 @@ CREATE TABLE IF NOT EXISTS portfolio_items (
     client VARCHAR(160) NOT NULL DEFAULT '',
     year VARCHAR(20) NOT NULL DEFAULT '',
     project_url VARCHAR(255) NOT NULL DEFAULT '',
+    category VARCHAR(20) NOT NULL DEFAULT 'web',
+    technologies VARCHAR(255) NOT NULL DEFAULT '',
+    duration VARCHAR(60) NOT NULL DEFAULT '',
+    metric_1_label VARCHAR(60) NOT NULL DEFAULT '',
+    metric_1_value VARCHAR(60) NOT NULL DEFAULT '',
+    metric_2_label VARCHAR(60) NOT NULL DEFAULT '',
+    metric_2_value VARCHAR(60) NOT NULL DEFAULT '',
+    metric_3_label VARCHAR(60) NOT NULL DEFAULT '',
+    metric_3_value VARCHAR(60) NOT NULL DEFAULT '',
     tag_de VARCHAR(160) NOT NULL,
     tag_en VARCHAR(160) NOT NULL,
     tag_ar VARCHAR(160) NOT NULL,
@@ -81,6 +90,14 @@ CREATE TABLE IF NOT EXISTS portfolio_items (
     description_en TEXT NOT NULL DEFAULT '',
     description_ar TEXT NOT NULL DEFAULT '',
     sort_order INT NOT NULL DEFAULT 0
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS portfolio_gallery (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    portfolio_id INT UNSIGNED NOT NULL,
+    image VARCHAR(255) NOT NULL,
+    sort_order INT NOT NULL DEFAULT 0,
+    CONSTRAINT fk_gallery_portfolio FOREIGN KEY (portfolio_id) REFERENCES portfolio_items(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- Upgrading an existing database created before these columns existed:
@@ -94,6 +111,15 @@ ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS slug VARCHAR(160) NOT NULL 
 ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS client VARCHAR(160) NOT NULL DEFAULT '' AFTER title;
 ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS year VARCHAR(20) NOT NULL DEFAULT '' AFTER client;
 ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS project_url VARCHAR(255) NOT NULL DEFAULT '' AFTER year;
+ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS category VARCHAR(20) NOT NULL DEFAULT 'web' AFTER project_url;
+ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS technologies VARCHAR(255) NOT NULL DEFAULT '' AFTER category;
+ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS duration VARCHAR(60) NOT NULL DEFAULT '' AFTER technologies;
+ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS metric_1_label VARCHAR(60) NOT NULL DEFAULT '' AFTER duration;
+ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS metric_1_value VARCHAR(60) NOT NULL DEFAULT '' AFTER metric_1_label;
+ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS metric_2_label VARCHAR(60) NOT NULL DEFAULT '' AFTER metric_1_value;
+ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS metric_2_value VARCHAR(60) NOT NULL DEFAULT '' AFTER metric_2_label;
+ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS metric_3_label VARCHAR(60) NOT NULL DEFAULT '' AFTER metric_2_value;
+ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS metric_3_value VARCHAR(60) NOT NULL DEFAULT '' AFTER metric_3_label;
 ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS description_de TEXT NOT NULL DEFAULT '' AFTER tag_ar;
 ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS description_en TEXT NOT NULL DEFAULT '' AFTER description_de;
 ALTER TABLE portfolio_items ADD COLUMN IF NOT EXISTS description_ar TEXT NOT NULL DEFAULT '' AFTER description_en;
@@ -182,10 +208,17 @@ CREATE TABLE IF NOT EXISTS client_messages (
     sender ENUM('client','admin') NOT NULL,
     admin_id INT UNSIGNED NULL,
     body TEXT NOT NULL,
+    attachment_path VARCHAR(255) NOT NULL DEFAULT '',
+    attachment_type VARCHAR(20) NOT NULL DEFAULT '',
+    attachment_name VARCHAR(255) NOT NULL DEFAULT '',
     is_read TINYINT(1) NOT NULL DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_messages_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
+
+ALTER TABLE client_messages ADD COLUMN IF NOT EXISTS attachment_path VARCHAR(255) NOT NULL DEFAULT '' AFTER body;
+ALTER TABLE client_messages ADD COLUMN IF NOT EXISTS attachment_type VARCHAR(20) NOT NULL DEFAULT '' AFTER attachment_path;
+ALTER TABLE client_messages ADD COLUMN IF NOT EXISTS attachment_name VARCHAR(255) NOT NULL DEFAULT '' AFTER attachment_type;
 
 CREATE TABLE IF NOT EXISTS client_notifications (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,

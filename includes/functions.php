@@ -221,6 +221,14 @@ function icon(string $name): string
         'log-out' => '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>',
         'grip' => '<circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/>',
         'file-text' => '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>',
+        'paperclip' => '<path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>',
+        'mic' => '<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/>',
+        'smile' => '<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/>',
+        'gauge' => '<path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/>',
+        'search' => '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+        'shield-alert' => '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M12 8v4"/><path d="M12 16h.01"/>',
+        'bar-chart-3' => '<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 16h8"/><path d="M7 11h12"/><path d="M7 6h3"/>',
+        'lock' => '<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
     ];
 
     $path = $icons[$name] ?? $icons['box'];
@@ -296,7 +304,7 @@ function stack_data(): array
 function portfolio_data(): array
 {
     $lang = lang_column_suffix();
-    $rows = db_fetch_all("SELECT id, slug, image, title, client, year, tag_{$lang} AS tag FROM portfolio_items ORDER BY sort_order ASC, id ASC");
+    $rows = db_fetch_all("SELECT id, slug, image, title, client, year, category, tag_{$lang} AS tag FROM portfolio_items ORDER BY sort_order ASC, id ASC");
     return array_map(fn($r) => [
         'id' => (int) $r['id'],
         'slug' => $r['slug'],
@@ -305,16 +313,33 @@ function portfolio_data(): array
         'image' => $r['image'],
         'client' => $r['client'],
         'year' => $r['year'],
+        'category' => $r['category'],
     ], $rows);
 }
 
 function portfolio_item_by_slug(string $slug): ?array
 {
     $lang = lang_column_suffix();
-    $sql = "SELECT id, slug, image, title, client, year, project_url, tag_{$lang} AS tag, description_{$lang} AS description
+    $sql = "SELECT id, slug, image, title, client, year, project_url, category, technologies, duration,
+                   metric_1_label, metric_1_value, metric_2_label, metric_2_value, metric_3_label, metric_3_value,
+                   tag_{$lang} AS tag, description_{$lang} AS description
             FROM portfolio_items WHERE slug = " . quote_for_lookup($slug) . " LIMIT 1";
     $rows = db_fetch_all($sql);
-    return $rows[0] ?? null;
+    $item = $rows[0] ?? null;
+    if ($item) {
+        $item['gallery'] = db_fetch_all('SELECT image FROM portfolio_gallery WHERE portfolio_id = ' . (int) $item['id'] . ' ORDER BY sort_order ASC, id ASC');
+    }
+    return $item;
+}
+
+function portfolio_categories(): array
+{
+    return [
+        'web' => t('portfolio_category_web'),
+        'uiux' => t('portfolio_category_uiux'),
+        'mobile' => t('portfolio_category_mobile'),
+        'business' => t('portfolio_category_business'),
+    ];
 }
 
 function portfolio_neighbors(int $id): array

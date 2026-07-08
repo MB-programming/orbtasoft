@@ -101,6 +101,29 @@ function client_messages(int $userId): array
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function chat_emoji_list(): array
+{
+    return ['😀','😂','😊','😍','🤔','😅','😉','😎','🙌','👍','👏','🙏','💪','🔥','✨','🎉',
+            '❤️','💬','✅','⚠️','📎','📅','⏰','🚀','😢','😮','👌','🤝','💡','📌','🙋','😴'];
+}
+
+function render_chat_attachment(array $msg): string
+{
+    if (empty($msg['attachment_path'])) {
+        return '';
+    }
+    $path = e($msg['attachment_path']);
+    $name = e($msg['attachment_name'] ?: basename($msg['attachment_path']));
+
+    if ($msg['attachment_type'] === 'image') {
+        return '<a href="' . $path . '" target="_blank" rel="noopener noreferrer" class="chat-attachment chat-attachment--image"><img src="' . $path . '" alt="' . $name . '"></a>';
+    }
+    if ($msg['attachment_type'] === 'audio') {
+        return '<audio class="chat-attachment chat-attachment--audio" controls src="' . $path . '"></audio>';
+    }
+    return '<a href="' . $path . '" target="_blank" rel="noopener noreferrer" class="chat-attachment chat-attachment--file">' . icon('file-text') . '<span>' . $name . '</span></a>';
+}
+
 function unread_message_count(int $userId, string $from = 'admin'): int
 {
     $pdo = get_db();

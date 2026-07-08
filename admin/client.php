@@ -1,6 +1,7 @@
 <?php
 require __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/../includes/client.php';
+require_once __DIR__ . '/../includes/uploads.php';
 $admin = admin_require_login();
 $pdo = get_db();
 
@@ -78,10 +79,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $flash = 'Milestone removed.';
         } elseif ($action === 'send_message') {
             $body = trim($_POST['body'] ?? '');
-            if ($body !== '') {
-                $stmt = $pdo->prepare("INSERT INTO client_messages (user_id, sender, admin_id, body) VALUES (:uid, 'admin', :aid, :body)");
-                $stmt->execute(['uid' => $clientId, 'aid' => $admin['id'], 'body' => $body]);
-                notify_user($clientId, 'message', 'New message from your account manager', mb_substr($body, 0, 120), '/account/messages.php');
+            $attachment = handle_chat_attachment_upload('attachment');
+            if ($body !== '' || $attachment) {
+                $stmt = $pdo->prepare("INSERT INTO client_messages (user_id, sender, admin_id, body, attachment_path, attachment_type, attachment_name) VALUES (:uid, 'admin', :aid, :body, :apath, :atype, :aname)");
+                $stmt->execute([
+                    'uid' => $clientId, 'aid' => $admin['id'], 'body' => $body,
+                    'apath' => $attachment['path'] ?? '', 'atype' => $attachment['type'] ?? '', 'aname' => $attachment['name'] ?? '',
+                ]);
+                $notifyBody = $body !== '' ? mb_substr($body, 0, 120) : 'Sent an attachment';
+                notify_user($clientId, 'message', 'New message from your account manager', $notifyBody, '/account/messages.php');
             }
         } elseif ($action === 'add_wallet_tx') {
             $amount = (float) ($_POST['amount'] ?? 0);
@@ -212,17 +218,32 @@ require __DIR__ . '/includes/layout-top.php';
     <?php else: ?>
       <?php foreach ($messages as $msg): ?>
         <div class="chat-bubble chat-bubble--<?= $msg['sender'] === 'admin' ? 'client' : 'admin' ?>">
-          <?= nl2br(e($msg['body'])) ?>
+          <?= render_chat_attachment($msg) ?>
+          <?php if ($msg['body'] !== ''): ?><?= nl2br(e($msg['body'])) ?><?php endif; ?>
           <span class="chat-bubble__meta"><?= $msg['sender'] === 'admin' ? 'You' : e($client['name']) ?> · <?= e(format_date($msg['created_at'])) ?></span>
         </div>
       <?php endforeach; ?>
     <?php endif; ?>
   </div>
-  <form method="post" action="/admin/client.php?id=<?= $clientId ?>" class="chat-form">
+  <form method="post" action="/admin/client.php?id=<?= $clientId ?>" class="chat-form" enctype="multipart/form-data">
     <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
     <input type="hidden" name="action" value="send_message">
-    <textarea name="body" placeholder="Reply to <?= e($client['name']) ?>…" required></textarea>
-    <button type="submit" class="btn btn--primary btn--sm">Send</button>
+
+    <div class="chat-emoji-panel" id="emojiPanel">
+      <?php foreach (chat_emoji_list() as $emoji): ?><button type="button"><?= $emoji ?></button><?php endforeach; ?>
+    </div>
+
+    <div class="chat-form__row">
+      <div class="chat-toolbar">
+        <button type="button" class="chat-emoji-btn" aria-label="Emoji"><?= icon('smile') ?></button>
+        <button type="button" class="chat-attach-btn" aria-label="Attach file"><?= icon('paperclip') ?></button>
+        <button type="button" class="chat-voice-btn" aria-label="Record voice message"><?= icon('mic') ?></button>
+      </div>
+      <textarea name="body" placeholder="Reply to <?= e($client['name']) ?>…"></textarea>
+      <button type="submit" class="btn btn--primary btn--sm">Send</button>
+    </div>
+    <input type="file" name="attachment" class="chat-attach-input" style="display:none;" accept="image/*,audio/*,.pdf,.doc,.docx,.xls,.xlsx,.zip,.txt">
+    <span class="chat-attach-name"></span>
   </form>
 </div>
 

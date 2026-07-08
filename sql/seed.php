@@ -173,6 +173,10 @@ $portfolio = [
         [
             'slug' => 'nova-analytics', 'image' => '/assets/img/project-nova.svg', 'title' => 'Nova Analytics',
             'client' => 'Nova Analytics Inc.', 'year' => '2025', 'project_url' => 'https://nova-analytics.example.com',
+            'category' => 'web', 'technologies' => 'PHP, MySQL, GSAP, Chart.js', 'duration' => '10 weeks',
+            'metric_1_label' => 'Load Time', 'metric_1_value' => '-60%',
+            'metric_2_label' => 'Events / Day', 'metric_2_value' => '4M+',
+            'metric_3_label' => 'Support Tickets', 'metric_3_value' => '-45%',
             'tag_de' => 'SaaS-Dashboard', 'tag_en' => 'SaaS Dashboard', 'tag_ar' => 'لوحة تحكم SaaS',
             'description_de' => 'Nova Analytics brauchte ein Echtzeit-Dashboard, das täglich Millionen Ereignisse visualisieren kann, ohne das Betriebsteam zu überfordern. Wir haben das gesamte Frontend um ein leichtgewichtiges Komponentensystem herum neu aufgebaut, es mit einem optimierten MySQL-Schema für Zeitreihenabfragen kombiniert und GSAP-gesteuerte Mikrointeraktionen eingebaut, damit sich jede Diagrammaktualisierung bewusst und nicht abrupt anfühlt. Ergebnis: Die Ladezeiten sanken um 60 %, und das Support-Team meldet deutlich weniger Anfragen der Art „Ist das Dashboard kaputt?".',
             'description_en' => 'Nova Analytics needed a real-time dashboard that could visualize millions of events per day without overwhelming their operations team. We rebuilt their entire front-end around a lightweight component system, paired it with an optimized MySQL schema for time-series queries, and layered in GSAP-driven micro-interactions so every chart update feels intentional rather than jarring. The result: page load times dropped by 60%, and the support team reports far fewer "is the dashboard broken?" tickets.',
@@ -181,6 +185,10 @@ $portfolio = [
         [
             'slug' => 'vertex-commerce', 'image' => '/assets/img/project-vertex.svg', 'title' => 'Vertex Commerce',
             'client' => 'Vertex Commerce', 'year' => '2024', 'project_url' => 'https://vertex-commerce.example.com',
+            'category' => 'web', 'technologies' => 'PHP, MySQL, JavaScript, GSAP', 'duration' => '14 weeks',
+            'metric_1_label' => 'Cart Drop-off', 'metric_1_value' => '-32%',
+            'metric_2_label' => 'Conversion Rate', 'metric_2_value' => '+18%',
+            'metric_3_label' => 'Peak Uptime', 'metric_3_value' => '100%',
             'tag_de' => 'E-Commerce-Plattform', 'tag_en' => 'E-Commerce Platform', 'tag_ar' => 'منصة تجارة إلكترونية',
             'description_de' => 'Vertex Commerce kam mit einem Checkout-Prozess zu uns, der fast ein Drittel der Kunden zwischen Warenkorb und Bestätigung verlor. Wir haben die gesamte Kaufreise um einen Einzelseiten-Checkout herum neu gestaltet, Inline-Validierung statt vollständiger Fehler-Neuladungen hinzugefügt und eine individuelle PHP/MySQL-Bestellpipeline gebaut, die Verkaufsspitzen ohne Ausfälle bewältigt. Die Konversionsrate verbesserte sich bereits im ersten Monat, und die Plattform bewältigt heute problemlos den größten Verkaufstag des Jahres.',
             'description_en' => 'Vertex Commerce came to us with a checkout flow that was losing nearly a third of customers between cart and confirmation. We redesigned the entire purchase journey around a single-page checkout, added inline validation instead of full-page error reloads, and built a custom PHP/MySQL order pipeline that could handle flash-sale traffic spikes without falling over. Conversion improved within the first month, and the platform now comfortably handles their biggest sales day of the year.',
@@ -189,6 +197,10 @@ $portfolio = [
         [
             'slug' => 'lumen-booking', 'image' => '/assets/img/project-lumen.svg', 'title' => 'Lumen Booking',
             'client' => 'Lumen Booking', 'year' => '2024', 'project_url' => 'https://lumen-booking.example.com',
+            'category' => 'web', 'technologies' => 'PHP, MySQL, JavaScript', 'duration' => '8 weeks',
+            'metric_1_label' => 'No-shows', 'metric_1_value' => '-27%',
+            'metric_2_label' => 'Clinics Onboarded', 'metric_2_value' => '40+',
+            'metric_3_label' => 'Double Bookings', 'metric_3_value' => '0',
             'tag_de' => 'Buchungssystem', 'tag_en' => 'Booking System', 'tag_ar' => 'نظام حجز',
             'description_de' => 'Lumen Booking verwaltet die Terminplanung für Dutzende kleiner Kliniken, und das alte System vergab denselben Termin doppelt, wenn zwei Personen zur gleichen Sekunde buchten. Wir haben den Buchungskern mit korrektem Datenbank-Locking neu aufgebaut, eine Kalenderoberfläche mit Live-Verfügbarkeit hinzugefügt und automatische E-Mail-Erinnerungen eingerichtet, wodurch die Nichterscheinen-Quote im ersten Quartal nach dem Launch spürbar sank.',
             'description_en' => 'Lumen Booking runs appointment scheduling for dozens of small clinics, and their old system double-booked slots whenever two people booked at the same second. We rebuilt the booking core with proper database-level locking, added a calendar UI with live availability, and wired up automatic email reminders so no-show rates dropped noticeably in the first quarter after launch.',
@@ -197,6 +209,10 @@ $portfolio = [
         [
             'slug' => 'atlas-crm', 'image' => '/assets/img/project-atlas.svg', 'title' => 'Atlas CRM',
             'client' => 'Atlas CRM', 'year' => '2023', 'project_url' => 'https://atlas-crm.example.com',
+            'category' => 'business', 'technologies' => 'PHP, MySQL, JavaScript', 'duration' => '12 weeks',
+            'metric_1_label' => 'Spreadsheets Replaced', 'metric_1_value' => '4 → 1',
+            'metric_2_label' => 'Sales Managers', 'metric_2_value' => '25+',
+            'metric_3_label' => 'Data Accuracy', 'metric_3_value' => '+99%',
             'tag_de' => 'Business-App', 'tag_en' => 'Business App', 'tag_ar' => 'تطبيق أعمال',
             'description_de' => 'Das Vertriebsteam von Atlas CRM verfolgte Leads zuvor über vier verschiedene Tabellen, bevor wir übernommen haben. Wir haben ein einheitliches Dashboard mit Pipeline-Phasen, Aktivitätsverläufen und rollenbasierten Berechtigungen gebaut, alles auf derselben PHP/MySQL-Basis wie der Rest unseres Stacks. Die Vertriebsleiter haben jetzt eine einzige verlässliche Quelle, statt Updates über Slack hinterherzujagen.',
             'description_en' => "Atlas CRM's sales team was tracking leads across four different spreadsheets before we stepped in. We built them a unified dashboard with pipeline stages, activity timelines, and role-based permissions, all on the same PHP/MySQL foundation the rest of our stack uses. Their sales managers now get a single source of truth instead of chasing updates over Slack.",
@@ -205,47 +221,75 @@ $portfolio = [
         [
             'slug' => 'nexora-ops', 'image' => '/assets/img/project-nexora.svg', 'title' => 'Nexora Ops Suite',
             'client' => 'Nexora', 'year' => '2025', 'project_url' => 'https://nexora.example.com',
+            'category' => 'business', 'technologies' => 'PHP, MySQL, JavaScript, GSAP', 'duration' => '9 weeks',
+            'metric_1_label' => 'Stock Discrepancies', 'metric_1_value' => '-90%',
+            'metric_2_label' => 'Locations Synced', 'metric_2_value' => '12',
+            'metric_3_label' => 'Reconciliation Time', 'metric_3_value' => '-55%',
             'tag_de' => 'Betriebsmanagement', 'tag_en' => 'Operations Management', 'tag_ar' => 'إدارة العمليات',
-            'description_de' => 'Nexora verwaltete Lagerbestände über mehrere Standorte hinweg per E-Mail und Papierlisten, was zu ständigen Bestandsdifferenzen führte. Wir haben ein zentrales Betriebs-Dashboard gebaut, das Lagerbewegungen in Echtzeit über alle Standorte hinweg synchronisiert, mit klaren Warnungen bei niedrigem Bestand und einem Audit-Verlauf für jede Änderung.\n\nDas Team kann jetzt Bestellungen direkt aus dem Dashboard auslösen, und Standortleiter sehen nur die Daten, für die sie zuständig sind, dank feingranularer, rollenbasierter Berechtigungen. Innerhalb der ersten zwei Monate sank die Zeit für die monatliche Bestandsprüfung um mehr als die Hälfte.',
+            'description_de' => "Nexora verwaltete Lagerbestände über mehrere Standorte hinweg per E-Mail und Papierlisten, was zu ständigen Bestandsdifferenzen führte. Wir haben ein zentrales Betriebs-Dashboard gebaut, das Lagerbewegungen in Echtzeit über alle Standorte hinweg synchronisiert, mit klaren Warnungen bei niedrigem Bestand und einem Audit-Verlauf für jede Änderung.\n\nDas Team kann jetzt Bestellungen direkt aus dem Dashboard auslösen, und Standortleiter sehen nur die Daten, für die sie zuständig sind, dank feingranularer, rollenbasierter Berechtigungen. Innerhalb der ersten zwei Monate sank die Zeit für die monatliche Bestandsprüfung um mehr als die Hälfte.",
             'description_en' => "Nexora was managing inventory across multiple locations through email threads and paper lists, which led to constant stock discrepancies. We built a central operations dashboard that syncs stock movements in real time across every location, with clear low-stock alerts and an audit trail for every change.\n\nThe team can now trigger reorders directly from the dashboard, and location managers only see the data they're responsible for, thanks to fine-grained role-based permissions. Within the first two months, time spent on the monthly stock reconciliation dropped by more than half.",
             'description_ar' => "كانت Nexora تدير المخزون عبر عدة مواقع بواسطة رسائل بريد إلكتروني وقوائم ورقية، ما أدى إلى فروقات مستمرة في الجرد. بنينا لوحة تحكم مركزية للعمليات تُزامن حركة المخزون فوريًا عبر جميع المواقع، مع تنبيهات واضحة عند انخفاض المخزون وسجل تتبع لكل تغيير.\n\nيستطيع الفريق الآن تفعيل طلبات إعادة التوريد مباشرة من لوحة التحكم، ولا يرى مديرو المواقع سوى البيانات الخاصة بهم بفضل صلاحيات دقيقة قائمة على الأدوار. خلال أول شهرين، انخفض الوقت المستغرق في مطابقة الجرد الشهري بأكثر من النصف.",
         ],
         [
             'slug' => 'brightfield-retail', 'image' => '/assets/img/project-brightfield.svg', 'title' => 'Brightfield Retail',
             'client' => 'Brightfield', 'year' => '2024', 'project_url' => 'https://brightfield.example.com',
+            'category' => 'web', 'technologies' => 'PHP, MySQL, JavaScript', 'duration' => '11 weeks',
+            'metric_1_label' => 'New Stores Launched', 'metric_1_value' => '3',
+            'metric_2_label' => 'Catalog Size', 'metric_2_value' => '5,000+',
+            'metric_3_label' => 'Page Load', 'metric_3_value' => '<1s',
             'tag_de' => 'Einzelhandelsplattform', 'tag_en' => 'Retail Platform', 'tag_ar' => 'منصة تجزئة',
-            'description_de' => 'Brightfield betreibt ein Netz kleiner Boutiquen und brauchte eine gemeinsame Online-Plattform, die trotzdem jeden Filialbestand getrennt hält. Wir haben eine Multi-Store-Architektur auf derselben PHP/MySQL-Basis entwickelt, bei der jede Filiale ihren eigenen Katalogausschnitt, ihre Preise und ihre Bestellungen verwaltet, während Kunden alles über eine einzige, elegante Storefront durchsuchen.\n\nDie Such- und Filterfunktionen wurden mit sauberen, indizierten MySQL-Abfragen gebaut, sodass Seiten auch bei Tausenden Produkten sofort laden. Brightfield konnte innerhalb weniger Wochen drei neue Filialen online bringen, ohne eine Zeile Code anzufassen.',
+            'description_de' => "Brightfield betreibt ein Netz kleiner Boutiquen und brauchte eine gemeinsame Online-Plattform, die trotzdem jeden Filialbestand getrennt hält. Wir haben eine Multi-Store-Architektur auf derselben PHP/MySQL-Basis entwickelt, bei der jede Filiale ihren eigenen Katalogausschnitt, ihre Preise und ihre Bestellungen verwaltet, während Kunden alles über eine einzige, elegante Storefront durchsuchen.\n\nDie Such- und Filterfunktionen wurden mit sauberen, indizierten MySQL-Abfragen gebaut, sodass Seiten auch bei Tausenden Produkten sofort laden. Brightfield konnte innerhalb weniger Wochen drei neue Filialen online bringen, ohne eine Zeile Code anzufassen.",
             'description_en' => "Brightfield runs a network of small boutiques and needed a shared online platform that still kept each store's inventory separate. We built a multi-store architecture on the same PHP/MySQL foundation, where each location manages its own slice of the catalog, pricing and orders, while customers browse everything through a single, elegant storefront.\n\nSearch and filtering were built with clean, indexed MySQL queries so pages load instantly even with thousands of products. Brightfield was able to bring three new stores online within a few weeks without touching a line of code.",
             'description_ar' => "تدير Brightfield شبكة من المتاجر الصغيرة واحتاجت منصة إلكترونية مشتركة تحافظ مع ذلك على فصل مخزون كل متجر. بنينا بنية متعددة المتاجر على نفس أساس PHP وMySQL، حيث يدير كل متجر جزءه الخاص من الكتالوج والأسعار والطلبات، بينما يتصفح العملاء كل شيء عبر واجهة أنيقة واحدة.\n\nبُنيت ميزات البحث والتصفية باستعلامات MySQL نظيفة ومفهرسة بحيث تُحمَّل الصفحات فورًا حتى مع آلاف المنتجات. تمكنت Brightfield من تشغيل ثلاثة متاجر جديدة خلال أسابيع قليلة دون تعديل أي سطر كود.",
         ],
+        [
+            'slug' => 'solstice-design-system', 'image' => '/assets/img/project-solstice.svg', 'title' => 'Solstice Design System',
+            'client' => 'Solstice Labs', 'year' => '2025', 'project_url' => 'https://solstice-labs.example.com',
+            'category' => 'uiux', 'technologies' => 'Figma, Design Tokens, HTML/CSS Component Library', 'duration' => '6 weeks',
+            'metric_1_label' => 'Components Shipped', 'metric_1_value' => '60+',
+            'metric_2_label' => 'Design-to-Dev Time', 'metric_2_value' => '-50%',
+            'metric_3_label' => 'Teams Adopted', 'metric_3_value' => '5',
+            'tag_de' => 'UI/UX Design System', 'tag_en' => 'UI/UX Design System', 'tag_ar' => 'نظام تصميم UI/UX',
+            'description_de' => "Solstice Labs hatte fünf Produktteams, die jeweils ihre eigenen Buttons, Formulare und Farbwerte neu erfanden, was zu einem inkonsistenten Erlebnis über ihre gesamte Suite hinweg führte. Wir haben ein vollständiges Designsystem aufgebaut: eine Token-basierte Farb- und Typografie-Skala, eine Bibliothek wiederverwendbarer Komponenten und klare Nutzungsrichtlinien für jeden Zustand — Hover, Fokus, Fehler, Laden.\n\nStatt das System nur als Figma-Datei zu übergeben, haben wir es direkt als HTML/CSS-Komponentenbibliothek implementiert, die Entwickler ohne Rätselraten übernehmen konnten. Die Zeit vom Design bis zur einsatzbereiten Komponente halbierte sich, und alle fünf Produktteams verwenden das System inzwischen als gemeinsame Grundlage.",
+            'description_en' => "Solstice Labs had five product teams each reinventing their own buttons, forms, and color values, resulting in an inconsistent experience across their whole suite. We built a complete design system: a token-based color and typography scale, a library of reusable components, and clear usage guidelines for every state — hover, focus, error, loading.\n\nRather than handing over just a Figma file, we implemented the system directly as an HTML/CSS component library that developers could adopt without guesswork. Time from design to shippable component was cut in half, and all five product teams now build on the same shared foundation.",
+            'description_ar' => "كان لدى Solstice Labs خمسة فرق منتجات يعيد كل منها ابتكار أزرارها ونماذجها وألوانها الخاصة، ما أدى إلى تجربة غير متسقة عبر مجموعتهم بالكامل. بنينا نظام تصميم كاملاً: مقياس ألوان وطباعة قائم على الرموز (tokens)، ومكتبة من المكونات القابلة لإعادة الاستخدام، وإرشادات استخدام واضحة لكل حالة - التحويم، التركيز، الخطأ، التحميل.\n\nبدلاً من تسليم ملف Figma فقط، نفّذنا النظام مباشرة كمكتبة مكونات HTML/CSS تمكن المطورون من تبنيها دون تخمين. انخفض الوقت من التصميم إلى المكون الجاهز للاستخدام إلى النصف، وتبني جميع الفرق الخمسة الآن نفس الأساس المشترك.",
+        ],
 ];
 
+$portfolioGallery = [
+    'solstice-design-system' => [
+        '/assets/img/project-solstice-gallery-1.svg',
+        '/assets/img/project-solstice-gallery-2.svg',
+        '/assets/img/project-solstice-gallery-3.svg',
+    ],
+];
+
+$portfolioCols = 'slug, image, title, client, year, project_url, category, technologies, duration, metric_1_label, metric_1_value, metric_2_label, metric_2_value, metric_3_label, metric_3_value, tag_de, tag_en, tag_ar, description_de, description_en, description_ar, sort_order';
+$portfolioPlaceholders = ':slug, :image, :title, :client, :year, :project_url, :category, :technologies, :duration, :metric_1_label, :metric_1_value, :metric_2_label, :metric_2_value, :metric_3_label, :metric_3_value, :tag_de, :tag_en, :tag_ar, :description_de, :description_en, :description_ar, :sort_order';
+
 if (seed_count($pdo, 'portfolio_items') === 0) {
-    $stmt = $pdo->prepare('INSERT INTO portfolio_items (slug, image, title, client, year, project_url, tag_de, tag_en, tag_ar, description_de, description_en, description_ar, sort_order) VALUES (:slug, :image, :title, :client, :year, :project_url, :tag_de, :tag_en, :tag_ar, :description_de, :description_en, :description_ar, :sort_order)');
+    $stmt = $pdo->prepare("INSERT INTO portfolio_items ({$portfolioCols}) VALUES ({$portfolioPlaceholders})");
     foreach ($portfolio as $i => $p) {
         $p['sort_order'] = $i;
         $stmt->execute($p);
     }
     echo "Seeded portfolio items.\n";
 } else {
-    // Backfill detail fields (slug/client/year/url/description) for rows created before these columns existed.
+    // Backfill detail fields (slug/client/year/url/description/category/etc.) for rows created before these columns existed.
     require_once __DIR__ . '/../includes/functions.php';
     $byTitle = [];
     foreach ($portfolio as $p) {
         $byTitle[$p['title']] = $p;
     }
-    $rows = $pdo->query("SELECT id, title FROM portfolio_items WHERE client = '' OR client IS NULL")->fetchAll(PDO::FETCH_ASSOC);
+    $rows = $pdo->query("SELECT id, title FROM portfolio_items WHERE client = '' OR client IS NULL OR technologies = ''")->fetchAll(PDO::FETCH_ASSOC);
     if ($rows) {
-        $stmt = $pdo->prepare('UPDATE portfolio_items SET slug = :slug, client = :client, year = :year, project_url = :project_url, description_de = :description_de, description_en = :description_en, description_ar = :description_ar WHERE id = :id');
+        $stmt = $pdo->prepare('UPDATE portfolio_items SET slug = :slug, client = :client, year = :year, project_url = :project_url, category = :category, technologies = :technologies, duration = :duration, metric_1_label = :metric_1_label, metric_1_value = :metric_1_value, metric_2_label = :metric_2_label, metric_2_value = :metric_2_value, metric_3_label = :metric_3_label, metric_3_value = :metric_3_value, description_de = :description_de, description_en = :description_en, description_ar = :description_ar WHERE id = :id');
         foreach ($rows as $row) {
             $match = $byTitle[$row['title']] ?? null;
             if ($match) {
-                $stmt->execute([
-                    'slug' => $match['slug'], 'client' => $match['client'], 'year' => $match['year'],
-                    'project_url' => $match['project_url'], 'description_de' => $match['description_de'],
-                    'description_en' => $match['description_en'], 'description_ar' => $match['description_ar'],
-                    'id' => $row['id'],
-                ]);
+                $match['id'] = $row['id'];
+                unset($match['image'], $match['title'], $match['tag_de'], $match['tag_en'], $match['tag_ar'], $match['sort_order']);
+                $stmt->execute($match);
             } else {
                 $pdo->prepare('UPDATE portfolio_items SET slug = :slug WHERE id = :id')
                     ->execute(['slug' => slugify($row['title']) . '-' . $row['id'], 'id' => $row['id']]);
@@ -255,18 +299,36 @@ if (seed_count($pdo, 'portfolio_items') === 0) {
     }
 }
 
-// Add any new catalog items (like nexora-ops/brightfield-retail) that don't exist yet,
+// Add any new catalog items (like solstice-design-system) that don't exist yet,
 // so re-running this script against an already-seeded database still picks them up.
 $existingSlugs = $pdo->query('SELECT slug FROM portfolio_items')->fetchAll(PDO::FETCH_COLUMN);
 $missing = array_filter($portfolio, fn($p) => !in_array($p['slug'], $existingSlugs, true));
 if ($missing) {
     $nextOrder = (int) $pdo->query('SELECT COALESCE(MAX(sort_order), -1) + 1 FROM portfolio_items')->fetchColumn();
-    $stmt = $pdo->prepare('INSERT INTO portfolio_items (slug, image, title, client, year, project_url, tag_de, tag_en, tag_ar, description_de, description_en, description_ar, sort_order) VALUES (:slug, :image, :title, :client, :year, :project_url, :tag_de, :tag_en, :tag_ar, :description_de, :description_en, :description_ar, :sort_order)');
+    $stmt = $pdo->prepare("INSERT INTO portfolio_items ({$portfolioCols}) VALUES ({$portfolioPlaceholders})");
     foreach (array_values($missing) as $i => $p) {
         $p['sort_order'] = $nextOrder + $i;
         $stmt->execute($p);
     }
     echo 'Added ' . count($missing) . " new portfolio item(s).\n";
+}
+
+// ---------- Portfolio gallery images (for UI/UX case studies) ----------
+$slugToId = $pdo->query('SELECT slug, id FROM portfolio_items')->fetchAll(PDO::FETCH_KEY_PAIR);
+foreach ($portfolioGallery as $slug => $images) {
+    if (!isset($slugToId[$slug])) {
+        continue;
+    }
+    $portfolioId = $slugToId[$slug];
+    $countStmt = $pdo->prepare('SELECT COUNT(*) FROM portfolio_gallery WHERE portfolio_id = :pid');
+    $countStmt->execute(['pid' => $portfolioId]);
+    if ((int) $countStmt->fetchColumn() === 0) {
+        $stmt = $pdo->prepare('INSERT INTO portfolio_gallery (portfolio_id, image, sort_order) VALUES (:pid, :image, :order)');
+        foreach ($images as $i => $image) {
+            $stmt->execute(['pid' => $portfolioId, 'image' => $image, 'order' => $i]);
+        }
+        echo "Seeded gallery for {$slug}.\n";
+    }
 }
 
 // ---------- Team ----------
