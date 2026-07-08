@@ -3,12 +3,12 @@ require __DIR__ . '/includes/functions.php';
 require __DIR__ . '/config/database.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /pages/login.php');
+    header('Location: /login.php');
     exit;
 }
 
 $lang = current_lang();
-$redirectBase = '/pages/login.php?lang=' . urlencode($lang);
+$redirectBase = '/login.php?lang=' . urlencode($lang);
 
 if (!csrf_valid($_POST['csrf_token'] ?? '')) {
     header('Location: ' . $redirectBase . '&error=generic');

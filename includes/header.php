@@ -18,12 +18,12 @@ $seo = seo_resolve($seo_entity_type ?? 'page', $seo_entity_key ?? $current_page,
 
 $nav_links = [
     'home'      => ['label' => t('nav_home'),      'href' => '/index.php'],
-    'services'  => ['label' => t('nav_services'),  'href' => '/pages/services.php'],
-    'portfolio' => ['label' => t('nav_portfolio'), 'href' => '/pages/portfolio.php'],
-    'blog'      => ['label' => t('nav_blog'),      'href' => '/pages/blog.php'],
-    'tools'     => ['label' => t('nav_tools'),     'href' => '/pages/tools.php'],
-    'about'     => ['label' => t('nav_about'),     'href' => '/pages/about.php'],
-    'contact'   => ['label' => t('nav_contact'),   'href' => '/pages/contact.php'],
+    'services'  => ['label' => t('nav_services'),  'href' => '/services.php'],
+    'portfolio' => ['label' => t('nav_portfolio'), 'href' => '/portfolio.php'],
+    'blog'      => ['label' => t('nav_blog'),      'href' => '/blog.php'],
+    'tools'     => ['label' => t('nav_tools'),     'href' => '/tools.php'],
+    'about'     => ['label' => t('nav_about'),     'href' => '/about.php'],
+    'contact'   => ['label' => t('nav_contact'),   'href' => '/contact.php'],
 ];
 
 function lang_url(string $code): string
@@ -75,7 +75,7 @@ $authUser = current_user();
           <?php endforeach; ?>
         </div>
       </div>
-      <a href="/pages/contact.php" class="btn btn--primary btn--sm header-cta"><?= e(t('nav_cta')) ?></a>
+      <a href="/contact.php" class="btn btn--primary btn--sm header-cta"><?= e(t('nav_cta')) ?></a>
       <button class="menu-trigger" id="menuTrigger" aria-haspopup="true" aria-expanded="false" aria-controls="popoutMenu">
         <span class="menu-trigger__bars"><span></span><span></span></span>
         <span class="menu-trigger__label"><?= e(t('nav_menu')) ?></span>
@@ -119,9 +119,9 @@ $authUser = current_user();
           <a href="/auth-logout.php"><?= e(t('nav_logout')) ?></a>
         </div>
       <?php else: ?>
-        <a href="/pages/login.php" class="popout-account-link"><?= e(t('nav_login')) ?></a>
+        <a href="/login.php" class="popout-account-link"><?= e(t('nav_login')) ?></a>
       <?php endif; ?>
-      <a href="/pages/contact.php" class="btn btn--primary popout-cta"><?= e(t('nav_get_in_touch')) ?></a>
+      <a href="/contact.php" class="btn btn--primary popout-cta"><?= e(t('nav_get_in_touch')) ?></a>
     </div>
   </div>
 </div>

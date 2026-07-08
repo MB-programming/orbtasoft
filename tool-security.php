@@ -1,6 +1,6 @@
 <?php
-require __DIR__ . '/../includes/functions.php';
-require_once __DIR__ . '/../includes/tools.php';
+require __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/includes/tools.php';
 set_time_limit(30);
 
 $current_page = 'tools';
@@ -82,6 +82,19 @@ if ($rawUrl !== '') {
             $referrerStatus, $permissionsStatus, $serverStatus, $cookieStatus, $mixedStatus, $tlsStatus,
         ]);
 
+        $tipKeys = [];
+        if ($httpsStatus === 'bad') $tipKeys[] = 'ai_rec_no_https';
+        if ($hstsStatus === 'bad' || $hstsStatus === 'warn') $tipKeys[] = 'ai_rec_no_hsts';
+        if ($cspStatus === 'warn') $tipKeys[] = 'ai_rec_no_csp';
+        if ($xfoStatus === 'warn') $tipKeys[] = 'ai_rec_no_xfo';
+        if ($xctoStatus === 'warn') $tipKeys[] = 'tip_no_xcto';
+        if ($referrerStatus === 'warn') $tipKeys[] = 'tip_no_referrer_policy';
+        if ($permissionsStatus === 'warn') $tipKeys[] = 'tip_no_permissions_policy';
+        if ($serverStatus === 'warn') $tipKeys[] = 'tip_server_disclosure';
+        if ($cookieStatus === 'warn') $tipKeys[] = 'tip_insecure_cookies';
+        if ($mixedStatus === 'warn') $tipKeys[] = 'tip_mixed_content';
+        if ($tlsStatus === 'bad' || $tlsStatus === 'warn') $tipKeys[] = 'tip_tls_cert_issue';
+
         $result = [
             'fetch' => $fetch, 'httpsStatus' => $httpsStatus, 'httpsDetail' => $httpsDetail,
             'hstsStatus' => $hstsStatus, 'hsts' => $hsts,
@@ -93,12 +106,12 @@ if ($rawUrl !== '') {
             'serverStatus' => $serverStatus, 'server' => $server,
             'cookieStatus' => $cookieStatus, 'cookieDetail' => $cookieDetail,
             'mixedStatus' => $mixedStatus, 'mixedContentCount' => $mixedContentCount,
-            'tlsStatus' => $tlsStatus, 'tlsDetail' => $tlsDetail,
+            'tlsStatus' => $tlsStatus, 'tlsDetail' => $tlsDetail, 'tipKeys' => $tipKeys,
         ];
     }
 }
 
-require __DIR__ . '/../includes/header.php';
+require __DIR__ . '/includes/header.php';
 ?>
 
 <main>
@@ -113,7 +126,7 @@ require __DIR__ . '/../includes/header.php';
 
   <section class="section section--tight">
     <div class="container">
-      <form method="get" action="/pages/tool-security.php" class="tool-form reveal">
+      <form method="get" action="/tool-security.php" class="tool-form reveal no-print">
         <input type="text" name="url" value="<?= e($rawUrl) ?>" placeholder="<?= e(t('tools_url_placeholder')) ?>" aria-label="<?= e(t('tools_url_label')) ?>" required>
         <button type="submit" class="btn btn--primary"><?= icon('shield-alert') ?> <?= e(t('tools_run_btn')) ?></button>
       </form>
@@ -122,12 +135,7 @@ require __DIR__ . '/../includes/header.php';
         <?= tools_render_error($errorCode) ?>
       <?php elseif ($result): ?>
         <div class="tool-result">
-          <div class="tool-result__head">
-            <div>
-              <h2><?= e(t('tools_result_for')) ?></h2>
-              <a href="<?= e($result['fetch']['final_url']) ?>" target="_blank" rel="noopener noreferrer" style="direction:ltr; display:inline-block;"><?= e($result['fetch']['final_url']) ?></a>
-            </div>
-          </div>
+          <?= tools_render_report_header(t('tool_security_title'), $result['fetch']['final_url']) ?>
 
           <?= tools_render_score($score) ?>
 
@@ -145,13 +153,18 @@ require __DIR__ . '/../includes/header.php';
             <?= tools_render_check_item(t('sec_tls_cert_label'), $result['tlsStatus'], $result['tlsDetail']) ?>
           </div>
 
+          <?= tools_render_tips($result['tipKeys']) ?>
+
           <?= tools_render_cta() ?>
 
-          <a href="/pages/tool-security.php" class="tool-check-another"><?= e(t('tools_check_another')) ?></a>
+          <div class="tool-actions-row">
+            <?= tools_render_pdf_button() ?>
+            <a href="/tool-security.php" class="tool-check-another no-print"><?= e(t('tools_check_another')) ?></a>
+          </div>
         </div>
       <?php endif; ?>
     </div>
   </section>
 </main>
 
-<?php require __DIR__ . '/../includes/footer.php'; ?>
+<?php require __DIR__ . '/includes/footer.php'; ?>

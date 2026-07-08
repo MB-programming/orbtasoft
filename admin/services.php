@@ -151,7 +151,7 @@ require __DIR__ . '/includes/layout-top.php';
               <td class="cell-muted"><?= (int) $s['sort_order'] ?></td>
               <td><?= icon($s['icon']) ?></td>
               <td class="cell-strong"><?= e($s['title_en']) ?></td>
-              <td class="cell-muted">/pages/service.php?slug=<?= e($s['slug']) ?></td>
+              <td class="cell-muted">/service.php?slug=<?= e($s['slug']) ?></td>
               <td class="cell-muted cell-wrap"><?= e(mb_substr($s['desc_en'], 0, 80)) ?><?= mb_strlen($s['desc_en']) > 80 ? '…' : '' ?></td>
               <td>
                 <div class="admin-row-actions">

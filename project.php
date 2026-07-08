@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../includes/functions.php';
+require __DIR__ . '/includes/functions.php';
 
 $slug = $_GET['slug'] ?? '';
 $project = $slug ? portfolio_item_by_slug($slug) : null;
@@ -20,7 +20,7 @@ $seo_entity_key = $project['slug'];
 $seo_fallback_title = $project['title'] . ' — ' . t('hero_brand');
 $seo_fallback_description = mb_substr(strip_tags($project['description']), 0, 200);
 $seo_fallback_image = $project['image'];
-require __DIR__ . '/../includes/header.php';
+require __DIR__ . '/includes/header.php';
 ?>
 
 <main>
@@ -28,7 +28,7 @@ require __DIR__ . '/../includes/header.php';
     <section class="page-hero page-hero--project">
       <div class="bg-grid" aria-hidden="true"></div>
       <div class="container">
-        <a href="/pages/portfolio.php" class="back-link reveal"><?= icon('arrow-left') ?> <?= e(t('project_back_to_work')) ?></a>
+        <a href="/portfolio.php" class="back-link reveal"><?= icon('arrow-left') ?> <?= e(t('project_back_to_work')) ?></a>
         <span class="kicker reveal"><?= e($project['tag']) ?></span>
         <h1 class="reveal"><?= e($project['title']) ?></h1>
         <div class="project-detail__meta reveal">
@@ -125,13 +125,13 @@ require __DIR__ . '/../includes/header.php';
         <div class="container container--narrow">
           <div class="post-nav">
             <?php if ($prevProject): ?>
-              <a href="/pages/project.php?slug=<?= e(urlencode($prevProject['slug'])) ?>" class="post-nav__item post-nav__item--prev">
+              <a href="/project.php?slug=<?= e(urlencode($prevProject['slug'])) ?>" class="post-nav__item post-nav__item--prev">
                 <span class="post-nav__label"><?= icon('arrow-left') ?> <?= e(t('project_prev')) ?></span>
                 <span class="post-nav__title"><?= e($prevProject['title']) ?></span>
               </a>
             <?php else: ?><span></span><?php endif; ?>
             <?php if ($nextProject): ?>
-              <a href="/pages/project.php?slug=<?= e(urlencode($nextProject['slug'])) ?>" class="post-nav__item post-nav__item--next">
+              <a href="/project.php?slug=<?= e(urlencode($nextProject['slug'])) ?>" class="post-nav__item post-nav__item--next">
                 <span class="post-nav__label"><?= e(t('project_next')) ?> <?= icon('arrow-right') ?></span>
                 <span class="post-nav__title"><?= e($nextProject['title']) ?></span>
               </a>
@@ -148,11 +148,11 @@ require __DIR__ . '/../includes/header.php';
         <h2><?= e(t('cta_heading')) ?></h2>
         <p><?= e(t('cta_desc')) ?></p>
         <div class="hero__actions">
-          <a href="/pages/contact.php" class="btn btn--primary"><?= e(t('cta_btn_primary')) ?></a>
+          <a href="/contact.php" class="btn btn--primary"><?= e(t('cta_btn_primary')) ?></a>
         </div>
       </div>
     </div>
   </section>
 </main>
 
-<?php require __DIR__ . '/../includes/footer.php'; ?>
+<?php require __DIR__ . '/includes/footer.php'; ?>

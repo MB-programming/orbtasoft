@@ -1,6 +1,6 @@
 <?php
-require __DIR__ . '/../includes/functions.php';
-require_once __DIR__ . '/../includes/service-visuals.php';
+require __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/includes/service-visuals.php';
 
 $slug = $_GET['slug'] ?? '';
 $service = $slug ? service_by_slug($slug) : null;
@@ -23,7 +23,7 @@ $seo_entity_key = $service['slug'];
 $seo_fallback_title = $service['title'] . ' — ' . t('hero_brand');
 $seo_fallback_description = mb_substr(strip_tags($service['description']), 0, 200);
 $seo_fallback_image = $service['image'] ?? '';
-require __DIR__ . '/../includes/header.php';
+require __DIR__ . '/includes/header.php';
 ?>
 
 <main>
@@ -31,7 +31,7 @@ require __DIR__ . '/../includes/header.php';
     <section class="page-hero page-hero--project">
       <div class="bg-grid" aria-hidden="true"></div>
       <div class="container">
-        <a href="/pages/services.php" class="back-link reveal"><?= icon('arrow-left') ?> <?= e(t('nav_services')) ?></a>
+        <a href="/services.php" class="back-link reveal"><?= icon('arrow-left') ?> <?= e(t('nav_services')) ?></a>
         <div class="service-detail__icon reveal"><?= icon($service['icon']) ?></div>
         <h1 class="reveal"><?= e($service['title']) ?></h1>
         <p class="reveal"><?= e($service['description']) ?></p>
@@ -91,13 +91,13 @@ require __DIR__ . '/../includes/header.php';
         <div class="container container--narrow">
           <div class="post-nav">
             <?php if ($prevService): ?>
-              <a href="/pages/service.php?slug=<?= e(urlencode($prevService['slug'])) ?>" class="post-nav__item post-nav__item--prev">
+              <a href="/service.php?slug=<?= e(urlencode($prevService['slug'])) ?>" class="post-nav__item post-nav__item--prev">
                 <span class="post-nav__label"><?= icon('arrow-left') ?> <?= e(t('service_prev')) ?></span>
                 <span class="post-nav__title"><?= e($prevService['title']) ?></span>
               </a>
             <?php else: ?><span></span><?php endif; ?>
             <?php if ($nextService): ?>
-              <a href="/pages/service.php?slug=<?= e(urlencode($nextService['slug'])) ?>" class="post-nav__item post-nav__item--next">
+              <a href="/service.php?slug=<?= e(urlencode($nextService['slug'])) ?>" class="post-nav__item post-nav__item--next">
                 <span class="post-nav__label"><?= e(t('service_next')) ?> <?= icon('arrow-right') ?></span>
                 <span class="post-nav__title"><?= e($nextService['title']) ?></span>
               </a>
@@ -114,11 +114,11 @@ require __DIR__ . '/../includes/header.php';
         <h2><?= e(t('cta_heading')) ?></h2>
         <p><?= e(t('cta_desc')) ?></p>
         <div class="hero__actions">
-          <a href="/pages/contact.php" class="btn btn--primary"><?= e(t('cta_btn_primary')) ?></a>
+          <a href="/contact.php" class="btn btn--primary"><?= e(t('cta_btn_primary')) ?></a>
         </div>
       </div>
     </div>
   </section>
 </main>
 
-<?php require __DIR__ . '/../includes/footer.php'; ?>
+<?php require __DIR__ . '/includes/footer.php'; ?>

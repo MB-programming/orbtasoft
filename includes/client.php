@@ -11,7 +11,7 @@ function client_require_login(): array
 {
     $user = current_user();
     if (!$user) {
-        header('Location: /pages/login.php');
+        header('Location: /login.php');
         exit;
     }
     return $user;

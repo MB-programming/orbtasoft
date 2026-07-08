@@ -477,10 +477,45 @@ function generate_keyword_ideas(string $seed, string $lang): array
 /** Shared "hire us to fix this" CTA shown at the bottom of every tool result. */
 function tools_render_cta(): string
 {
-    return '<div class="cta-section" style="padding-block:0; margin-block-start:48px;">'
+    return '<div class="cta-section no-print" style="padding-block:0; margin-block-start:48px;">'
         . '<div class="tool-cta-card reveal">'
         . '<h2>' . e(t('tools_cta_heading')) . '</h2>'
         . '<p>' . e(t('tools_cta_desc')) . '</p>'
-        . '<a href="/pages/contact.php" class="btn btn--primary">' . e(t('tools_cta_btn')) . '</a>'
+        . '<a href="/contact.php" class="btn btn--primary">' . e(t('tools_cta_btn')) . '</a>'
         . '</div></div>';
+}
+
+/** Branded header (logo + site name + report title + checked URL + date) shown on-screen and in the printed PDF. */
+function tools_render_report_header(string $reportTitle, string $checkedUrl, bool $forceLtr = true): string
+{
+    $urlStyle = $forceLtr ? ' style="direction:ltr; text-align:start;"' : '';
+    return '<div class="report-header">'
+        . '<div class="report-header__brand">' . icon('brand-mark') . '<span>' . e(t('hero_brand')) . '</span></div>'
+        . '<div class="report-header__meta">'
+        . '<h1>' . e($reportTitle) . '</h1>'
+        . '<p class="report-header__url"' . $urlStyle . '>' . e(t('report_checked_url')) . ' ' . e($checkedUrl) . '</p>'
+        . '<p class="report-header__date">' . e(t('report_generated_on')) . ' ' . e(format_date(date('Y-m-d H:i:s'))) . '</p>'
+        . '</div></div>';
+}
+
+/** "Export as PDF" button — uses the browser's native print-to-PDF over a print-only stylesheet, no server-side PDF library needed. */
+function tools_render_pdf_button(): string
+{
+    return '<button type="button" class="btn btn--outline btn--sm tool-pdf-btn no-print" onclick="window.print()">' . icon('file-text') . ' ' . e(t('tools_export_pdf')) . '</button>';
+}
+
+/** Renders a "How to Improve" tip list from a set of translation keys (already filtered to failed/warn checks by the caller). */
+function tools_render_tips(array $tipKeys): string
+{
+    $tipKeys = array_values(array_unique(array_filter($tipKeys)));
+    $html = '<h3 class="tool-section-title">' . e(t('tools_tips_heading')) . '</h3>';
+    if (!$tipKeys) {
+        return $html . '<div class="tool-check-item tool-check-item--good"><span class="tool-check-item__dot"></span><div class="tool-check-item__label">' . e(t('tools_no_tips')) . '</div></div>';
+    }
+    $html .= '<div class="tool-tips-list">';
+    foreach ($tipKeys as $key) {
+        $html .= '<div class="tool-tip-item">' . icon('star') . '<span>' . e(t($key)) . '</span></div>';
+    }
+    $html .= '</div>';
+    return $html;
 }

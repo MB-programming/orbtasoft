@@ -231,7 +231,7 @@ require __DIR__ . '/includes/layout-top.php';
               <td class="cell-strong"><?= e($it['title']) ?></td>
               <td class="cell-muted"><?= e(ucfirst($it['category'])) ?></td>
               <td class="cell-muted"><?= e($it['client']) ?></td>
-              <td class="cell-muted">/pages/project.php?slug=<?= e($it['slug']) ?></td>
+              <td class="cell-muted">/project.php?slug=<?= e($it['slug']) ?></td>
               <td class="cell-muted"><?= e($it['tag_en']) ?></td>
               <td>
                 <div class="admin-row-actions">

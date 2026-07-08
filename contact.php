@@ -1,7 +1,7 @@
 <?php
-require __DIR__ . '/../includes/functions.php';
+require __DIR__ . '/includes/functions.php';
 $current_page = 'contact';
-require __DIR__ . '/../includes/header.php';
+require __DIR__ . '/includes/header.php';
 ?>
 
 <main>
@@ -23,15 +23,15 @@ require __DIR__ . '/../includes/header.php';
 
           <div class="contact-detail">
             <span class="icon"><?= icon('mail') ?></span>
-            <span>hello@orbtasoft.dev</span>
+            <span><?= e(t('company_email')) ?></span>
           </div>
           <div class="contact-detail">
             <span class="icon"><?= icon('phone') ?></span>
-            <span dir="ltr">+20 100 000 0000</span>
+            <span dir="ltr"><?= e(t('company_phone')) ?></span>
           </div>
           <div class="contact-detail">
             <span class="icon"><?= icon('map-pin') ?></span>
-            <span><?= current_lang() === 'ar' ? 'عن بُعد / عالميًا' : 'Remote / Worldwide' ?></span>
+            <span><?= e(t('company_location')) ?></span>
           </div>
         </div>
 
@@ -61,4 +61,4 @@ require __DIR__ . '/../includes/header.php';
   </section>
 </main>
 
-<?php require __DIR__ . '/../includes/footer.php'; ?>
+<?php require __DIR__ . '/includes/footer.php'; ?>

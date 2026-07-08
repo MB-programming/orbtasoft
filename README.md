@@ -58,7 +58,7 @@ dependency at runtime, no Node/build step required to run the site).
    ```
 
    Or point your Apache/Nginx document root at the project root — all
-   asset and page links are root-relative (`/assets/...`, `/pages/...`).
+   asset and page links are root-relative (`/assets/...`, `/about.php`, etc.).
 
 4. Visit `http://localhost:8000/index.php`.
 
@@ -66,7 +66,7 @@ dependency at runtime, no Node/build step required to run the site).
 
 ```
 index.php               Homepage (hero, services, stack, work, CTA)
-pages/                  services.php, portfolio.php, about.php, contact.php
+services.php, portfolio.php, about.php, contact.php, ...   Public pages (root-level)
 includes/               header.php, footer.php, functions.php (i18n + helpers)
 lang/                   ar.php, en.php — translation strings
 config/database.php     PDO MySQL connection
@@ -144,7 +144,7 @@ joining (see the expertise hover slider, which hit this exact bug).
 
 ## 404 page
 
-`pages/404.php` uses [cobe](https://github.com/shuding/cobe) — a
+`404.php` uses [cobe](https://github.com/shuding/cobe) — a
 canvas-based globe library with a framework-agnostic vanilla JS API, so
 it works here without any React wrapper. It's vendored as a single
 bundled script (`assets/vendor/cobe.min.js`, built with esbuild from the

@@ -16,12 +16,12 @@ $urls = [];
 
 $staticPages = [
     'home' => '/index.php',
-    'services' => '/pages/services.php',
-    'portfolio' => '/pages/portfolio.php',
-    'blog' => '/pages/blog.php',
-    'tools' => '/pages/tools.php',
-    'about' => '/pages/about.php',
-    'contact' => '/pages/contact.php',
+    'services' => '/services.php',
+    'portfolio' => '/portfolio.php',
+    'blog' => '/blog.php',
+    'tools' => '/tools.php',
+    'about' => '/about.php',
+    'contact' => '/contact.php',
 ];
 foreach ($staticPages as $key => $path) {
     if (!sitemap_is_noindex('page', $key)) {
@@ -31,19 +31,19 @@ foreach ($staticPages as $key => $path) {
 
 foreach (portfolio_data() as $project) {
     if (!sitemap_is_noindex('project', $project['slug'])) {
-        $urls[] = ['loc' => $base . '/pages/project.php?slug=' . urlencode($project['slug']), 'priority' => '0.7'];
+        $urls[] = ['loc' => $base . '/project.php?slug=' . urlencode($project['slug']), 'priority' => '0.7'];
     }
 }
 
 foreach (services_data() as $service) {
     if (!sitemap_is_noindex('service', $service['slug'])) {
-        $urls[] = ['loc' => $base . '/pages/service.php?slug=' . urlencode($service['slug']), 'priority' => '0.7'];
+        $urls[] = ['loc' => $base . '/service.php?slug=' . urlencode($service['slug']), 'priority' => '0.7'];
     }
 }
 
 foreach (blog_posts_data() as $post) {
     if (!sitemap_is_noindex('blog_post', $post['slug'])) {
-        $urls[] = ['loc' => $base . '/pages/blog-post.php?slug=' . urlencode($post['slug']), 'priority' => '0.6'];
+        $urls[] = ['loc' => $base . '/blog-post.php?slug=' . urlencode($post['slug']), 'priority' => '0.6'];
     }
 }
 

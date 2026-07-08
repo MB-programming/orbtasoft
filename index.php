@@ -38,8 +38,8 @@ require __DIR__ . '/includes/header.php';
       </h1>
       <p class="hero__desc hero-line"><?= t('meta_desc') ?></p>
       <div class="hero__actions hero-line">
-        <a href="/pages/contact.php" class="btn btn--primary"><?= e(t('nav_cta')) ?></a>
-        <a href="/pages/portfolio.php" class="btn btn--outline"><?= e(t('work_view_all')) ?></a>
+        <a href="/contact.php" class="btn btn--primary"><?= e(t('nav_cta')) ?></a>
+        <a href="/portfolio.php" class="btn btn--outline"><?= e(t('work_view_all')) ?></a>
       </div>
     </div>
 
@@ -164,7 +164,7 @@ require __DIR__ . '/includes/header.php';
       </div>
       <div class="services-grid">
         <?php foreach (services_data() as $service): ?>
-          <a class="service-card reveal" href="/pages/service.php?slug=<?= e(urlencode($service['slug'])) ?>">
+          <a class="service-card reveal" href="/service.php?slug=<?= e(urlencode($service['slug'])) ?>">
             <div class="service-card__icon"><?= icon($service['icon']) ?></div>
             <h3><?= e($service['title']) ?></h3>
             <p><?= e($service['desc']) ?></p>
@@ -205,7 +205,7 @@ require __DIR__ . '/includes/header.php';
     <div class="work-gallery__pin">
       <div class="work-gallery__track">
         <?php foreach (portfolio_data() as $i => $project): ?>
-          <a class="work-card" href="/pages/project.php?slug=<?= e(urlencode($project['slug'])) ?>">
+          <a class="work-card" href="/project.php?slug=<?= e(urlencode($project['slug'])) ?>">
             <span class="work-card__index">0<?= $i + 1 ?></span>
             <img src="<?= e($project['image']) ?>" alt="<?= e($project['title']) ?>" loading="lazy">
             <div class="work-card__overlay">
@@ -215,7 +215,7 @@ require __DIR__ . '/includes/header.php';
             </div>
           </a>
         <?php endforeach; ?>
-        <a href="/pages/portfolio.php" class="work-card work-card--cta">
+        <a href="/portfolio.php" class="work-card work-card--cta">
           <h3><?= e(t('work_view_all')) ?></h3>
           <p><?= e(t('cta_desc')) ?></p>
           <span class="btn btn--outline btn--sm"><?= e(t('work_view_all')) ?> →</span>
@@ -264,8 +264,8 @@ require __DIR__ . '/includes/header.php';
         <h2><?= e(t('cta_heading')) ?></h2>
         <p><?= e(t('cta_desc')) ?></p>
         <div class="hero__actions">
-          <a href="/pages/contact.php" class="btn btn--primary"><?= e(t('cta_btn_primary')) ?></a>
-          <a href="/pages/portfolio.php" class="btn btn--secondary"><?= e(t('cta_btn_secondary')) ?></a>
+          <a href="/contact.php" class="btn btn--primary"><?= e(t('cta_btn_primary')) ?></a>
+          <a href="/portfolio.php" class="btn btn--secondary"><?= e(t('cta_btn_secondary')) ?></a>
         </div>
       </div>
     </div>

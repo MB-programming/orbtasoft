@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../includes/functions.php';
+require __DIR__ . '/includes/functions.php';
 
 $slug = $_GET['slug'] ?? '';
 $post = $slug ? blog_post_by_slug($slug) : null;
@@ -20,7 +20,7 @@ $seo_entity_key = $post['slug'];
 $seo_fallback_title = $post['title'] . ' — ' . t('hero_brand');
 $seo_fallback_description = mb_substr(strip_tags($post['excerpt']), 0, 200);
 $seo_fallback_image = $post['cover_image'];
-require __DIR__ . '/../includes/header.php';
+require __DIR__ . '/includes/header.php';
 ?>
 
 <main>
@@ -28,7 +28,7 @@ require __DIR__ . '/../includes/header.php';
     <section class="page-hero page-hero--blog">
       <div class="bg-grid" aria-hidden="true"></div>
       <div class="container">
-        <a href="/pages/blog.php" class="back-link reveal"><?= icon('arrow-left') ?> <?= e(t('blog_back_to_blog')) ?></a>
+        <a href="/blog.php" class="back-link reveal"><?= icon('arrow-left') ?> <?= e(t('blog_back_to_blog')) ?></a>
         <div class="blog-post__meta reveal">
           <span><?= e(format_date($post['published_at'])) ?></span>
           <span aria-hidden="true">&middot;</span>
@@ -58,13 +58,13 @@ require __DIR__ . '/../includes/header.php';
         <div class="container container--narrow">
           <div class="post-nav">
             <?php if ($prevPost): ?>
-              <a href="/pages/blog-post.php?slug=<?= e(urlencode($prevPost['slug'])) ?>" class="post-nav__item post-nav__item--prev">
+              <a href="/blog-post.php?slug=<?= e(urlencode($prevPost['slug'])) ?>" class="post-nav__item post-nav__item--prev">
                 <span class="post-nav__label"><?= icon('arrow-left') ?> <?= e(t('blog_prev_post')) ?></span>
                 <span class="post-nav__title"><?= e($prevPost['title']) ?></span>
               </a>
             <?php else: ?><span></span><?php endif; ?>
             <?php if ($nextPost): ?>
-              <a href="/pages/blog-post.php?slug=<?= e(urlencode($nextPost['slug'])) ?>" class="post-nav__item post-nav__item--next">
+              <a href="/blog-post.php?slug=<?= e(urlencode($nextPost['slug'])) ?>" class="post-nav__item post-nav__item--next">
                 <span class="post-nav__label"><?= e(t('blog_next_post')) ?> <?= icon('arrow-right') ?></span>
                 <span class="post-nav__title"><?= e($nextPost['title']) ?></span>
               </a>
@@ -81,11 +81,11 @@ require __DIR__ . '/../includes/header.php';
         <h2><?= e(t('cta_heading')) ?></h2>
         <p><?= e(t('cta_desc')) ?></p>
         <div class="hero__actions">
-          <a href="/pages/contact.php" class="btn btn--primary"><?= e(t('cta_btn_primary')) ?></a>
+          <a href="/contact.php" class="btn btn--primary"><?= e(t('cta_btn_primary')) ?></a>
         </div>
       </div>
     </div>
   </section>
 </main>
 
-<?php require __DIR__ . '/../includes/footer.php'; ?>
+<?php require __DIR__ . '/includes/footer.php'; ?>

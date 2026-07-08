@@ -1,8 +1,8 @@
 <?php
-require __DIR__ . '/../includes/functions.php';
+require __DIR__ . '/includes/functions.php';
 $current_page = 'blog';
 $posts = blog_posts_data();
-require __DIR__ . '/../includes/header.php';
+require __DIR__ . '/includes/header.php';
 ?>
 
 <main>
@@ -22,7 +22,7 @@ require __DIR__ . '/../includes/header.php';
       <?php else: ?>
         <div class="blog-grid">
           <?php foreach ($posts as $post): ?>
-            <a class="blog-card reveal" href="/pages/blog-post.php?slug=<?= e(urlencode($post['slug'])) ?>">
+            <a class="blog-card reveal" href="/blog-post.php?slug=<?= e(urlencode($post['slug'])) ?>">
               <div class="blog-card__media">
                 <img src="<?= e($post['cover_image']) ?>" alt="<?= e($post['title']) ?>" loading="lazy">
               </div>
@@ -49,11 +49,11 @@ require __DIR__ . '/../includes/header.php';
         <h2><?= e(t('cta_heading')) ?></h2>
         <p><?= e(t('cta_desc')) ?></p>
         <div class="hero__actions">
-          <a href="/pages/contact.php" class="btn btn--primary"><?= e(t('cta_btn_primary')) ?></a>
+          <a href="/contact.php" class="btn btn--primary"><?= e(t('cta_btn_primary')) ?></a>
         </div>
       </div>
     </div>
   </section>
 </main>
 
-<?php require __DIR__ . '/../includes/footer.php'; ?>
+<?php require __DIR__ . '/includes/footer.php'; ?>

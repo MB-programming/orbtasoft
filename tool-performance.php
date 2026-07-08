@@ -1,6 +1,6 @@
 <?php
-require __DIR__ . '/../includes/functions.php';
-require_once __DIR__ . '/../includes/tools.php';
+require __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/includes/tools.php';
 set_time_limit(45);
 
 $current_page = 'tools';
@@ -49,15 +49,21 @@ if ($rawUrl !== '') {
 
         $score = (int) round($ttfbScore * 0.25 + $totalScore * 0.25 + $weightScore * 0.3 + $compressionScore * 0.1 + $cachingScore * 0.1);
 
+        $tipKeys = [];
+        if ($ttfbScore < 70) $tipKeys[] = 'ai_rec_slow_ttfb';
+        if ($weightScore < 70) $tipKeys[] = 'ai_rec_heavy_page';
+        if (!$compressed) $tipKeys[] = 'ai_rec_no_compression';
+        if (!$cached) $tipKeys[] = 'tip_no_caching';
+
         $result = [
             'fetch' => $fetch, 'assetCount' => $assetCount, 'breakdown' => $breakdown,
             'htmlBytes' => $htmlBytes, 'totalWeight' => $totalWeight,
-            'compressed' => $compressed, 'cached' => $cached,
+            'compressed' => $compressed, 'cached' => $cached, 'tipKeys' => $tipKeys,
         ];
     }
 }
 
-require __DIR__ . '/../includes/header.php';
+require __DIR__ . '/includes/header.php';
 ?>
 
 <main>
@@ -72,7 +78,7 @@ require __DIR__ . '/../includes/header.php';
 
   <section class="section section--tight">
     <div class="container">
-      <form method="get" action="/pages/tool-performance.php" class="tool-form reveal">
+      <form method="get" action="/tool-performance.php" class="tool-form reveal no-print">
         <input type="text" name="url" value="<?= e($rawUrl) ?>" placeholder="<?= e(t('tools_url_placeholder')) ?>" aria-label="<?= e(t('tools_url_label')) ?>" required>
         <button type="submit" class="btn btn--primary"><?= icon('gauge') ?> <?= e(t('tools_run_btn')) ?></button>
       </form>
@@ -81,12 +87,7 @@ require __DIR__ . '/../includes/header.php';
         <?= tools_render_error($errorCode) ?>
       <?php elseif ($result): ?>
         <div class="tool-result">
-          <div class="tool-result__head">
-            <div>
-              <h2><?= e(t('tools_result_for')) ?></h2>
-              <a href="<?= e($result['fetch']['final_url']) ?>" target="_blank" rel="noopener noreferrer" style="direction:ltr; display:inline-block;"><?= e($result['fetch']['final_url']) ?></a>
-            </div>
-          </div>
+          <?= tools_render_report_header(t('tool_performance_title'), $result['fetch']['final_url']) ?>
 
           <?= tools_render_score($score) ?>
 
@@ -122,13 +123,18 @@ require __DIR__ . '/../includes/header.php';
             </div>
           <?php endif; ?>
 
+          <?= tools_render_tips($result['tipKeys']) ?>
+
           <?= tools_render_cta() ?>
 
-          <a href="/pages/tool-performance.php" class="tool-check-another"><?= e(t('tools_check_another')) ?></a>
+          <div class="tool-actions-row">
+            <?= tools_render_pdf_button() ?>
+            <a href="/tool-performance.php" class="tool-check-another no-print"><?= e(t('tools_check_another')) ?></a>
+          </div>
         </div>
       <?php endif; ?>
     </div>
   </section>
 </main>
 
-<?php require __DIR__ . '/../includes/footer.php'; ?>
+<?php require __DIR__ . '/includes/footer.php'; ?>

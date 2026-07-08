@@ -1,6 +1,6 @@
 <?php
-require __DIR__ . '/../includes/functions.php';
-require_once __DIR__ . '/../includes/tools.php';
+require __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/includes/tools.php';
 
 $current_page = 'tools';
 $seed = trim($_GET['keyword'] ?? '');
@@ -17,7 +17,7 @@ if ($seed !== '') {
     $errorCode = 'empty';
 }
 
-require __DIR__ . '/../includes/header.php';
+require __DIR__ . '/includes/header.php';
 ?>
 
 <main>
@@ -32,7 +32,7 @@ require __DIR__ . '/../includes/header.php';
 
   <section class="section section--tight">
     <div class="container">
-      <form method="get" action="/pages/tool-keywords.php" class="tool-form reveal">
+      <form method="get" action="/tool-keywords.php" class="tool-form reveal no-print">
         <input type="text" name="keyword" value="<?= e($seed) ?>" placeholder="<?= e(t('keywords_seed_placeholder')) ?>" aria-label="<?= e(t('keywords_seed_label')) ?>" required>
         <button type="submit" class="btn btn--primary"><?= icon('search') ?> <?= e(t('keywords_generate_btn')) ?></button>
       </form>
@@ -41,11 +41,7 @@ require __DIR__ . '/../includes/header.php';
         <div class="tool-error"><?= e(t('keywords_error_empty')) ?></div>
       <?php elseif ($groups): ?>
         <div class="tool-result">
-          <div class="tool-result__head">
-            <div>
-              <h2><?= e(t('keywords_results_for')) ?> "<?= e($seed) ?>"</h2>
-            </div>
-          </div>
+          <?= tools_render_report_header(t('tool_keywords_title'), $seed, false) ?>
           <p class="kw-total"><?= (int) $total ?> <?= e(t('keywords_total_label')) ?></p>
 
           <?php
@@ -70,7 +66,14 @@ require __DIR__ . '/../includes/header.php';
             </div>
           <?php endforeach; ?>
 
+          <?= tools_render_tips(['tip_kw_long_tail', 'tip_kw_intent', 'tip_kw_no_stuffing', 'tip_kw_use_in_titles']) ?>
+
           <?= tools_render_cta() ?>
+
+          <div class="tool-actions-row">
+            <?= tools_render_pdf_button() ?>
+            <a href="/tool-keywords.php" class="tool-check-another no-print"><?= e(t('tools_check_another')) ?></a>
+          </div>
         </div>
       <?php endif; ?>
     </div>
@@ -104,4 +107,4 @@ require __DIR__ . '/../includes/header.php';
 })();
 </script>
 
-<?php require __DIR__ . '/../includes/footer.php'; ?>
+<?php require __DIR__ . '/includes/footer.php'; ?>

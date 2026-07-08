@@ -1,7 +1,7 @@
 <?php
-require __DIR__ . '/../includes/functions.php';
+require __DIR__ . '/includes/functions.php';
 $current_page = 'portfolio';
-require __DIR__ . '/../includes/header.php';
+require __DIR__ . '/includes/header.php';
 ?>
 
 <main>
@@ -26,7 +26,7 @@ require __DIR__ . '/../includes/header.php';
     <div class="work-gallery__pin">
       <div class="work-gallery__track" id="workTrack">
         <?php foreach (portfolio_data() as $i => $project): ?>
-          <a class="work-card" data-category="<?= e($project['category']) ?>" href="/pages/project.php?slug=<?= e(urlencode($project['slug'])) ?>">
+          <a class="work-card" data-category="<?= e($project['category']) ?>" href="/project.php?slug=<?= e(urlencode($project['slug'])) ?>">
             <span class="work-card__index">0<?= $i + 1 ?></span>
             <img src="<?= e($project['image']) ?>" alt="<?= e($project['title']) ?>" loading="lazy">
             <div class="work-card__overlay">
@@ -46,11 +46,11 @@ require __DIR__ . '/../includes/header.php';
         <h2><?= e(t('cta_heading')) ?></h2>
         <p><?= e(t('cta_desc')) ?></p>
         <div class="hero__actions">
-          <a href="/pages/contact.php" class="btn btn--primary"><?= e(t('cta_btn_primary')) ?></a>
+          <a href="/contact.php" class="btn btn--primary"><?= e(t('cta_btn_primary')) ?></a>
         </div>
       </div>
     </div>
   </section>
 </main>
 
-<?php require __DIR__ . '/../includes/footer.php'; ?>
+<?php require __DIR__ . '/includes/footer.php'; ?>

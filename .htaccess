@@ -1,4 +1,4 @@
-ErrorDocument 404 /pages/404.php
+ErrorDocument 404 /404.php
 
 RewriteEngine On
 RewriteRule ^robots\.txt$ robots.php [L]

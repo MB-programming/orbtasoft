@@ -1,7 +1,7 @@
 <?php
-require __DIR__ . '/../includes/functions.php';
+require __DIR__ . '/includes/functions.php';
 $current_page = 'about';
-require __DIR__ . '/../includes/header.php';
+require __DIR__ . '/includes/header.php';
 
 $stats = [
     ['val' => t('stat_1_val'), 'label' => t('stat_1_label')],
@@ -102,11 +102,11 @@ $stats = [
         <h2><?= e(t('cta_heading')) ?></h2>
         <p><?= e(t('cta_desc')) ?></p>
         <div class="hero__actions">
-          <a href="/pages/contact.php" class="btn btn--primary"><?= e(t('cta_btn_primary')) ?></a>
+          <a href="/contact.php" class="btn btn--primary"><?= e(t('cta_btn_primary')) ?></a>
         </div>
       </div>
     </div>
   </section>
 </main>
 
-<?php require __DIR__ . '/../includes/footer.php'; ?>
+<?php require __DIR__ . '/includes/footer.php'; ?>

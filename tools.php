@@ -1,7 +1,7 @@
 <?php
-require __DIR__ . '/../includes/functions.php';
+require __DIR__ . '/includes/functions.php';
 $current_page = 'tools';
-require __DIR__ . '/../includes/header.php';
+require __DIR__ . '/includes/header.php';
 
 $tools = [
     ['slug' => 'performance',  'icon' => 'gauge',            'title' => t('tools_card_performance_title'), 'desc' => t('tools_card_performance_desc')],
@@ -28,7 +28,7 @@ $tools = [
     <div class="container">
       <div class="tools-grid">
         <?php foreach ($tools as $tool): ?>
-          <a class="tool-card reveal" href="/pages/tool-<?= e($tool['slug']) ?>.php">
+          <a class="tool-card reveal" href="/tool-<?= e($tool['slug']) ?>.php">
             <div class="tool-card__icon"><?= icon($tool['icon']) ?></div>
             <h3><?= e($tool['title']) ?></h3>
             <p><?= e($tool['desc']) ?></p>
@@ -45,12 +45,12 @@ $tools = [
         <h2><?= e(t('cta_heading')) ?></h2>
         <p><?= e(t('cta_desc')) ?></p>
         <div class="hero__actions">
-          <a href="/pages/contact.php" class="btn btn--primary"><?= e(t('cta_btn_primary')) ?></a>
-          <a href="/pages/services.php" class="btn btn--secondary"><?= e(t('cta_btn_secondary')) ?></a>
+          <a href="/contact.php" class="btn btn--primary"><?= e(t('cta_btn_primary')) ?></a>
+          <a href="/services.php" class="btn btn--secondary"><?= e(t('cta_btn_secondary')) ?></a>
         </div>
       </div>
     </div>
   </section>
 </main>
 
-<?php require __DIR__ . '/../includes/footer.php'; ?>
+<?php require __DIR__ . '/includes/footer.php'; ?>

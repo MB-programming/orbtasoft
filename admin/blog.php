@@ -150,7 +150,7 @@ require __DIR__ . '/includes/layout-top.php';
               <td class="cell-strong"><?= e($p['title_en']) ?></td>
               <td class="cell-muted"><?= e($p['author']) ?></td>
               <td class="cell-muted"><?= e($p['published_at']) ?></td>
-              <td class="cell-muted">/pages/blog-post.php?slug=<?= e($p['slug']) ?></td>
+              <td class="cell-muted">/blog-post.php?slug=<?= e($p['slug']) ?></td>
               <td>
                 <div class="admin-row-actions">
                   <a class="admin-icon-btn" href="/admin/blog.php?edit=<?= (int) $p['id'] ?>" aria-label="Edit"><?= icon('pencil') ?></a>

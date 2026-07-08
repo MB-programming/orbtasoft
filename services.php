@@ -1,7 +1,7 @@
 <?php
-require __DIR__ . '/../includes/functions.php';
+require __DIR__ . '/includes/functions.php';
 $current_page = 'services';
-require __DIR__ . '/../includes/header.php';
+require __DIR__ . '/includes/header.php';
 ?>
 
 <main>
@@ -18,7 +18,7 @@ require __DIR__ . '/../includes/header.php';
     <div class="container">
       <div class="services-grid">
         <?php foreach (services_data() as $service): ?>
-          <a class="service-card reveal" href="/pages/service.php?slug=<?= e(urlencode($service['slug'])) ?>">
+          <a class="service-card reveal" href="/service.php?slug=<?= e(urlencode($service['slug'])) ?>">
             <div class="service-card__icon"><?= icon($service['icon']) ?></div>
             <h3><?= e($service['title']) ?></h3>
             <p><?= e($service['desc']) ?></p>
@@ -35,12 +35,12 @@ require __DIR__ . '/../includes/header.php';
         <h2><?= e(t('cta_heading')) ?></h2>
         <p><?= e(t('cta_desc')) ?></p>
         <div class="hero__actions">
-          <a href="/pages/contact.php" class="btn btn--primary"><?= e(t('cta_btn_primary')) ?></a>
-          <a href="/pages/portfolio.php" class="btn btn--secondary"><?= e(t('cta_btn_secondary')) ?></a>
+          <a href="/contact.php" class="btn btn--primary"><?= e(t('cta_btn_primary')) ?></a>
+          <a href="/portfolio.php" class="btn btn--secondary"><?= e(t('cta_btn_secondary')) ?></a>
         </div>
       </div>
     </div>
   </section>
 </main>
 
-<?php require __DIR__ . '/../includes/footer.php'; ?>
+<?php require __DIR__ . '/includes/footer.php'; ?>

@@ -1,6 +1,6 @@
 <?php
-require __DIR__ . '/../includes/functions.php';
-require_once __DIR__ . '/../includes/tools.php';
+require __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/includes/tools.php';
 set_time_limit(30);
 
 $current_page = 'tools';
@@ -91,6 +91,21 @@ if ($rawUrl !== '') {
             $viewportStatus, $httpsStatus, $wordCountStatus,
         ]);
 
+        $tipKeys = [];
+        if ($titleStatus === 'bad' || $titleStatus === 'warn') $tipKeys[] = 'ai_rec_no_title';
+        if ($metaDescStatus === 'bad' || $metaDescStatus === 'warn') $tipKeys[] = 'ai_rec_no_meta_desc';
+        if ($h1Status !== 'good') $tipKeys[] = 'ai_rec_bad_h1';
+        if ($canonicalStatus === 'warn') $tipKeys[] = 'tip_no_canonical';
+        if ($robotsStatus === 'bad') $tipKeys[] = 'tip_robots_blocking';
+        if ($robotsTxtStatus === 'warn') $tipKeys[] = 'tip_no_robots_txt';
+        if ($sitemapStatus === 'warn') $tipKeys[] = 'tip_no_sitemap';
+        if ($altStatus === 'bad' || $altStatus === 'warn') $tipKeys[] = 'ai_rec_missing_alt';
+        if ($ogStatus !== 'good') $tipKeys[] = 'tip_no_og_tags';
+        if ($structuredStatus === 'warn') $tipKeys[] = 'tip_no_structured_data';
+        if ($viewportStatus === 'bad') $tipKeys[] = 'ai_rec_no_viewport';
+        if ($httpsStatus === 'bad') $tipKeys[] = 'ai_rec_no_https';
+        if ($wordCountStatus !== 'good') $tipKeys[] = 'tip_thin_content';
+
         $result = [
             'fetch' => $fetch,
             'title' => $title, 'titleLen' => $titleLen, 'titleStatus' => $titleStatus,
@@ -103,11 +118,12 @@ if ($rawUrl !== '') {
             'ogCount' => $ogCount, 'ogStatus' => $ogStatus,
             'structuredStatus' => $structuredStatus, 'viewport' => $viewport, 'viewportStatus' => $viewportStatus,
             'httpsStatus' => $httpsStatus, 'wordCount' => $wordCount, 'wordCountStatus' => $wordCountStatus,
+            'tipKeys' => $tipKeys,
         ];
     }
 }
 
-require __DIR__ . '/../includes/header.php';
+require __DIR__ . '/includes/header.php';
 ?>
 
 <main>
@@ -122,7 +138,7 @@ require __DIR__ . '/../includes/header.php';
 
   <section class="section section--tight">
     <div class="container">
-      <form method="get" action="/pages/tool-seo.php" class="tool-form reveal">
+      <form method="get" action="/tool-seo.php" class="tool-form reveal no-print">
         <input type="text" name="url" value="<?= e($rawUrl) ?>" placeholder="<?= e(t('tools_url_placeholder')) ?>" aria-label="<?= e(t('tools_url_label')) ?>" required>
         <button type="submit" class="btn btn--primary"><?= icon('search') ?> <?= e(t('tools_run_btn')) ?></button>
       </form>
@@ -131,12 +147,7 @@ require __DIR__ . '/../includes/header.php';
         <?= tools_render_error($errorCode) ?>
       <?php elseif ($result): ?>
         <div class="tool-result">
-          <div class="tool-result__head">
-            <div>
-              <h2><?= e(t('tools_result_for')) ?></h2>
-              <a href="<?= e($result['fetch']['final_url']) ?>" target="_blank" rel="noopener noreferrer" style="direction:ltr; display:inline-block;"><?= e($result['fetch']['final_url']) ?></a>
-            </div>
-          </div>
+          <?= tools_render_report_header(t('tool_seo_title'), $result['fetch']['final_url']) ?>
 
           <?= tools_render_score($score) ?>
 
@@ -156,13 +167,18 @@ require __DIR__ . '/../includes/header.php';
             <?= tools_render_check_item(t('seo_word_count_label'), $result['wordCountStatus'], number_format($result['wordCount']) . ' ' . t('seo_words_count')) ?>
           </div>
 
+          <?= tools_render_tips($result['tipKeys']) ?>
+
           <?= tools_render_cta() ?>
 
-          <a href="/pages/tool-seo.php" class="tool-check-another"><?= e(t('tools_check_another')) ?></a>
+          <div class="tool-actions-row">
+            <?= tools_render_pdf_button() ?>
+            <a href="/tool-seo.php" class="tool-check-another no-print"><?= e(t('tools_check_another')) ?></a>
+          </div>
         </div>
       <?php endif; ?>
     </div>
   </section>
 </main>
 
-<?php require __DIR__ . '/../includes/footer.php'; ?>
+<?php require __DIR__ . '/includes/footer.php'; ?>

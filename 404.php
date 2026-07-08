@@ -1,7 +1,7 @@
 <?php
-require __DIR__ . '/../includes/functions.php';
+require __DIR__ . '/includes/functions.php';
 http_response_code(404);
-require __DIR__ . '/../includes/header.php';
+require __DIR__ . '/includes/header.php';
 ?>
 
 <main>
@@ -35,4 +35,4 @@ require __DIR__ . '/../includes/header.php';
 <script src="/assets/vendor/cobe.min.js"></script>
 <script src="/assets/js/globe.js"></script>
 
-<?php require __DIR__ . '/../includes/footer.php'; ?>
+<?php require __DIR__ . '/includes/footer.php'; ?>
