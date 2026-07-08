@@ -35,13 +35,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $data['published_at'] = $publishedAt !== '' ? str_replace('T', ' ', $publishedAt) . ':00' : date('Y-m-d H:i:s');
         $slugInput = trim($_POST['slug'] ?? '');
 
+        $contentEmpty = static fn(string $html): bool => trim(strip_tags($html)) === '';
+
         $required = [
             $data['cover_image'], $data['author'],
             $data['title_de'], $data['title_en'], $data['title_ar'],
             $data['excerpt_de'], $data['excerpt_en'], $data['excerpt_ar'],
-            $data['content_de'], $data['content_en'], $data['content_ar'],
         ];
-        if (in_array('', $required, true)) {
+        if (in_array('', $required, true) || $contentEmpty($data['content_de']) || $contentEmpty($data['content_en']) || $contentEmpty($data['content_ar'])) {
             $flash = 'Please fill in every field for all three languages.';
             $flashType = 'error';
         } else {
@@ -83,6 +84,9 @@ $current_admin_page = 'blog';
 require __DIR__ . '/includes/layout-top.php';
 ?>
 
+<link rel="stylesheet" href="/assets/vendor/quill/quill.snow.css">
+<link rel="stylesheet" href="/assets/vendor/highlight/atom-one-dark.min.css">
+
 <div class="admin-page-head">
   <div>
     <h1>Blog</h1>
@@ -121,9 +125,21 @@ require __DIR__ . '/includes/layout-top.php';
       <div class="form-row"><label for="excerpt_en">Excerpt (English)</label><textarea id="excerpt_en" name="excerpt_en" required><?= e($editing['excerpt_en'] ?? '') ?></textarea></div>
       <div class="form-row"><label for="excerpt_ar">Excerpt (العربية)</label><textarea id="excerpt_ar" name="excerpt_ar" dir="rtl" required><?= e($editing['excerpt_ar'] ?? '') ?></textarea></div>
 
-      <div class="form-row span-3"><label for="content_de">Content (Deutsch — separate paragraphs with a blank line)</label><textarea id="content_de" name="content_de" rows="8" required><?= e($editing['content_de'] ?? '') ?></textarea></div>
-      <div class="form-row span-3"><label for="content_en">Content (English — separate paragraphs with a blank line)</label><textarea id="content_en" name="content_en" rows="8" required><?= e($editing['content_en'] ?? '') ?></textarea></div>
-      <div class="form-row span-3"><label for="content_ar">Content (العربية — افصل الفقرات بسطر فارغ)</label><textarea id="content_ar" name="content_ar" dir="rtl" rows="8" required><?= e($editing['content_ar'] ?? '') ?></textarea></div>
+      <div class="form-row span-3">
+        <label>Content (Deutsch)</label>
+        <textarea id="content_de" name="content_de" class="blog-editor-source"><?= e($editing['content_de'] ?? '') ?></textarea>
+        <div id="editor_de" class="blog-editor" data-source="content_de"></div>
+      </div>
+      <div class="form-row span-3">
+        <label>Content (English)</label>
+        <textarea id="content_en" name="content_en" class="blog-editor-source"><?= e($editing['content_en'] ?? '') ?></textarea>
+        <div id="editor_en" class="blog-editor" data-source="content_en"></div>
+      </div>
+      <div class="form-row span-3">
+        <label>Content (العربية)</label>
+        <textarea id="content_ar" name="content_ar" class="blog-editor-source"><?= e($editing['content_ar'] ?? '') ?></textarea>
+        <div id="editor_ar" class="blog-editor blog-editor--rtl" dir="rtl" data-source="content_ar"></div>
+      </div>
     </div>
 
     <?php require __DIR__ . '/includes/seo-fields.php'; ?>
@@ -169,5 +185,46 @@ require __DIR__ . '/includes/layout-top.php';
     </div>
   <?php endif; ?>
 </div>
+
+<script src="/assets/vendor/highlight/highlight.min.js"></script>
+<script src="/assets/vendor/quill/quill.min.js"></script>
+<script>
+(function () {
+  if (typeof Quill === 'undefined') return;
+
+  var toolbarOptions = [
+    [{ header: [2, 3, false] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    ['blockquote', 'code-block'],
+    [{ list: 'ordered' }, { list: 'bullet' }],
+    ['link', 'image'],
+    ['clean'],
+  ];
+
+  ['de', 'en', 'ar'].forEach(function (lang) {
+    var source = document.getElementById('content_' + lang);
+    var mount = document.getElementById('editor_' + lang);
+    if (!source || !mount) return;
+
+    var quill = new Quill(mount, {
+      theme: 'snow',
+      modules: {
+        toolbar: toolbarOptions,
+        syntax: typeof hljs !== 'undefined' ? { highlight: function (text) { return hljs.highlightAuto(text).value; } } : false,
+      },
+    });
+
+    quill.root.innerHTML = source.value;
+
+    var form = source.closest('form');
+    form.addEventListener('submit', function () {
+      source.value = quill.root.innerHTML;
+    });
+    quill.on('text-change', function () {
+      source.value = quill.root.innerHTML;
+    });
+  });
+})();
+</script>
 
 <?php require __DIR__ . '/includes/layout-bottom.php'; ?>

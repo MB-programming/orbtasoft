@@ -56,8 +56,12 @@ $stats = [
       <div class="team-marquee__track">
         <?php foreach (array_merge(team_data(), team_data()) as $member): ?>
           <div class="team-card">
-            <div class="team-card__avatar" style="background: <?= e($member['color']) ?>;">
-              <span class="team-card__initials"><?= e(initials($member['name'])) ?></span>
+            <div class="team-card__avatar" style="<?= $member['image'] ? '' : 'background: ' . e($member['color']) . ';' ?>">
+              <?php if ($member['image']): ?>
+                <img src="<?= e($member['image']) ?>" alt="<?= e($member['name']) ?>" class="team-card__photo">
+              <?php else: ?>
+                <span class="team-card__initials"><?= e(initials($member['name'])) ?></span>
+              <?php endif; ?>
               <div class="team-card__info">
                 <h3><?= e($member['name']) ?></h3>
                 <p><?= e($member['role']) ?></p>

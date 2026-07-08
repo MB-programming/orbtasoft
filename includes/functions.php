@@ -177,15 +177,15 @@ function db_fetch_all(string $sql): array
 function team_data(): array
 {
     $lang = lang_column_suffix();
-    $rows = db_fetch_all("SELECT id, name, role_{$lang} AS role, color FROM team_members ORDER BY sort_order ASC, id ASC");
-    return array_map(fn($r) => ['id' => (int) $r['id'], 'name' => $r['name'], 'role' => $r['role'], 'color' => $r['color']], $rows);
+    $rows = db_fetch_all("SELECT id, name, image, role_{$lang} AS role, color FROM team_members ORDER BY sort_order ASC, id ASC");
+    return array_map(fn($r) => ['id' => (int) $r['id'], 'name' => $r['name'], 'image' => $r['image'], 'role' => $r['role'], 'color' => $r['color']], $rows);
 }
 
 function testimonials_data(): array
 {
     $lang = lang_column_suffix();
-    $rows = db_fetch_all("SELECT id, name, role_{$lang} AS role, quote_{$lang} AS quote, color FROM testimonials ORDER BY sort_order ASC, id ASC");
-    return array_map(fn($r) => ['id' => (int) $r['id'], 'name' => $r['name'], 'role' => $r['role'], 'quote' => $r['quote'], 'color' => $r['color']], $rows);
+    $rows = db_fetch_all("SELECT id, name, image, role_{$lang} AS role, quote_{$lang} AS quote, color FROM testimonials ORDER BY sort_order ASC, id ASC");
+    return array_map(fn($r) => ['id' => (int) $r['id'], 'name' => $r['name'], 'image' => $r['image'], 'role' => $r['role'], 'quote' => $r['quote'], 'color' => $r['color']], $rows);
 }
 
 function icon(string $name): string
@@ -237,9 +237,9 @@ function icon(string $name): string
 
 function partners_data(): array
 {
-    // Fictional client/partner wordmarks (rendered as styled text, not real company logos).
-    $rows = db_fetch_all('SELECT id, name, weight FROM partners ORDER BY sort_order ASC, id ASC');
-    return array_map(fn($r) => ['id' => (int) $r['id'], 'name' => $r['name'], 'weight' => (int) $r['weight']], $rows);
+    // Fictional client/partner logos + names (logo marks are placeholder illustrations, not real company logos).
+    $rows = db_fetch_all('SELECT id, name, logo, weight FROM partners ORDER BY sort_order ASC, id ASC');
+    return array_map(fn($r) => ['id' => (int) $r['id'], 'name' => $r['name'], 'logo' => $r['logo'], 'weight' => (int) $r['weight']], $rows);
 }
 
 function services_data(): array

@@ -46,9 +46,7 @@ require __DIR__ . '/includes/header.php';
           <img src="<?= e($post['cover_image']) ?>" alt="<?= e($post['title']) ?>">
         </div>
         <div class="blog-post__content reveal">
-          <?php foreach (explode("\n\n", $post['content']) as $paragraph): ?>
-            <p><?= e($paragraph) ?></p>
-          <?php endforeach; ?>
+          <?= $post['content'] ?>
         </div>
       </div>
     </section>
@@ -87,5 +85,11 @@ require __DIR__ . '/includes/header.php';
     </div>
   </section>
 </main>
+
+<?php if (str_contains($post['content'], 'ql-syntax')): ?>
+<link rel="stylesheet" href="/assets/vendor/highlight/atom-one-dark.min.css">
+<script src="/assets/vendor/highlight/highlight.min.js"></script>
+<script>document.querySelectorAll('pre.ql-syntax').forEach(function (b) { hljs.highlightElement(b); });</script>
+<?php endif; ?>
 
 <?php require __DIR__ . '/includes/footer.php'; ?>

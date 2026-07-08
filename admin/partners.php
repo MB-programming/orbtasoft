@@ -1,5 +1,6 @@
 <?php
 require __DIR__ . '/includes/auth.php';
+require __DIR__ . '/../includes/uploads.php';
 admin_require_login();
 $pdo = get_db();
 
@@ -18,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = (int) ($_POST['id'] ?? 0);
         $data = [
             'name' => trim($_POST['name'] ?? ''),
+            'logo' => handle_image_upload('logo_file', trim($_POST['existing_logo'] ?? '')),
             'weight' => max(400, min(900, (int) ($_POST['weight'] ?? 700))),
             'sort_order' => (int) ($_POST['sort_order'] ?? 0),
         ];
@@ -26,10 +28,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $flashType = 'error';
         } elseif ($id > 0) {
             $data['id'] = $id;
-            $pdo->prepare('UPDATE partners SET name=:name, weight=:weight, sort_order=:sort_order WHERE id=:id')->execute($data);
+            $pdo->prepare('UPDATE partners SET name=:name, logo=:logo, weight=:weight, sort_order=:sort_order WHERE id=:id')->execute($data);
             $flash = 'Partner updated.';
         } else {
-            $pdo->prepare('INSERT INTO partners (name, weight, sort_order) VALUES (:name, :weight, :sort_order)')->execute($data);
+            $pdo->prepare('INSERT INTO partners (name, logo, weight, sort_order) VALUES (:name, :logo, :weight, :sort_order)')->execute($data);
             $flash = 'Partner created.';
         }
     }
@@ -51,7 +53,7 @@ require __DIR__ . '/includes/layout-top.php';
 <div class="admin-page-head">
   <div>
     <h1>Partners</h1>
-    <p>Manage the scrolling logo cloud wordmarks. These are fictional client names, not real companies.</p>
+    <p>Manage the scrolling logo cloud. These are fictional client names/logos, not real companies.</p>
   </div>
 </div>
 
@@ -59,12 +61,21 @@ require __DIR__ . '/includes/layout-top.php';
 
 <div class="admin-panel">
   <h2><?= $editing ? 'Edit Partner' : 'Add New Partner' ?></h2>
-  <form method="post" action="/admin/partners.php">
+  <form method="post" action="/admin/partners.php" enctype="multipart/form-data">
     <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
     <input type="hidden" name="action" value="save">
     <input type="hidden" name="id" value="<?= (int) ($editing['id'] ?? 0) ?>">
+    <input type="hidden" name="existing_logo" value="<?= e($editing['logo'] ?? '') ?>">
 
     <div class="admin-form-grid">
+      <div class="form-row span-3">
+        <label for="logo_file">Logo</label>
+        <?php if (!empty($editing['logo'])): ?>
+          <img class="admin-img-preview" src="<?= e($editing['logo']) ?>" alt="" style="margin-block-end:10px; width:56px; height:56px; border-radius:12px; object-fit:cover;">
+        <?php endif; ?>
+        <input type="file" id="logo_file" name="logo_file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml">
+      </div>
+
       <div class="form-row"><label for="name">Name</label><input type="text" id="name" name="name" value="<?= e($editing['name'] ?? '') ?>" required></div>
       <div class="form-row"><label for="weight">Font Weight (400–900)</label><input type="number" id="weight" name="weight" min="400" max="900" step="100" value="<?= (int) ($editing['weight'] ?? 700) ?>"></div>
       <div class="form-row"><label for="sort_order">Sort Order</label><input type="number" id="sort_order" name="sort_order" value="<?= (int) ($editing['sort_order'] ?? count($partners)) ?>"></div>
@@ -84,11 +95,18 @@ require __DIR__ . '/includes/layout-top.php';
   <?php else: ?>
     <div class="admin-table-wrap">
       <table class="admin-table">
-        <thead><tr><th>#</th><th>Name</th><th>Weight</th><th></th></tr></thead>
+        <thead><tr><th>#</th><th>Logo</th><th>Name</th><th>Weight</th><th></th></tr></thead>
         <tbody>
           <?php foreach ($partners as $p): ?>
             <tr>
               <td class="cell-muted"><?= (int) $p['sort_order'] ?></td>
+              <td>
+                <?php if (!empty($p['logo'])): ?>
+                  <img src="<?= e($p['logo']) ?>" alt="" style="width:36px; height:36px; border-radius:8px; object-fit:cover;">
+                <?php else: ?>
+                  <span class="cell-muted">—</span>
+                <?php endif; ?>
+              </td>
               <td class="cell-strong" style="font-weight: <?= (int) $p['weight'] ?>;"><?= e($p['name']) ?></td>
               <td class="cell-muted"><?= (int) $p['weight'] ?></td>
               <td>

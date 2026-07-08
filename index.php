@@ -60,7 +60,10 @@ require __DIR__ . '/includes/header.php';
       <div class="logo-cloud">
         <div class="logo-track">
           <?php foreach (array_merge(partners_data(), partners_data()) as $partner): ?>
-            <span class="logo-wordmark" style="font-weight: <?= (int) $partner['weight'] ?>;"><?= e($partner['name']) ?></span>
+            <span class="logo-item">
+              <?php if ($partner['logo']): ?><img src="<?= e($partner['logo']) ?>" alt="" class="logo-item__mark"><?php endif; ?>
+              <span class="logo-wordmark" style="font-weight: <?= (int) $partner['weight'] ?>;"><?= e($partner['name']) ?></span>
+            </span>
           <?php endforeach; ?>
         </div>
         <div class="logo-cloud__blur logo-cloud__blur--left"><span></span></div>
@@ -235,8 +238,12 @@ require __DIR__ . '/includes/header.php';
       <div class="testimonials-grid reveal" id="circularTestimonials">
         <div class="testimonial-images">
           <?php foreach (testimonials_data() as $i => $tItem): ?>
-            <div class="testimonial-avatar <?= $i === 0 ? 'is-active' : '' ?>" data-index="<?= $i ?>" style="background: <?= e($tItem['color']) ?>;">
-              <?= e(initials($tItem['name'])) ?>
+            <div class="testimonial-avatar <?= $i === 0 ? 'is-active' : '' ?>" data-index="<?= $i ?>" style="<?= $tItem['image'] ? '' : 'background: ' . e($tItem['color']) . ';' ?>">
+              <?php if ($tItem['image']): ?>
+                <img src="<?= e($tItem['image']) ?>" alt="<?= e($tItem['name']) ?>" class="testimonial-avatar__photo">
+              <?php else: ?>
+                <?= e(initials($tItem['name'])) ?>
+              <?php endif; ?>
             </div>
           <?php endforeach; ?>
         </div>

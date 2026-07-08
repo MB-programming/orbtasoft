@@ -1,5 +1,6 @@
 <?php
 require __DIR__ . '/includes/auth.php';
+require __DIR__ . '/../includes/uploads.php';
 admin_require_login();
 $pdo = get_db();
 
@@ -27,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = (int) ($_POST['id'] ?? 0);
         $data = [
             'name' => trim($_POST['name'] ?? ''),
+            'image' => handle_image_upload('image_file', trim($_POST['existing_image'] ?? '')),
             'role_de' => trim($_POST['role_de'] ?? ''),
             'role_en' => trim($_POST['role_en'] ?? ''),
             'role_ar' => trim($_POST['role_ar'] ?? ''),
@@ -38,10 +40,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $flashType = 'error';
         } elseif ($id > 0) {
             $data['id'] = $id;
-            $pdo->prepare('UPDATE team_members SET name=:name, role_de=:role_de, role_en=:role_en, role_ar=:role_ar, color=:color, sort_order=:sort_order WHERE id=:id')->execute($data);
+            $pdo->prepare('UPDATE team_members SET name=:name, image=:image, role_de=:role_de, role_en=:role_en, role_ar=:role_ar, color=:color, sort_order=:sort_order WHERE id=:id')->execute($data);
             $flash = 'Team member updated.';
         } else {
-            $pdo->prepare('INSERT INTO team_members (name, role_de, role_en, role_ar, color, sort_order) VALUES (:name, :role_de, :role_en, :role_ar, :color, :sort_order)')->execute($data);
+            $pdo->prepare('INSERT INTO team_members (name, image, role_de, role_en, role_ar, color, sort_order) VALUES (:name, :image, :role_de, :role_en, :role_ar, :color, :sort_order)')->execute($data);
             $flash = 'Team member created.';
         }
     }
@@ -71,15 +73,24 @@ require __DIR__ . '/includes/layout-top.php';
 
 <div class="admin-panel">
   <h2><?= $editing ? 'Edit Team Member' : 'Add New Team Member' ?></h2>
-  <form method="post" action="/admin/team.php">
+  <form method="post" action="/admin/team.php" enctype="multipart/form-data">
     <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
     <input type="hidden" name="action" value="save">
     <input type="hidden" name="id" value="<?= (int) ($editing['id'] ?? 0) ?>">
+    <input type="hidden" name="existing_image" value="<?= e($editing['image'] ?? '') ?>">
 
     <div class="admin-form-grid">
+      <div class="form-row span-3">
+        <label for="image_file">Photo (real photo recommended — falls back to an avatar if left blank)</label>
+        <?php if (!empty($editing['image'])): ?>
+          <img class="admin-img-preview" src="<?= e($editing['image']) ?>" alt="" style="margin-block-end:10px; border-radius:50%; width:80px; height:80px; object-fit:cover;">
+        <?php endif; ?>
+        <input type="file" id="image_file" name="image_file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml">
+      </div>
+
       <div class="form-row"><label for="name">Name</label><input type="text" id="name" name="name" value="<?= e($editing['name'] ?? '') ?>" required></div>
       <div class="form-row">
-        <label for="color">Avatar Color</label>
+        <label for="color">Fallback Avatar Color</label>
         <select id="color" name="color">
           <?php foreach ($palette as $i => $c): ?>
             <option value="<?= e($c) ?>" <?= ($editing['color'] ?? $palette[0]) === $c ? 'selected' : '' ?>>Palette <?= $i + 1 ?></option>
@@ -112,7 +123,13 @@ require __DIR__ . '/includes/layout-top.php';
           <?php foreach ($members as $m): ?>
             <tr>
               <td class="cell-muted"><?= (int) $m['sort_order'] ?></td>
-              <td><div class="admin-avatar-preview" style="background: <?= e($m['color']) ?>;"><?= e(initials($m['name'])) ?></div></td>
+              <td>
+                <?php if (!empty($m['image'])): ?>
+                  <img src="<?= e($m['image']) ?>" alt="" style="width:44px; height:44px; border-radius:50%; object-fit:cover;">
+                <?php else: ?>
+                  <div class="admin-avatar-preview" style="background: <?= e($m['color']) ?>;"><?= e(initials($m['name'])) ?></div>
+                <?php endif; ?>
+              </td>
               <td class="cell-strong"><?= e($m['name']) ?></td>
               <td class="cell-muted"><?= e($m['role_en']) ?></td>
               <td>

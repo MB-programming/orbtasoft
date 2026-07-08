@@ -334,16 +334,16 @@ foreach ($portfolioGallery as $slug => $images) {
 // ---------- Team ----------
 if (seed_count($pdo, 'team_members') === 0) {
     $team = [
-        ['Youssef Adel', 'CEO & Gründer', 'CEO & Founder', 'الرئيس التنفيذي والمؤسس'],
-        ['Lina Hartmann', 'Head of Design', 'Head of Design', 'رئيس قسم التصميم'],
-        ['Marco Lindqvist', 'Tech Lead', 'Tech Lead', 'قائد تقني'],
-        ['Sara El-Amin', 'Content Director', 'Content Director', 'مدير المحتوى'],
-        ['Tom Richter', 'Backend-Entwickler', 'Backend Engineer', 'مهندس أنظمة خلفية'],
-        ['Maya Okafor', 'QA & Research Lead', 'QA & Research Lead', 'قائد الجودة والأبحاث'],
+        ['Youssef Adel', '/assets/img/team-youssef-adel.svg', 'CEO & Gründer', 'CEO & Founder', 'الرئيس التنفيذي والمؤسس'],
+        ['Lina Hartmann', '/assets/img/team-lina-hartmann.svg', 'Head of Design', 'Head of Design', 'رئيس قسم التصميم'],
+        ['Marco Lindqvist', '/assets/img/team-marco-lindqvist.svg', 'Tech Lead', 'Tech Lead', 'قائد تقني'],
+        ['Sara El-Amin', '/assets/img/team-sara-el-amin.svg', 'Content Director', 'Content Director', 'مدير المحتوى'],
+        ['Tom Richter', '/assets/img/team-tom-richter.svg', 'Backend-Entwickler', 'Backend Engineer', 'مهندس أنظمة خلفية'],
+        ['Maya Okafor', '/assets/img/team-maya-okafor.svg', 'QA & Research Lead', 'QA & Research Lead', 'قائد الجودة والأبحاث'],
     ];
-    $stmt = $pdo->prepare('INSERT INTO team_members (name, role_de, role_en, role_ar, color, sort_order) VALUES (?, ?, ?, ?, ?, ?)');
+    $stmt = $pdo->prepare('INSERT INTO team_members (name, image, role_de, role_en, role_ar, color, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?)');
     foreach ($team as $i => $m) {
-        $stmt->execute([$m[0], $m[1], $m[2], $m[3], $palette[$i % count($palette)], $i]);
+        $stmt->execute([$m[0], $m[1], $m[2], $m[3], $m[4], $palette[$i % count($palette)], $i]);
     }
     echo "Seeded team members.\n";
 }
@@ -351,46 +351,46 @@ if (seed_count($pdo, 'team_members') === 0) {
 // ---------- Testimonials ----------
 if (seed_count($pdo, 'testimonials') === 0) {
     $testimonials = [
-        ['Rania Kassab', 'COO, Vertex Commerce', 'COO, Vertex Commerce', 'مدير العمليات، Vertex Commerce',
+        ['Rania Kassab', '/assets/img/testimonial-rania-kassab.svg', 'COO, Vertex Commerce', 'COO, Vertex Commerce', 'مدير العمليات، Vertex Commerce',
             'Orbtasoft hat unser Dashboard komplett neu gebaut, die Codequalität war herausragend. Die Kommunikation war jederzeit klar.',
             'Orbtasoft rebuilt our dashboard from scratch and the quality of the code was outstanding. Communication was clear at every step.',
             'أعادت أوربتاسوفت بناء لوحة التحكم الخاصة بنا من الصفر، وكانت جودة الكود استثنائية. التواصل كان واضحًا في كل خطوة.',
             $palette[0]],
-        ['Jonas Weber', 'Gründer, Solstice Labs', 'Founder, Solstice Labs', 'المؤسس، Solstice Labs',
+        ['Jonas Weber', '/assets/img/testimonial-jonas-weber.svg', 'Gründer, Solstice Labs', 'Founder, Solstice Labs', 'المؤسس، Solstice Labs',
             'Das kinematografische Design hat jede Erwartung übertroffen. Unsere Conversion-Rate stieg innerhalb weniger Wochen nach dem Launch.',
             'The cinematic design they delivered exceeded every expectation. Our conversion rate jumped within weeks of launch.',
             'التصميم السينمائي الذي قدموه فاق كل التوقعات. ارتفع معدل التحويل لدينا خلال أسابيع من الإطلاق.',
             $palette[2]],
-        ['Amara Chukwu', 'Product Lead, Atlas CRM', 'Product Lead, Atlas CRM', 'قائدة المنتج، Atlas CRM',
+        ['Amara Chukwu', '/assets/img/testimonial-amara-chukwu.svg', 'Product Lead, Atlas CRM', 'Product Lead, Atlas CRM', 'قائدة المنتج، Atlas CRM',
             'Ein seltenes Team, das in Engineering und Design gleichermaßen stark ist. Pünktlich geliefert, und das Produkt funktioniert einfach.',
             'A rare team that\'s equally strong on engineering and design. They shipped on time and the product just works.',
             'فريق نادر قوي في الهندسة والتصميم معًا. سلّموا في الموعد والمنتج يعمل ببساطة كما ينبغي.',
             $palette[4]],
-        ['Daniel Osei', 'Operations Director, Nexora', 'Operations Director, Nexora', 'مدير العمليات، Nexora',
+        ['Daniel Osei', '/assets/img/testimonial-daniel-osei.svg', 'Operations Director, Nexora', 'Operations Director, Nexora', 'مدير العمليات، Nexora',
             'Unsere Bestandsdifferenzen sind praktisch verschwunden, seit wir das neue Dashboard nutzen. Orbtasoft hat wirklich verstanden, wie unser Betrieb funktioniert, bevor sie eine Zeile Code geschrieben haben.',
             'Our stock discrepancies practically disappeared once we started using the new dashboard. Orbtasoft genuinely understood how our operations worked before writing a line of code.',
             'اختفت فروقات المخزون لدينا عمليًا بعد استخدام لوحة التحكم الجديدة. فهم فريق أوربتاسوفت طريقة عمل عملياتنا فعليًا قبل كتابة أي سطر كود.',
             $palette[5]],
-        ['Priya Nair', 'Head of E-Commerce, Brightfield', 'Head of E-Commerce, Brightfield', 'رئيسة التجارة الإلكترونية، Brightfield',
+        ['Priya Nair', '/assets/img/testimonial-priya-nair.svg', 'Head of E-Commerce, Brightfield', 'Head of E-Commerce, Brightfield', 'رئيسة التجارة الإلكترونية، Brightfield',
             'Wir haben drei neue Filialen in wenigen Wochen online gebracht, ohne unser Entwicklerteam aufzustocken. Genau das hatten wir uns von einer Partnerschaft erhofft.',
             'We brought three new stores online in a matter of weeks without growing our dev team. That is exactly what we hoped a partnership would look like.',
             'أطلقنا ثلاثة متاجر جديدة خلال أسابيع دون توسيع فريق التطوير لدينا. هذا بالضبط ما كنا نأمل أن تبدو عليه الشراكة.',
             $palette[3]],
     ];
-    $stmt = $pdo->prepare('INSERT INTO testimonials (name, role_de, role_en, role_ar, quote_de, quote_en, quote_ar, color, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+    $stmt = $pdo->prepare('INSERT INTO testimonials (name, image, role_de, role_en, role_ar, quote_de, quote_en, quote_ar, color, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
     foreach ($testimonials as $i => $t) {
-        $stmt->execute([$t[0], $t[1], $t[2], $t[3], $t[4], $t[5], $t[6], $t[7], $i]);
+        $stmt->execute([$t[0], $t[1], $t[2], $t[3], $t[4], $t[5], $t[6], $t[7], $t[8], $i]);
     }
     echo "Seeded testimonials.\n";
 } else {
     $existingNames = $pdo->query('SELECT name FROM testimonials')->fetchAll(PDO::FETCH_COLUMN);
     $newTestimonials = [
-        ['Daniel Osei', 'Operations Director, Nexora', 'Operations Director, Nexora', 'مدير العمليات، Nexora',
+        ['Daniel Osei', '/assets/img/testimonial-daniel-osei.svg', 'Operations Director, Nexora', 'Operations Director, Nexora', 'مدير العمليات، Nexora',
             'Unsere Bestandsdifferenzen sind praktisch verschwunden, seit wir das neue Dashboard nutzen. Orbtasoft hat wirklich verstanden, wie unser Betrieb funktioniert, bevor sie eine Zeile Code geschrieben haben.',
             'Our stock discrepancies practically disappeared once we started using the new dashboard. Orbtasoft genuinely understood how our operations worked before writing a line of code.',
             'اختفت فروقات المخزون لدينا عمليًا بعد استخدام لوحة التحكم الجديدة. فهم فريق أوربتاسوفت طريقة عمل عملياتنا فعليًا قبل كتابة أي سطر كود.',
             $palette[5]],
-        ['Priya Nair', 'Head of E-Commerce, Brightfield', 'Head of E-Commerce, Brightfield', 'رئيسة التجارة الإلكترونية، Brightfield',
+        ['Priya Nair', '/assets/img/testimonial-priya-nair.svg', 'Head of E-Commerce, Brightfield', 'Head of E-Commerce, Brightfield', 'رئيسة التجارة الإلكترونية، Brightfield',
             'Wir haben drei neue Filialen in wenigen Wochen online gebracht, ohne unser Entwicklerteam aufzustocken. Genau das hatten wir uns von einer Partnerschaft erhofft.',
             'We brought three new stores online in a matter of weeks without growing our dev team. That is exactly what we hoped a partnership would look like.',
             'أطلقنا ثلاثة متاجر جديدة خلال أسابيع دون توسيع فريق التطوير لدينا. هذا بالضبط ما كنا نأمل أن تبدو عليه الشراكة.',
@@ -399,9 +399,9 @@ if (seed_count($pdo, 'testimonials') === 0) {
     $missing = array_filter($newTestimonials, fn($t) => !in_array($t[0], $existingNames, true));
     if ($missing) {
         $nextOrder = (int) $pdo->query('SELECT COALESCE(MAX(sort_order), -1) + 1 FROM testimonials')->fetchColumn();
-        $stmt = $pdo->prepare('INSERT INTO testimonials (name, role_de, role_en, role_ar, quote_de, quote_en, quote_ar, color, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        $stmt = $pdo->prepare('INSERT INTO testimonials (name, image, role_de, role_en, role_ar, quote_de, quote_en, quote_ar, color, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
         foreach (array_values($missing) as $i => $t) {
-            $stmt->execute([$t[0], $t[1], $t[2], $t[3], $t[4], $t[5], $t[6], $t[7], $nextOrder + $i]);
+            $stmt->execute([$t[0], $t[1], $t[2], $t[3], $t[4], $t[5], $t[6], $t[7], $t[8], $nextOrder + $i]);
         }
         echo 'Added ' . count($missing) . " new testimonial(s).\n";
     }
@@ -410,12 +410,18 @@ if (seed_count($pdo, 'testimonials') === 0) {
 // ---------- Partners ----------
 if (seed_count($pdo, 'partners') === 0) {
     $partners = [
-        ['Nova Analytics', 800], ['Vertex Commerce', 700], ['Lumen Booking', 600], ['Atlas CRM', 800],
-        ['Solstice Labs', 700], ['Nexora', 900], ['Brightfield', 600], ['Cobalt Systems', 700],
+        ['Nova Analytics', '/assets/img/partner-nova-analytics.svg', 800],
+        ['Vertex Commerce', '/assets/img/partner-vertex-commerce.svg', 700],
+        ['Lumen Booking', '/assets/img/partner-lumen-booking.svg', 600],
+        ['Atlas CRM', '/assets/img/partner-atlas-crm.svg', 800],
+        ['Solstice Labs', '/assets/img/partner-solstice-labs.svg', 700],
+        ['Nexora', '/assets/img/partner-nexora.svg', 900],
+        ['Brightfield', '/assets/img/partner-brightfield.svg', 600],
+        ['Cobalt Systems', '/assets/img/partner-cobalt-systems.svg', 700],
     ];
-    $stmt = $pdo->prepare('INSERT INTO partners (name, weight, sort_order) VALUES (?, ?, ?)');
+    $stmt = $pdo->prepare('INSERT INTO partners (name, logo, weight, sort_order) VALUES (?, ?, ?, ?)');
     foreach ($partners as $i => $p) {
-        $stmt->execute([$p[0], $p[1], $i]);
+        $stmt->execute([$p[0], $p[1], $p[2], $i]);
     }
     echo "Seeded partners.\n";
 }
