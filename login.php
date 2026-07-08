@@ -13,6 +13,7 @@ $errorMap = [
 ];
 $errorCode = $_GET['error'] ?? '';
 $errorKey = $errorMap[$errorCode] ?? null;
+$justReset = isset($_GET['reset']);
 
 $current_page = 'login';
 require __DIR__ . '/includes/header.php';
@@ -24,6 +25,10 @@ require __DIR__ . '/includes/header.php';
       <div class="auth-page__form-inner">
         <h1><?= e(t('auth_login_title')) ?></h1>
         <p><?= e(t('auth_login_desc')) ?></p>
+
+        <?php if ($justReset): ?>
+          <div class="form-status is-success" style="display:block; margin-block-end:20px;"><?= e(t('auth_reset_success')) ?></div>
+        <?php endif; ?>
 
         <?php if ($errorKey): ?>
           <div class="form-status is-error" style="display:block; margin-block-end:20px;"><?= e(t($errorKey)) ?></div>
@@ -47,7 +52,7 @@ require __DIR__ . '/includes/header.php';
 
           <div class="auth-options">
             <label><input type="checkbox" name="remember"> <?= e(t('auth_remember')) ?></label>
-            <a href="/contact.php"><?= e(t('auth_reset_password')) ?></a>
+            <a href="/forgot-password.php"><?= e(t('auth_reset_password')) ?></a>
           </div>
 
           <button type="submit" class="btn btn--primary" style="width:100%;"><?= e(t('auth_signin_btn')) ?></button>
@@ -68,7 +73,9 @@ require __DIR__ . '/includes/header.php';
         <div class="auth-testimonial-stack">
           <?php foreach (array_slice(testimonials_data(), 0, 2) as $tItem): ?>
             <div class="auth-testimonial-card">
-              <div class="auth-testimonial-card__avatar" style="background: <?= e($tItem['color']) ?>;"><?= e(initials($tItem['name'])) ?></div>
+              <div class="auth-testimonial-card__avatar" style="<?= $tItem['image'] ? '' : 'background: ' . e($tItem['color']) . ';' ?>">
+                <?php if ($tItem['image']): ?><img src="<?= e($tItem['image']) ?>" alt="" class="auth-testimonial-card__photo"><?php else: ?><?= e(initials($tItem['name'])) ?><?php endif; ?>
+              </div>
               <p>
                 <span class="name"><?= e($tItem['name']) ?></span><br>
                 <span class="role"><?= e($tItem['role']) ?></span><br>

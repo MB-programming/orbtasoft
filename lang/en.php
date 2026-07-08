@@ -150,6 +150,24 @@ return [
     'auth_success_registered'  => 'Account created! Redirecting…',
     'auth_success_login'       => 'Welcome back! Redirecting…',
 
+    'auth_forgot_title'   => 'Reset your password',
+    'auth_forgot_desc'    => "Enter your account email and we'll send you a link to set a new password.",
+    'auth_forgot_btn'     => 'Send Reset Link',
+    'auth_forgot_sent'    => "If an account exists for that email, we've sent a password reset link. Check your inbox.",
+    'auth_forgot_back_to_login' => 'Back to sign in',
+
+    'auth_reset_title'    => 'Set a new password',
+    'auth_reset_desc'     => 'Choose a new password for your account.',
+    'auth_reset_new_password' => 'New Password',
+    'auth_reset_confirm_password' => 'Confirm New Password',
+    'auth_reset_btn'      => 'Update Password',
+    'auth_reset_invalid'  => 'This reset link is invalid or has expired. Please request a new one.',
+    'auth_reset_request_new' => 'Request a new reset link',
+    'auth_reset_success'  => 'Your password has been updated.',
+
+    'auth_email_reset_subject' => 'Reset your Orbtasoft password',
+    'auth_email_reset_body' => "Hi {{name}},\n\nWe received a request to reset your Orbtasoft password. Click the link below to choose a new one — it expires in 1 hour:\n\n{{reset_link}}\n\nIf you didn't request this, you can safely ignore this email.",
+
     'blog_kicker'         => 'Journal',
     'blog_heading'        => 'Notes on building software',
     'blog_desc'           => 'Case studies, engineering lessons and design thinking from the Orbtasoft team.',

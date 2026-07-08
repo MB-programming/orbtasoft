@@ -130,6 +130,21 @@ function render_email_template(string $template, array $placeholders): string
     return strtr($template, $replacements);
 }
 
+/** Sends a transactional email to an arbitrary recipient (e.g. password reset) using the site's configured SMTP settings. */
+function send_user_mail(string $toEmail, string $subject, string $body): bool
+{
+    $settings = get_settings();
+    return send_smtp_mail([
+        'host' => $settings['smtp_host'] ?? '',
+        'port' => (int) ($settings['smtp_port'] ?? 587),
+        'encryption' => $settings['smtp_encryption'] ?? 'tls',
+        'username' => $settings['smtp_username'] ?? '',
+        'password' => $settings['smtp_password'] ?? '',
+        'from_email' => $settings['smtp_from_email'] ?? '',
+        'from_name' => $settings['smtp_from_name'] ?? '',
+    ], $toEmail, $subject, $body);
+}
+
 function notify_admin(string $type, array $placeholders): bool
 {
     $settings = get_settings();

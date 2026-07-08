@@ -11,6 +11,7 @@ $settingKeys = [
     'notify_email', 'notify_on_contact', 'notify_on_newsletter',
     'contact_email_subject', 'contact_email_body',
     'newsletter_email_subject', 'newsletter_email_body',
+    'social_github', 'social_linkedin', 'social_x',
 ];
 $heroVariants = [
     'cinematic' => ['label' => 'Cinematic', 'desc' => 'Three.js particle field with a wireframe globe drifting behind the headline.'],
@@ -150,6 +151,16 @@ require __DIR__ . '/includes/layout-top.php';
     <div class="admin-form-grid">
       <div class="form-row span-3"><label for="newsletter_email_subject">Subject</label><input type="text" id="newsletter_email_subject" name="newsletter_email_subject" value="<?= e(sv($settings, 'newsletter_email_subject')) ?>"></div>
       <div class="form-row span-3"><label for="newsletter_email_body">Body</label><textarea id="newsletter_email_body" name="newsletter_email_body" rows="4"><?= e(sv($settings, 'newsletter_email_body')) ?></textarea></div>
+    </div>
+  </div>
+
+  <div class="admin-panel">
+    <h2>Social Links</h2>
+    <p style="color:var(--color-muted); font-size:.85rem; margin-block-end:16px;">Leave blank to hide an icon from the site footer.</p>
+    <div class="admin-form-grid">
+      <div class="form-row"><label for="social_github">GitHub URL</label><input type="url" id="social_github" name="social_github" placeholder="https://github.com/yourorg" value="<?= e(sv($settings, 'social_github')) ?>"></div>
+      <div class="form-row"><label for="social_linkedin">LinkedIn URL</label><input type="url" id="social_linkedin" name="social_linkedin" placeholder="https://linkedin.com/company/yourorg" value="<?= e(sv($settings, 'social_linkedin')) ?>"></div>
+      <div class="form-row"><label for="social_x">X (Twitter) URL</label><input type="url" id="social_x" name="social_x" placeholder="https://x.com/yourorg" value="<?= e(sv($settings, 'social_x')) ?>"></div>
     </div>
   </div>
 

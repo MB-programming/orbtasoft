@@ -1,4 +1,11 @@
-<?php $year = date('Y'); ?>
+<?php
+$year = date('Y');
+$socialLinks = [
+    ['url' => site_setting('social_github'), 'label' => 'GitHub', 'icon' => 'code-2'],
+    ['url' => site_setting('social_linkedin'), 'label' => 'LinkedIn', 'icon' => 'briefcase'],
+    ['url' => site_setting('social_x'), 'label' => 'X', 'icon' => 'send'],
+];
+?>
 <footer class="site-footer site-footer--pro">
   <div class="container site-footer__grid">
     <div class="site-footer__brand">
@@ -7,11 +14,15 @@
         <span class="brand__name"><?= e(t('hero_brand')) ?></span>
       </a>
       <p><?= e(t('footer_tagline')) ?></p>
+      <?php if (array_filter($socialLinks, fn($s) => $s['url'] !== '')): ?>
       <div class="site-footer__social">
-        <a href="#" aria-label="GitHub"><?= icon('code-2') ?></a>
-        <a href="#" aria-label="LinkedIn"><?= icon('briefcase') ?></a>
-        <a href="#" aria-label="X"><?= icon('send') ?></a>
+        <?php foreach ($socialLinks as $social): ?>
+          <?php if ($social['url'] !== ''): ?>
+            <a href="<?= e($social['url']) ?>" target="_blank" rel="noopener noreferrer" aria-label="<?= e($social['label']) ?>"><?= icon($social['icon']) ?></a>
+          <?php endif; ?>
+        <?php endforeach; ?>
       </div>
+      <?php endif; ?>
     </div>
 
     <div class="site-footer__col">

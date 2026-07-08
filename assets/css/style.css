@@ -855,9 +855,10 @@ body.is-rtl .work-gallery__hint .arrow::after { transform: rotate(-135deg); }
   border: 1px solid rgba(255,255,255,.1);
 }
 .auth-testimonial-card__avatar {
-  flex: 0 0 auto; width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
-  font-size: .8rem; font-weight: 800; color: #fff;
+  position: relative; flex: 0 0 auto; width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+  font-size: .8rem; font-weight: 800; color: #fff; overflow: hidden;
 }
+.auth-testimonial-card__photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .auth-testimonial-card p { font-size: .8rem; line-height: 1.5; }
 .auth-testimonial-card .name { font-weight: 700; color: #fff; }
 .auth-testimonial-card .role { color: rgba(219,234,254,.55); margin-block-end: 4px; }

@@ -78,7 +78,9 @@ require __DIR__ . '/includes/header.php';
         <div class="auth-testimonial-stack">
           <?php foreach (array_slice(testimonials_data(), 1, 2) as $tItem): ?>
             <div class="auth-testimonial-card">
-              <div class="auth-testimonial-card__avatar" style="background: <?= e($tItem['color']) ?>;"><?= e(initials($tItem['name'])) ?></div>
+              <div class="auth-testimonial-card__avatar" style="<?= $tItem['image'] ? '' : 'background: ' . e($tItem['color']) . ';' ?>">
+                <?php if ($tItem['image']): ?><img src="<?= e($tItem['image']) ?>" alt="" class="auth-testimonial-card__photo"><?php else: ?><?= e(initials($tItem['name'])) ?><?php endif; ?>
+              </div>
               <p>
                 <span class="name"><?= e($tItem['name']) ?></span><br>
                 <span class="role"><?= e($tItem['role']) ?></span><br>

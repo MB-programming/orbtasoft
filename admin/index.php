@@ -13,7 +13,9 @@ function admin_count(?PDO $pdo, string $table): int
 $stats = [
     ['label' => 'Contact Messages', 'href' => '/admin/messages.php', 'count' => admin_count($pdo, 'contact_messages')],
     ['label' => 'Newsletter Subscribers', 'href' => '/admin/newsletter.php', 'count' => admin_count($pdo, 'newsletter_subscribers')],
-    ['label' => 'Registered Users', 'href' => '#', 'count' => admin_count($pdo, 'users')],
+    ['label' => 'Registered Users', 'href' => '/admin/clients.php', 'count' => admin_count($pdo, 'users')],
+    ['label' => 'Invoices', 'href' => '/admin/invoices.php', 'count' => admin_count($pdo, 'invoices')],
+    ['label' => 'Blog Posts', 'href' => '/admin/blog.php', 'count' => admin_count($pdo, 'blog_posts')],
     ['label' => 'Services', 'href' => '/admin/services.php', 'count' => admin_count($pdo, 'services')],
     ['label' => 'Portfolio Items', 'href' => '/admin/portfolio.php', 'count' => admin_count($pdo, 'portfolio_items')],
     ['label' => 'Team Members', 'href' => '/admin/team.php', 'count' => admin_count($pdo, 'team_members')],

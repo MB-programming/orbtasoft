@@ -150,6 +150,24 @@ return [
     'auth_success_registered'  => 'Konto erstellt! Weiterleitung…',
     'auth_success_login'       => 'Willkommen zurück! Weiterleitung…',
 
+    'auth_forgot_title'   => 'Passwort zurücksetzen',
+    'auth_forgot_desc'    => 'Geben Sie Ihre Konto-E-Mail ein, und wir senden Ihnen einen Link, um ein neues Passwort festzulegen.',
+    'auth_forgot_btn'     => 'Link zum Zurücksetzen senden',
+    'auth_forgot_sent'    => 'Falls für diese E-Mail ein Konto existiert, haben wir einen Link zum Zurücksetzen gesendet. Bitte prüfen Sie Ihr Postfach.',
+    'auth_forgot_back_to_login' => 'Zurück zur Anmeldung',
+
+    'auth_reset_title'    => 'Neues Passwort festlegen',
+    'auth_reset_desc'     => 'Wählen Sie ein neues Passwort für Ihr Konto.',
+    'auth_reset_new_password' => 'Neues Passwort',
+    'auth_reset_confirm_password' => 'Neues Passwort bestätigen',
+    'auth_reset_btn'      => 'Passwort aktualisieren',
+    'auth_reset_invalid'  => 'Dieser Link zum Zurücksetzen ist ungültig oder abgelaufen. Bitte fordern Sie einen neuen an.',
+    'auth_reset_request_new' => 'Neuen Link anfordern',
+    'auth_reset_success'  => 'Ihr Passwort wurde aktualisiert.',
+
+    'auth_email_reset_subject' => 'Setzen Sie Ihr Orbtasoft-Passwort zurück',
+    'auth_email_reset_body' => "Hallo {{name}},\n\nWir haben eine Anfrage zum Zurücksetzen Ihres Orbtasoft-Passworts erhalten. Klicken Sie auf den folgenden Link, um ein neues festzulegen — er läuft in 1 Stunde ab:\n\n{{reset_link}}\n\nWenn Sie dies nicht angefordert haben, können Sie diese E-Mail ignorieren.",
+
     'blog_kicker'         => 'Journal',
     'blog_heading'        => 'Notizen zum Softwarebau',
     'blog_desc'           => 'Fallstudien, technische Lektionen und Design-Denkweisen vom Orbtasoft-Team.',
