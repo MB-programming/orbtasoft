@@ -1,5 +1,6 @@
 <?php
 require __DIR__ . '/../includes/functions.php';
+require_once __DIR__ . '/../includes/service-visuals.php';
 
 $slug = $_GET['slug'] ?? '';
 $service = $slug ? service_by_slug($slug) : null;
@@ -10,11 +11,18 @@ if (!$service) {
     exit;
 }
 
+$visualData = service_visual_data()[$service['slug']] ?? null;
+
 $neighbors = service_neighbors((int) $service['id']);
 $prevService = $neighbors['prev'] ? service_by_slug($neighbors['prev']) : null;
 $nextService = $neighbors['next'] ? service_by_slug($neighbors['next']) : null;
 
 $current_page = 'services';
+$seo_entity_type = 'service';
+$seo_entity_key = $service['slug'];
+$seo_fallback_title = $service['title'] . ' — ' . t('hero_brand');
+$seo_fallback_description = mb_substr(strip_tags($service['description']), 0, 200);
+$seo_fallback_image = $service['image'] ?? '';
 require __DIR__ . '/../includes/header.php';
 ?>
 
@@ -32,7 +40,9 @@ require __DIR__ . '/../includes/header.php';
 
     <section class="section section--tight">
       <div class="container container--narrow">
-        <?php if (!empty($service['image'])): ?>
+        <?php if ($visualData): ?>
+          <div class="reveal"><?= render_service_visual($service['slug']) ?></div>
+        <?php elseif (!empty($service['image'])): ?>
           <div class="project-detail__cover reveal">
             <img src="<?= e($service['image']) ?>" alt="<?= e($service['title']) ?>">
           </div>
@@ -42,8 +52,39 @@ require __DIR__ . '/../includes/header.php';
             <p><?= e($paragraph) ?></p>
           <?php endforeach; ?>
         </div>
+
+        <?php if ($visualData): ?>
+          <h2 class="service-section-title reveal"><?= e(t('service_whats_included')) ?></h2>
+          <div class="service-feature-list reveal">
+            <?php foreach ($visualData['features'] as $feature): ?>
+              <div class="service-feature-item"><?= icon('check-circle') ?> <span><?= e($feature) ?></span></div>
+            <?php endforeach; ?>
+          </div>
+
+          <h2 class="service-section-title reveal"><?= e(t('service_technologies')) ?></h2>
+          <div class="project-tech-pills reveal">
+            <?php foreach ($visualData['tech'] as $tech): ?><span class="project-tech-pill"><?= e($tech) ?></span><?php endforeach; ?>
+          </div>
+        <?php endif; ?>
       </div>
     </section>
+
+    <?php if ($visualData): ?>
+      <section class="section section--tight service-process-section">
+        <div class="container container--narrow">
+          <h2 class="service-section-title reveal"><?= e(t('service_our_process')) ?></h2>
+          <div class="service-process">
+            <?php for ($i = 1; $i <= 5; $i++): ?>
+              <div class="service-process__step reveal">
+                <span class="service-process__num"><?= $i ?></span>
+                <h3><?= e(t('process_step_' . $i . '_title')) ?></h3>
+                <p><?= e(t('process_step_' . $i . '_desc')) ?></p>
+              </div>
+            <?php endfor; ?>
+          </div>
+        </div>
+      </section>
+    <?php endif; ?>
 
     <?php if ($prevService || $nextService): ?>
       <section class="section section--tight post-nav-section">

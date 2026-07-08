@@ -47,6 +47,25 @@ CREATE TABLE IF NOT EXISTS site_strings (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
+-- Per-entity SEO overrides: static pages, portfolio projects, services, blog posts.
+-- Global SEO defaults (title suffix, analytics IDs, org schema, verification codes) live in `settings`.
+CREATE TABLE IF NOT EXISTS seo_meta (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    entity_type VARCHAR(20) NOT NULL,
+    entity_key VARCHAR(160) NOT NULL,
+    seo_title_de VARCHAR(255) NOT NULL DEFAULT '',
+    seo_title_en VARCHAR(255) NOT NULL DEFAULT '',
+    seo_title_ar VARCHAR(255) NOT NULL DEFAULT '',
+    seo_description_de VARCHAR(320) NOT NULL DEFAULT '',
+    seo_description_en VARCHAR(320) NOT NULL DEFAULT '',
+    seo_description_ar VARCHAR(320) NOT NULL DEFAULT '',
+    og_image VARCHAR(255) NOT NULL DEFAULT '',
+    canonical_url VARCHAR(255) NOT NULL DEFAULT '',
+    noindex TINYINT(1) NOT NULL DEFAULT 0,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY entity_unique (entity_type, entity_key)
+) ENGINE=InnoDB;
+
 -- ============ Admin-managed content ============
 
 CREATE TABLE IF NOT EXISTS services (

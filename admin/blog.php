@@ -1,6 +1,7 @@
 <?php
 require __DIR__ . '/includes/auth.php';
 require __DIR__ . '/../includes/uploads.php';
+require_once __DIR__ . '/../includes/seo.php';
 admin_require_login();
 $pdo = get_db();
 
@@ -58,15 +59,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $flash = str_contains($e->getMessage(), 'Duplicate') ? 'That slug is already in use — choose another.' : 'Something went wrong, please try again.';
                 $flashType = 'error';
             }
+            if ($flashType === 'success') {
+                seo_meta_save('blog_post', $data['slug'], $_POST);
+            }
         }
     }
 }
 
 $editing = null;
+$seoData = null;
 if (isset($_GET['edit'])) {
     $stmt = $pdo->prepare('SELECT * FROM blog_posts WHERE id = :id');
     $stmt->execute(['id' => (int) $_GET['edit']]);
     $editing = $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    if ($editing) {
+        $seoData = seo_meta_fetch('blog_post', $editing['slug']);
+    }
 }
 
 $posts = $pdo->query('SELECT * FROM blog_posts ORDER BY published_at DESC, id DESC')->fetchAll(PDO::FETCH_ASSOC);
@@ -117,6 +125,8 @@ require __DIR__ . '/includes/layout-top.php';
       <div class="form-row span-3"><label for="content_en">Content (English — separate paragraphs with a blank line)</label><textarea id="content_en" name="content_en" rows="8" required><?= e($editing['content_en'] ?? '') ?></textarea></div>
       <div class="form-row span-3"><label for="content_ar">Content (العربية — افصل الفقرات بسطر فارغ)</label><textarea id="content_ar" name="content_ar" dir="rtl" rows="8" required><?= e($editing['content_ar'] ?? '') ?></textarea></div>
     </div>
+
+    <?php require __DIR__ . '/includes/seo-fields.php'; ?>
 
     <div class="admin-form-actions">
       <button type="submit" class="btn btn--primary btn--sm"><?= $editing ? 'Save Changes' : 'Create Post' ?></button>

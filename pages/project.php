@@ -15,6 +15,11 @@ $prevProject = $neighbors['prev'] ? portfolio_item_by_slug($neighbors['prev']) :
 $nextProject = $neighbors['next'] ? portfolio_item_by_slug($neighbors['next']) : null;
 
 $current_page = 'portfolio';
+$seo_entity_type = 'project';
+$seo_entity_key = $project['slug'];
+$seo_fallback_title = $project['title'] . ' — ' . t('hero_brand');
+$seo_fallback_description = mb_substr(strip_tags($project['description']), 0, 200);
+$seo_fallback_image = $project['image'];
 require __DIR__ . '/../includes/header.php';
 ?>
 

@@ -1,6 +1,7 @@
 <?php
 require __DIR__ . '/includes/auth.php';
 require __DIR__ . '/../includes/uploads.php';
+require_once __DIR__ . '/../includes/seo.php';
 admin_require_login();
 $pdo = get_db();
 
@@ -61,6 +62,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $flash = str_contains($e->getMessage(), 'Duplicate') ? 'That slug is already in use — choose another.' : 'Something went wrong, please try again.';
                 $flashType = 'error';
             }
+            if ($flashType === 'success') {
+                seo_meta_save('project', $data['slug'], $_POST);
+            }
         }
         if (!$flash || $flashType === 'success') {
             header('Location: /admin/portfolio.php?edit=' . $id . '&saved=1');
@@ -87,11 +91,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $editing = null;
 $galleryImages = [];
+$seoData = null;
 if (isset($_GET['edit'])) {
     $stmt = $pdo->prepare('SELECT * FROM portfolio_items WHERE id = :id');
     $stmt->execute(['id' => (int) $_GET['edit']]);
     $editing = $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     if ($editing) {
+        $seoData = seo_meta_fetch('project', $editing['slug']);
         $stmt = $pdo->prepare('SELECT * FROM portfolio_gallery WHERE portfolio_id = :id ORDER BY sort_order ASC, id ASC');
         $stmt->execute(['id' => $editing['id']]);
         $galleryImages = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -167,6 +173,8 @@ require __DIR__ . '/includes/layout-top.php';
       <div class="form-row span-3"><label for="description_en">Case study (English)</label><textarea id="description_en" name="description_en" rows="5"><?= e($editing['description_en'] ?? '') ?></textarea></div>
       <div class="form-row span-3"><label for="description_ar">Case study (العربية)</label><textarea id="description_ar" name="description_ar" dir="rtl" rows="5"><?= e($editing['description_ar'] ?? '') ?></textarea></div>
     </div>
+
+    <?php require __DIR__ . '/includes/seo-fields.php'; ?>
 
     <div class="admin-form-actions">
       <button type="submit" class="btn btn--primary btn--sm"><?= $editing ? 'Save Changes' : 'Create Item' ?></button>

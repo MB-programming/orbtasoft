@@ -182,6 +182,8 @@ require __DIR__ . '/../includes/header.php';
             <?php endif; ?>
           </div>
 
+          <?= tools_render_cta() ?>
+
           <a href="/pages/tool-analysis.php" class="tool-check-another"><?= e(t('tools_check_another')) ?></a>
         </div>
       <?php endif; ?>

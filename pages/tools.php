@@ -4,10 +4,13 @@ $current_page = 'tools';
 require __DIR__ . '/../includes/header.php';
 
 $tools = [
-    ['slug' => 'performance', 'icon' => 'gauge',        'title' => t('tools_card_performance_title'), 'desc' => t('tools_card_performance_desc')],
-    ['slug' => 'analysis',    'icon' => 'bar-chart-3',  'title' => t('tools_card_analysis_title'),    'desc' => t('tools_card_analysis_desc')],
-    ['slug' => 'security',    'icon' => 'shield-alert', 'title' => t('tools_card_security_title'),    'desc' => t('tools_card_security_desc')],
-    ['slug' => 'seo',         'icon' => 'search',        'title' => t('tools_card_seo_title'),         'desc' => t('tools_card_seo_desc')],
+    ['slug' => 'performance',  'icon' => 'gauge',            'title' => t('tools_card_performance_title'), 'desc' => t('tools_card_performance_desc')],
+    ['slug' => 'analysis',     'icon' => 'bar-chart-3',      'title' => t('tools_card_analysis_title'),    'desc' => t('tools_card_analysis_desc')],
+    ['slug' => 'security',     'icon' => 'shield-alert',     'title' => t('tools_card_security_title'),    'desc' => t('tools_card_security_desc')],
+    ['slug' => 'seo',          'icon' => 'search',           'title' => t('tools_card_seo_title'),         'desc' => t('tools_card_seo_desc')],
+    ['slug' => 'keywords',     'icon' => 'send',             'title' => t('tools_card_keywords_title'),    'desc' => t('tools_card_keywords_desc')],
+    ['slug' => 'uiux',         'icon' => 'layout-panel-top', 'title' => t('tools_card_uiux_title'),        'desc' => t('tools_card_uiux_desc')],
+    ['slug' => 'ai-checker',   'icon' => 'star',             'title' => t('tools_card_ai_title'),          'desc' => t('tools_card_ai_desc')],
 ];
 ?>
 

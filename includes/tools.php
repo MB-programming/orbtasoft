@@ -432,3 +432,55 @@ function tools_probe_asset_size(string $url): ?int
     }
     return $result['size_download'];
 }
+
+/**
+ * Generates real keyword variations from a single seed word, grouped by search intent.
+ * Purely template-based (no external keyword-volume API involved) — honestly a generator, not a data source.
+ */
+function generate_keyword_ideas(string $seed, string $lang): array
+{
+    $kw = trim($seed);
+    $year = date('Y');
+
+    $templates = [
+        'en' => [
+            'questions' => ['what is {kw}', 'how does {kw} work', 'why use {kw}', 'when to use {kw}', 'how to choose {kw}', 'is {kw} worth it', 'what does {kw} cost'],
+            'comparisons' => ['{kw} vs competitors', 'best {kw}', '{kw} alternative', '{kw} or diy', '{kw} with support'],
+            'commercial' => ['{kw} pricing', '{kw} cost', '{kw} packages', '{kw} services', 'affordable {kw}', 'professional {kw}', '{kw} agency', '{kw} company', "{kw} {$year}"],
+            'longtail' => ['how to get started with {kw}', '{kw} for small business', '{kw} for beginners', '{kw} for startups', 'benefits of {kw}', '{kw} best practices', 'common {kw} mistakes'],
+            'local' => ['{kw} near me', 'local {kw} service', '{kw} consultant', '{kw} freelancer', 'hire {kw} expert'],
+        ],
+        'de' => [
+            'questions' => ['was ist {kw}', 'wie funktioniert {kw}', 'warum {kw} nutzen', 'wann {kw} einsetzen', 'wie wählt man {kw} aus', 'lohnt sich {kw}', 'was kostet {kw}'],
+            'comparisons' => ['{kw} im Vergleich', 'bestes {kw}', '{kw} Alternative', '{kw} oder selbst machen', '{kw} mit Support'],
+            'commercial' => ['{kw} Preise', '{kw} Kosten', '{kw} Pakete', '{kw} Dienstleistungen', 'günstiges {kw}', 'professionelles {kw}', '{kw} Agentur', '{kw} Firma', "{kw} {$year}"],
+            'longtail' => ['wie startet man mit {kw}', '{kw} für kleine Unternehmen', '{kw} für Anfänger', '{kw} für Startups', 'Vorteile von {kw}', '{kw} Best Practices', 'häufige {kw}-Fehler'],
+            'local' => ['{kw} in meiner Nähe', 'lokaler {kw}-Service', '{kw} Berater', '{kw} Freelancer', '{kw}-Experte beauftragen'],
+        ],
+        'ar' => [
+            'questions' => ['ما هو {kw}', 'كيف يعمل {kw}', 'ليه تستخدم {kw}', 'إمتى تستخدم {kw}', 'إزاي تختار {kw}', 'هل {kw} يستاهل', 'كام سعر {kw}'],
+            'comparisons' => ['{kw} مقابل المنافسين', 'أفضل {kw}', 'بديل {kw}', '{kw} أو تعمله بنفسك', '{kw} مع دعم فني'],
+            'commercial' => ['أسعار {kw}', 'تكلفة {kw}', 'باقات {kw}', 'خدمات {kw}', '{kw} بسعر مناسب', '{kw} احترافي', 'شركة {kw}', "{kw} {$year}"],
+            'longtail' => ['إزاي تبدأ مع {kw}', '{kw} للمشاريع الصغيرة', '{kw} للمبتدئين', '{kw} للستارت أب', 'فوائد {kw}', 'أفضل ممارسات {kw}', 'أخطاء شائعة في {kw}'],
+            'local' => ['{kw} بالقرب مني', 'خدمة {kw} محلية', 'مستشار {kw}', 'فريلانسر {kw}', 'استعن بخبير {kw}'],
+        ],
+    ];
+
+    $set = $templates[$lang] ?? $templates['en'];
+    $result = [];
+    foreach ($set as $group => $patterns) {
+        $result[$group] = array_map(fn($tpl) => str_replace('{kw}', $kw, $tpl), $patterns);
+    }
+    return $result;
+}
+
+/** Shared "hire us to fix this" CTA shown at the bottom of every tool result. */
+function tools_render_cta(): string
+{
+    return '<div class="cta-section" style="padding-block:0; margin-block-start:48px;">'
+        . '<div class="tool-cta-card reveal">'
+        . '<h2>' . e(t('tools_cta_heading')) . '</h2>'
+        . '<p>' . e(t('tools_cta_desc')) . '</p>'
+        . '<a href="/pages/contact.php" class="btn btn--primary">' . e(t('tools_cta_btn')) . '</a>'
+        . '</div></div>';
+}

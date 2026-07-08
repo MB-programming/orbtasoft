@@ -1,8 +1,20 @@
 <?php
-/** Expects (optional): $current_page = 'home'|'services'|'portfolio'|'about'|'contact' */
+/**
+ * Expects (optional): $current_page = 'home'|'services'|'portfolio'|'about'|'contact'
+ * Also expects (optional, for per-entity SEO overrides): $seo_entity_type, $seo_entity_key,
+ * $seo_fallback_title, $seo_fallback_description, $seo_fallback_image, $seo_fallback_canonical
+ */
+require_once __DIR__ . '/seo.php';
 $current_page = $current_page ?? 'home';
 $lang = current_lang();
 $is_rtl = $lang === 'ar';
+
+$seo = seo_resolve($seo_entity_type ?? 'page', $seo_entity_key ?? $current_page, [
+    'title' => $seo_fallback_title ?? t('meta_title'),
+    'description' => $seo_fallback_description ?? t('meta_desc'),
+    'image' => $seo_fallback_image ?? '',
+    'canonical' => $seo_fallback_canonical ?? null,
+]);
 
 $nav_links = [
     'home'      => ['label' => t('nav_home'),      'href' => '/index.php'],
@@ -28,8 +40,7 @@ $authUser = current_user();
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?= e(t('meta_title')) ?></title>
-<meta name="description" content="<?= e(t('meta_desc')) ?>">
+<?php seo_render_head($seo); ?>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22><rect width=%2224%22 height=%2224%22 rx=%225%22 fill=%22%2305070d%22/><ellipse cx=%2212%22 cy=%2212%22 rx=%229%22 ry=%224%22 fill=%22none%22 stroke=%22%233b82f6%22 stroke-width=%221.6%22 transform=%22rotate(-30 12 12)%22/><circle cx=%2212%22 cy=%2212%22 r=%222.6%22 fill=%22%2360a5fa%22/><circle cx=%2220%22 cy=%227.2%22 r=%221.6%22 fill=%22%2360a5fa%22/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

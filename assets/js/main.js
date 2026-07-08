@@ -485,7 +485,40 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ---------- Chat: emoji picker, attachments, voice notes ---------- */
   initChatForms();
+
+  /* ---------- Service detail: animated per-service visuals ---------- */
+  initServiceVisuals();
 });
+
+function initServiceVisuals() {
+  var visual = document.querySelector('[data-visual]');
+  if (!visual || typeof IntersectionObserver === 'undefined') return;
+
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-revealed');
+        if (entry.target.hasAttribute('data-counted')) return;
+        entry.target.setAttribute('data-counted', '1');
+        entry.target.querySelectorAll('[data-count]').forEach(function (el) {
+          var target = parseFloat(el.getAttribute('data-count'));
+          var start = null;
+          var duration = 1200;
+          function step(ts) {
+            if (!start) start = ts;
+            var progress = Math.min((ts - start) / duration, 1);
+            el.textContent = Math.round(target * progress);
+            if (progress < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        });
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  observer.observe(visual);
+}
 
 /* Shared by the client account chat (main.js) and the admin chat (admin.js). */
 function initChatForms() {

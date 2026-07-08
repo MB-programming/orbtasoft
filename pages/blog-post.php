@@ -15,6 +15,11 @@ $prevPost = $neighbors['prev'] ? blog_post_by_slug($neighbors['prev']) : null;
 $nextPost = $neighbors['next'] ? blog_post_by_slug($neighbors['next']) : null;
 
 $current_page = 'blog';
+$seo_entity_type = 'blog_post';
+$seo_entity_key = $post['slug'];
+$seo_fallback_title = $post['title'] . ' — ' . t('hero_brand');
+$seo_fallback_description = mb_substr(strip_tags($post['excerpt']), 0, 200);
+$seo_fallback_image = $post['cover_image'];
 require __DIR__ . '/../includes/header.php';
 ?>
 

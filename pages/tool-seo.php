@@ -156,6 +156,8 @@ require __DIR__ . '/../includes/header.php';
             <?= tools_render_check_item(t('seo_word_count_label'), $result['wordCountStatus'], number_format($result['wordCount']) . ' ' . t('seo_words_count')) ?>
           </div>
 
+          <?= tools_render_cta() ?>
+
           <a href="/pages/tool-seo.php" class="tool-check-another"><?= e(t('tools_check_another')) ?></a>
         </div>
       <?php endif; ?>

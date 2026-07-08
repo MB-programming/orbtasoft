@@ -145,6 +145,8 @@ require __DIR__ . '/../includes/header.php';
             <?= tools_render_check_item(t('sec_tls_cert_label'), $result['tlsStatus'], $result['tlsDetail']) ?>
           </div>
 
+          <?= tools_render_cta() ?>
+
           <a href="/pages/tool-security.php" class="tool-check-another"><?= e(t('tools_check_another')) ?></a>
         </div>
       <?php endif; ?>

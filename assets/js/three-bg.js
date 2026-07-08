@@ -78,3 +78,55 @@
 
   animate();
 })();
+
+/* Small standalone scene for the "Interactive 3D Experiences" service page. */
+(function () {
+  var canvasHost = document.getElementById('serviceThreeCanvas');
+  if (!canvasHost || typeof THREE === 'undefined') return;
+
+  var width = canvasHost.clientWidth;
+  var height = canvasHost.clientHeight;
+
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(55, width / height, 0.1, 1000);
+  camera.position.z = 16;
+
+  var renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(width, height);
+  canvasHost.appendChild(renderer.domElement);
+
+  var wireGeo = new THREE.IcosahedronGeometry(5.5, 1);
+  var wireMat = new THREE.MeshBasicMaterial({ color: 0x60a5fa, wireframe: true, transparent: true, opacity: 0.55 });
+  var wireMesh = new THREE.Mesh(wireGeo, wireMat);
+  scene.add(wireMesh);
+
+  var coreGeo = new THREE.IcosahedronGeometry(2.6, 0);
+  var coreMat = new THREE.MeshBasicMaterial({ color: 0x3b82f6, wireframe: true, transparent: true, opacity: 0.35 });
+  var coreMesh = new THREE.Mesh(coreGeo, coreMat);
+  scene.add(coreMesh);
+
+  window.addEventListener('resize', function () {
+    if (!canvasHost.isConnected) return;
+    width = canvasHost.clientWidth;
+    height = canvasHost.clientHeight;
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(width, height);
+  });
+
+  var clock = new THREE.Clock();
+
+  function animate() {
+    if (!canvasHost.isConnected) return;
+    requestAnimationFrame(animate);
+    var elapsed = clock.getElapsedTime();
+    wireMesh.rotation.y = elapsed * 0.25;
+    wireMesh.rotation.x = elapsed * 0.12;
+    coreMesh.rotation.y = -elapsed * 0.35;
+    coreMesh.rotation.x = elapsed * 0.2;
+    renderer.render(scene, camera);
+  }
+
+  animate();
+})();
