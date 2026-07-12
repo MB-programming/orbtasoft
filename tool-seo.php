@@ -160,7 +160,7 @@ require __DIR__ . '/includes/header.php';
             <?= tools_render_check_item(t('seo_robots_txt_label'), $result['robotsTxtStatus'], $result['robotsTxtStatus'] === 'good' ? t('tools_present') : t('tools_missing')) ?>
             <?= tools_render_check_item(t('seo_sitemap_label'), $result['sitemapStatus'], $result['sitemapStatus'] === 'good' ? t('tools_present') : t('tools_missing')) ?>
             <?= tools_render_check_item(t('seo_alt_coverage_label'), $result['altStatus'], $result['imgTotal'] > 0 ? $result['altCoverage'] . '%' : t('tools_status_na')) ?>
-            <?= tools_render_check_item(t('seo_og_tags_label'), $result['ogStatus'], $result['ogCount'] . ' / 3') ?>
+            <?= tools_render_check_item(t('seo_og_tags_label'), $result['ogStatus'], $result['ogCount'] . ' / 3', true) ?>
             <?= tools_render_check_item(t('seo_structured_data_label'), $result['structuredStatus'], $result['structuredStatus'] === 'good' ? t('tools_present') : t('tools_missing')) ?>
             <?= tools_render_check_item(t('seo_https_label'), $result['httpsStatus'], $result['httpsStatus'] === 'good' ? t('tools_yes') : t('tools_no')) ?>
             <?= tools_render_check_item(t('seo_viewport_label'), $result['viewportStatus'], $result['viewport'] ?: t('analysis_not_found')) ?>

@@ -734,9 +734,10 @@ body.is-rtl .work-gallery__hint .arrow::after { transform: rotate(-135deg); }
 .team-quote__text { font-size: clamp(1.05rem, 2vw, 1.3rem); font-weight: 500; line-height: 1.7; margin-block-end: 32px; }
 .team-quote__author { display: flex; flex-direction: column; align-items: center; gap: 10px; }
 .team-quote__avatar {
-  width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  font-weight: 700; color: #fff; font-size: 1.1rem;
+  position: relative; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-weight: 700; color: #fff; font-size: 1.1rem; overflow: hidden;
 }
+.team-quote__photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .team-quote__author p:first-child { font-weight: 700; }
 .team-quote__author p:last-child { color: var(--color-muted); font-size: .9rem; }
 

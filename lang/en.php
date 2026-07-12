@@ -64,6 +64,7 @@ return [
 
     'about_kicker'      => 'About Us',
     'about_heading'     => 'A small team, world-class execution',
+    'about_copy_heading' => 'Who we are',
     'about_desc'        => 'Orbtasoft is a team of engineers and designers building digital products for clients around the world. We believe great code and striking design aren\'t opposites — they complete each other.',
     'stat_1_val'        => '80+',
     'stat_1_label'      => 'Projects Completed',
@@ -77,6 +78,8 @@ return [
     'contact_kicker'    => 'Contact',
     'contact_heading'   => 'Let\'s start a conversation',
     'contact_desc'      => 'Tell us about your project and we\'ll get back to you within 24 hours.',
+    'contact_info_heading' => 'Reach us directly',
+    'contact_info_desc' => 'Prefer email or a call? We\'re easy to reach and quick to respond.',
     'form_name'         => 'Full Name',
     'form_email'        => 'Email Address',
     'form_message'      => 'Project Details',
@@ -100,10 +103,6 @@ return [
     'team_role_4'       => 'Content Director',
     'team_role_5'       => 'Backend Engineer',
     'team_role_6'       => 'QA & Research Lead',
-    'team_quote'        => 'The exceptional support from Orbtasoft truly impressed us. We suggested an improvement, and their team implemented it with remarkable speed!',
-    'team_quote_name'   => 'Natalia Kara',
-    'team_quote_role'   => 'CTO · Nova Analytics',
-
     'testimonials_kicker'  => 'Client Reviews',
     'testimonials_heading' => 'What our clients say',
     'testimonial_1_quote' => 'Orbtasoft rebuilt our dashboard from scratch and the quality of the code was outstanding. Communication was clear at every step.',

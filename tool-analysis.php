@@ -173,7 +173,7 @@ require __DIR__ . '/includes/header.php';
             <?= tools_render_check_item(t('analysis_meta_desc_label'), $result['metaDesc'] ? 'good' : 'warn', $result['metaDesc'] ?: t('analysis_not_found')) ?>
             <?= tools_render_check_item(t('analysis_viewport_label'), $result['viewport'] ? 'good' : 'warn', $result['viewport'] ?: t('analysis_not_found')) ?>
             <?= tools_render_check_item(t('analysis_charset_label'), $result['charset'] ? 'good' : 'warn', $result['charset'] ?: t('analysis_not_found')) ?>
-            <?= tools_render_check_item(t('analysis_headings_label'), $result['headingCounts']['h1'] === 1 ? 'good' : 'warn', implode('  ', array_map(fn($k, $v) => strtoupper($k) . ': ' . $v, array_keys($result['headingCounts']), $result['headingCounts']))) ?>
+            <?= tools_render_check_item(t('analysis_headings_label'), $result['headingCounts']['h1'] === 1 ? 'good' : 'warn', implode('  ', array_map(fn($k, $v) => strtoupper($k) . ': ' . $v, array_keys($result['headingCounts']), $result['headingCounts'])), true) ?>
             <?= tools_render_check_item(t('analysis_server_label'), $result['server'] ? 'na' : 'na', $result['server'] ?: t('analysis_not_found')) ?>
             <?= tools_render_check_item(t('analysis_powered_by_label'), $result['poweredBy'] ? 'warn' : 'good', $result['poweredBy'] ?: t('analysis_not_found')) ?>
             <?= tools_render_check_item(t('analysis_social_label'), $result['social'] ? 'good' : 'warn', $result['social'] ? t('tools_present') : t('tools_missing')) ?>

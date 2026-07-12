@@ -252,14 +252,15 @@ function tools_status_label(string $status): string
     };
 }
 
-function tools_render_check_item(string $label, string $status, string $detail = ''): string
+function tools_render_check_item(string $label, string $status, string $detail = '', bool $detailIsLtr = false): string
 {
     $cls = in_array($status, ['good', 'warn', 'bad', 'na'], true) ? $status : 'na';
     $html = '<div class="tool-check-item tool-check-item--' . $cls . '">';
     $html .= '<span class="tool-check-item__dot"></span>';
     $html .= '<div><div class="tool-check-item__label">' . e($label) . '</div>';
     if ($detail !== '') {
-        $html .= '<div class="tool-check-item__detail">' . e($detail) . '</div>';
+        $dirAttr = $detailIsLtr ? ' dir="ltr"' : '';
+        $html .= '<div class="tool-check-item__detail"' . $dirAttr . '>' . e($detail) . '</div>';
     }
     $html .= '</div>';
     $html .= '<span class="tool-check-item__status">' . e(tools_status_label($cls)) . '</span>';
@@ -271,7 +272,7 @@ function tools_render_score(int $score): string
 {
     $grade = tools_grade($score);
     return '<div class="tool-score"><div class="tool-score__ring tool-score__ring--' . e($grade) . '">' . e($grade) . '</div>'
-        . '<div><div class="tool-score__label">' . e(t('tools_score_label')) . '</div><div class="tool-score__value">' . (int) $score . ' / 100</div></div></div>';
+        . '<div><div class="tool-score__label">' . e(t('tools_score_label')) . '</div><div class="tool-score__value" dir="ltr">' . (int) $score . ' / 100</div></div></div>';
 }
 
 function tools_render_error(string $errorCode): string
@@ -311,7 +312,7 @@ function tools_average_score(array $statuses): int
 
 function tools_stat_card(string $label, string $value): string
 {
-    return '<div class="tool-stat-card"><div class="tool-stat-card__label">' . e($label) . '</div><div class="tool-stat-card__value">' . e($value) . '</div></div>';
+    return '<div class="tool-stat-card"><div class="tool-stat-card__label">' . e($label) . '</div><div class="tool-stat-card__value" dir="ltr">' . e($value) . '</div></div>';
 }
 
 /** Parses an HTML string into a DOMDocument, forcing UTF-8 interpretation regardless of declared charset quirks. */

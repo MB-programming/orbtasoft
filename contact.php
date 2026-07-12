@@ -18,8 +18,8 @@ require __DIR__ . '/includes/header.php';
     <div class="container">
       <div class="contact-grid">
         <div class="contact-info reveal">
-          <h2><?= e(t('contact_heading')) ?></h2>
-          <p><?= e(t('contact_desc')) ?></p>
+          <h2><?= e(t('contact_info_heading')) ?></h2>
+          <p><?= e(t('contact_info_desc')) ?></p>
 
           <div class="contact-detail">
             <span class="icon"><?= icon('mail') ?></span>
@@ -36,7 +36,7 @@ require __DIR__ . '/includes/header.php';
         </div>
 
         <form id="contactForm" class="contact-form reveal" data-error-msg="<?= e(t('form_error')) ?>">
-          <div class="form-row" style="position:absolute; left:-9999px;" aria-hidden="true">
+          <div class="form-row" style="position:absolute; inset-inline-start:-9999px;" aria-hidden="true">
             <label for="website">Website</label>
             <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
           </div>

@@ -9,6 +9,8 @@ $stats = [
     ['val' => t('stat_3_val'), 'label' => t('stat_3_label')],
     ['val' => t('stat_4_val'), 'label' => t('stat_4_label')],
 ];
+
+$featuredQuote = testimonials_data()[2] ?? null;
 ?>
 
 <main>
@@ -24,7 +26,7 @@ $stats = [
     <div class="container">
       <div class="about-grid">
         <div class="about-copy reveal">
-          <h2><?= e(t('about_heading')) ?></h2>
+          <h2><?= e(t('about_copy_heading')) ?></h2>
           <p><?= e(t('about_desc')) ?></p>
         </div>
         <div class="stats-grid">
@@ -72,16 +74,20 @@ $stats = [
       </div>
     </div>
 
+    <?php if ($featuredQuote): ?>
     <div class="container">
       <div class="team-quote">
-        <p class="team-quote__text">&ldquo;<?= e(t('team_quote')) ?>&rdquo;</p>
+        <p class="team-quote__text">&ldquo;<?= e($featuredQuote['quote']) ?>&rdquo;</p>
         <div class="team-quote__author">
-          <div class="team-quote__avatar" style="background: <?= e(avatar_palette(0)) ?>;"><?= e(initials(t('team_quote_name'))) ?></div>
-          <p><?= e(t('team_quote_name')) ?></p>
-          <p><?= e(t('team_quote_role')) ?></p>
+          <div class="team-quote__avatar" style="<?= $featuredQuote['image'] ? '' : 'background: ' . e($featuredQuote['color']) . ';' ?>">
+            <?php if ($featuredQuote['image']): ?><img src="<?= e($featuredQuote['image']) ?>" alt="" class="team-quote__photo"><?php else: ?><?= e(initials($featuredQuote['name'])) ?><?php endif; ?>
+          </div>
+          <p><?= e($featuredQuote['name']) ?></p>
+          <p><?= e($featuredQuote['role']) ?></p>
         </div>
       </div>
     </div>
+    <?php endif; ?>
   </section>
 
   <section class="section section--tight">

@@ -295,7 +295,7 @@ require __DIR__ . '/includes/header.php';
         <canvas id="confettiCanvas" class="confetti-canvas" aria-hidden="true"></canvas>
 
         <form id="newsletterForm" class="newsletter-form">
-          <input type="text" name="company" tabindex="-1" autocomplete="off" style="position:absolute; left:-9999px;" aria-hidden="true">
+          <input type="text" name="company" tabindex="-1" autocomplete="off" style="position:absolute; inset-inline-start:-9999px;" aria-hidden="true">
           <input type="email" name="email" placeholder="<?= e(t('newsletter_email')) ?>" required>
           <button type="submit"><?= e(t('newsletter_submit')) ?></button>
         </form>

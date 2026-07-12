@@ -32,7 +32,7 @@ require __DIR__ . '/includes/header.php';
 
         <form method="post" action="/auth-register.php">
           <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
-          <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute; left:-9999px;" aria-hidden="true">
+          <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute; inset-inline-start:-9999px;" aria-hidden="true">
 
           <div class="form-row">
             <label for="name"><?= e(t('auth_name')) ?></label>

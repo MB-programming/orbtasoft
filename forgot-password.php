@@ -24,7 +24,7 @@ require __DIR__ . '/includes/header.php';
         <?php else: ?>
           <form method="post" action="/auth-forgot-password.php">
             <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
-            <div class="form-row" style="position:absolute; left:-9999px;" aria-hidden="true">
+            <div class="form-row" style="position:absolute; inset-inline-start:-9999px;" aria-hidden="true">
               <label for="website">Website</label>
               <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
             </div>
