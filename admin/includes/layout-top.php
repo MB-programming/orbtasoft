@@ -19,6 +19,7 @@ $adminNav = [
     'stack'        => ['label' => 'Tech Stack', 'href' => '/admin/stack.php', 'icon' => 'code-2'],
     'messages'     => ['label' => 'Contact Messages', 'href' => '/admin/messages.php', 'icon' => 'mail'],
     'newsletter'   => ['label' => 'Newsletter Subscribers', 'href' => '/admin/newsletter.php', 'icon' => 'send'],
+    'downloader-check' => ['label' => 'Downloader Check', 'href' => '/admin/downloader-check.php', 'icon' => 'download'],
     'settings'     => ['label' => 'Settings', 'href' => '/admin/settings.php', 'icon' => 'settings'],
 ];
 ?>

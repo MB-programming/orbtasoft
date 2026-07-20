@@ -17,6 +17,13 @@ define('DOWNLOADER_MAX_FILESIZE', '700M'); // enforced by yt-dlp itself during d
 define('DOWNLOADER_INFO_TIMEOUT', 25);     // seconds
 define('DOWNLOADER_PROCESS_TIMEOUT', 300); // seconds
 
+// On hosts where the binaries aren't on PHP-FPM's PATH (common on shared hosting — there is
+// no root to `apt install` or edit the system PATH), point these at the absolute paths of the
+// binaries you uploaded yourself, e.g. '/home/u123456789/bin/yt-dlp'. Leave as-is if `yt-dlp`
+// and `ffmpeg` are already on PATH. Can also be set via env vars without touching this file.
+define('DOWNLOADER_YTDLP_BIN', getenv('YTDLP_BIN') ?: 'yt-dlp');
+define('DOWNLOADER_FFMPEG_DIR', getenv('FFMPEG_LOCATION') ?: ''); // directory containing the ffmpeg binary, or '' for PATH
+
 /** Platforms this tool supports, and the hostnames a pasted URL is allowed to belong to. */
 function downloader_platforms(): array
 {
@@ -132,7 +139,7 @@ function downloader_run_process(array $cmd, int $timeoutSeconds): array
 /** Fetches metadata (title, thumbnail, duration, max resolution) without downloading anything. */
 function downloader_fetch_info(string $url): array
 {
-    $bin = downloader_binary_path('yt-dlp');
+    $bin = downloader_binary_path(DOWNLOADER_YTDLP_BIN);
     if (!$bin) {
         return ['ok' => false, 'error' => 'binary_missing'];
     }
@@ -224,7 +231,7 @@ function downloader_format_args(string $quality): array
 /** Downloads the video into a fresh temp directory. Caller must downloader_rrmdir() the returned dir. */
 function downloader_download(string $url, string $quality): array
 {
-    $bin = downloader_binary_path('yt-dlp');
+    $bin = downloader_binary_path(DOWNLOADER_YTDLP_BIN);
     if (!$bin) {
         return ['ok' => false, 'error' => 'binary_missing'];
     }
@@ -234,11 +241,11 @@ function downloader_download(string $url, string $quality): array
         return ['ok' => false, 'error' => 'temp_dir'];
     }
 
-    $cmd = array_merge(
-        [$bin, '--no-warnings', '--no-playlist', '--max-filesize', DOWNLOADER_MAX_FILESIZE, '-o', $dir . '/%(title).100s.%(ext)s'],
-        downloader_format_args($quality),
-        [$url]
-    );
+    $cmd = [$bin, '--no-warnings', '--no-playlist', '--max-filesize', DOWNLOADER_MAX_FILESIZE, '-o', $dir . '/%(title).100s.%(ext)s'];
+    if (DOWNLOADER_FFMPEG_DIR !== '') {
+        $cmd = array_merge($cmd, ['--ffmpeg-location', DOWNLOADER_FFMPEG_DIR]);
+    }
+    $cmd = array_merge($cmd, downloader_format_args($quality), [$url]);
 
     $result = downloader_run_process($cmd, DOWNLOADER_PROCESS_TIMEOUT);
     $files = array_values(array_filter(glob($dir . '/*') ?: [], 'is_file'));
@@ -269,4 +276,41 @@ function downloader_format_duration(int $seconds): string
     $m = intdiv($seconds % 3600, 60);
     $s = $seconds % 60;
     return $h > 0 ? sprintf('%d:%02d:%02d', $h, $m, $s) : sprintf('%d:%02d', $m, $s);
+}
+
+/** Server-side self-check for the admin diagnostics page — no SSH needed to see what's missing. */
+function downloader_diagnose(): array
+{
+    $checks = [];
+
+    $checks['proc_open'] = [
+        'ok' => function_exists('proc_open') && !in_array('proc_open', array_map('trim', explode(',', (string) ini_get('disable_functions'))), true),
+        'detail' => function_exists('proc_open') ? 'proc_open() is callable' : 'proc_open() is disabled (disable_functions in php.ini) — ask your host to enable it, or move this to a VPS',
+    ];
+
+    $ytdlpBin = downloader_binary_path(DOWNLOADER_YTDLP_BIN);
+    $ytdlpVersion = null;
+    if ($ytdlpBin) {
+        $v = downloader_run_process([$ytdlpBin, '--version'], 8);
+        $ytdlpVersion = trim($v['stdout']);
+    }
+    $checks['yt-dlp'] = [
+        'ok' => $ytdlpBin !== null,
+        'detail' => $ytdlpBin ? ('found (' . DOWNLOADER_YTDLP_BIN . '), version ' . $ytdlpVersion) : ('not found — checked "' . DOWNLOADER_YTDLP_BIN . '" (set YTDLP_BIN env var or edit DOWNLOADER_YTDLP_BIN in includes/downloader.php)'),
+    ];
+
+    $ffmpegName = DOWNLOADER_FFMPEG_DIR !== '' ? rtrim(DOWNLOADER_FFMPEG_DIR, '/') . '/ffmpeg' : 'ffmpeg';
+    $ffmpegOk = false;
+    $ffmpegVersion = null;
+    if (function_exists('proc_open')) {
+        $v = downloader_run_process([$ffmpegName, '-version'], 8);
+        $ffmpegOk = $v['ok'];
+        $ffmpegVersion = $ffmpegOk ? trim(explode("\n", $v['stdout'])[0] ?? '') : null;
+    }
+    $checks['ffmpeg'] = [
+        'ok' => $ffmpegOk,
+        'detail' => $ffmpegOk ? ('found (' . $ffmpegName . '): ' . $ffmpegVersion) : ('not found — checked "' . $ffmpegName . '" (set FFMPEG_LOCATION env var to its directory, or edit DOWNLOADER_FFMPEG_DIR in includes/downloader.php). Needed for merging high-quality video/audio and for MP3 export.'),
+    ];
+
+    return $checks;
 }
