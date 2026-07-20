@@ -1421,6 +1421,23 @@ body.is-rtl .work-gallery__hint .arrow::after { transform: rotate(-135deg); }
 .tool-actions-row { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-block-start: 24px; }
 .tool-pdf-btn { display: inline-flex; align-items: center; gap: 8px; }
 
+.downloader-preview {
+  display: flex; gap: 20px; align-items: flex-start; background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius-md); padding: 20px; margin-block-end: 28px; flex-wrap: wrap;
+}
+.downloader-preview__thumb { width: 200px; max-width: 100%; border-radius: var(--radius-sm); overflow: hidden; flex-shrink: 0; background: #0b1120; }
+.downloader-preview__thumb img { display: block; width: 100%; height: auto; }
+.downloader-preview__body { flex: 1; min-width: 200px; }
+.downloader-preview__title { font-size: 1.05rem; font-weight: 700; margin-block-end: 10px; line-height: 1.5; }
+.downloader-preview__meta { display: flex; flex-wrap: wrap; gap: 16px; color: var(--color-muted); font-size: .85rem; }
+.downloader-preview__meta strong { color: var(--color-foreground); font-weight: 700; }
+
+.downloader-qualities { display: flex; flex-wrap: wrap; gap: 12px; margin-block-end: 20px; }
+.downloader-quality-btn { display: inline-flex; align-items: center; gap: 8px; }
+.downloader-quality-btn svg { width: 18px; height: 18px; }
+
+.downloader-note { color: var(--color-muted); font-size: .82rem; margin-block-start: 18px; line-height: 1.7; }
+
 @media print {
   .site-header, .popout-menu, .welcome-toast, .no-print, .bg-grid, .page-hero { display: none !important; }
   body { background: #fff !important; color: #111 !important; }

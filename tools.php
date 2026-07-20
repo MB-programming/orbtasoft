@@ -11,6 +11,16 @@ $tools = [
     ['slug' => 'keywords',     'icon' => 'send',             'title' => t('tools_card_keywords_title'),    'desc' => t('tools_card_keywords_desc')],
     ['slug' => 'uiux',         'icon' => 'layout-panel-top', 'title' => t('tools_card_uiux_title'),        'desc' => t('tools_card_uiux_desc')],
     ['slug' => 'ai-checker',   'icon' => 'star',             'title' => t('tools_card_ai_title'),          'desc' => t('tools_card_ai_desc')],
+
+    ['slug' => 'download-youtube',   'icon' => 'download', 'title' => t('tools_card_download_youtube_title'),   'desc' => t('tools_card_download_youtube_desc')],
+    ['slug' => 'download-tiktok',    'icon' => 'download', 'title' => t('tools_card_download_tiktok_title'),    'desc' => t('tools_card_download_tiktok_desc')],
+    ['slug' => 'download-instagram', 'icon' => 'download', 'title' => t('tools_card_download_instagram_title'), 'desc' => t('tools_card_download_instagram_desc')],
+    ['slug' => 'download-facebook',  'icon' => 'download', 'title' => t('tools_card_download_facebook_title'),  'desc' => t('tools_card_download_facebook_desc')],
+
+    ['url' => 'https://content.orbtasoft.com/',                  'icon' => 'share-2',        'title' => t('tools_card_video_uploader_title'),    'desc' => t('tools_card_video_uploader_desc')],
+    ['url' => 'https://content.orbtasoft.com/auto_replies.php',  'icon' => 'message-circle', 'title' => t('tools_card_auto_reply_title'),        'desc' => t('tools_card_auto_reply_desc')],
+    ['url' => 'https://content.orbtasoft.com/keywords.php',      'icon' => 'hash',            'title' => t('tools_card_content_keywords_title'),  'desc' => t('tools_card_content_keywords_desc')],
+    ['url' => 'https://content.orbtasoft.com/script_chat.php',   'icon' => 'terminal',        'title' => t('tools_card_script_writer_title'),     'desc' => t('tools_card_script_writer_desc')],
 ];
 ?>
 
@@ -27,12 +37,15 @@ $tools = [
   <section class="section section--tight">
     <div class="container">
       <div class="tools-grid">
-        <?php foreach ($tools as $tool): ?>
-          <a class="tool-card reveal" href="/tool-<?= e($tool['slug']) ?>.php">
+        <?php foreach ($tools as $tool):
+          $isExternal = isset($tool['url']);
+          $href = $isExternal ? $tool['url'] : '/tool-' . $tool['slug'] . '.php';
+        ?>
+          <a class="tool-card reveal" href="<?= e($href) ?>"<?= $isExternal ? ' target="_blank" rel="noopener noreferrer"' : '' ?>>
             <div class="tool-card__icon"><?= icon($tool['icon']) ?></div>
             <h3><?= e($tool['title']) ?></h3>
             <p><?= e($tool['desc']) ?></p>
-            <span class="tool-card__link"><?= e(t('tools_open_tool')) ?> →</span>
+            <span class="tool-card__link"><?= e($isExternal ? t('tools_external_badge') : t('tools_open_tool')) ?> →</span>
           </a>
         <?php endforeach; ?>
       </div>

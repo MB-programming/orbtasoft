@@ -9,6 +9,7 @@ echo "User-agent: *\n";
 echo "Allow: /\n";
 echo "Disallow: /admin/\n";
 echo "Disallow: /account/\n";
+echo "Disallow: /download-video.php\n";
 
 $extra = trim(site_setting('seo_robots_extra', ''));
 if ($extra !== '') {
